@@ -32,3 +32,25 @@
     margin-top: 3%;
     margin-bottom: 5%;
 }
+
+.img-logo{
+    width: 70%;
+    height: 20%;
+}
+
+.sign-in-button {
+    width: 100%;
+    height: 100%;
+    background-color: #fdb913;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: black;
+    margin-top: 5%;
+}
+
+.sign-in-button:hover {
+    background-color: #f9a602;
+    cursor: pointer;
+}

@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import './SignIn.css'
+import LogoImg from '../../assets/images/logo.jpeg'
+
 export const SignIn = () => {
 
     // Estados de los inputs
@@ -9,6 +11,7 @@ export const SignIn = () => {
   return (
     <div className='sign-in-container'>
         <form className='sign-in-form'>
+            <img src={LogoImg} alt="Descripción de la imagen"  className='img-logo'/>
             <h2 className='sign-in-title'>Sign In</h2>
             <div className='sign-in-inputs'>
                 <div className='input-container'>
