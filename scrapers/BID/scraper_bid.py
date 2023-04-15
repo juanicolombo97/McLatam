@@ -26,7 +26,7 @@ def main():
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-    options.add_argument('headless')
+    #options.add_argument('headless')
     options.add_argument("start-maximized")
     options.add_experimental_option('prefs', {
         'download.prompt_for_download': False,
@@ -36,7 +36,7 @@ def main():
 
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='chromedriver',  chrome_options=options)
+    driver = webdriver.Chrome(executable_path='scrapers/chromedriver',  chrome_options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
