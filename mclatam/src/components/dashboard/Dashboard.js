@@ -1,6 +1,6 @@
 import React from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+import MenuBar from '../MenuBar/MenuBar';
 
 const Dashboard = () => {
 
@@ -23,6 +23,7 @@ const Dashboard = () => {
     <div>
       <h1>Dashboard</h1>
       <p>Bienvenido</p>
+      <MenuBar />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import {signInWithEmailAndPassword} from "firebase/auth";
 import {auth} from '../../firebase'
 import { useNavigate } from 'react-router-dom';
 
-export const SignIn = () => {
+export const SignIn = ({isSignedIn, setIsSignedIn}) => {
 
     // Estados de los inputs
     const [email, setEmail] = useState('')
@@ -16,17 +16,25 @@ export const SignIn = () => {
 
     // Hook useNavigate
     const navigate = useNavigate();
-
     // Función para iniciar sesión
     const signIn = (e) => {
+
+        // Prevenimos que se recargue la página
         e.preventDefault()
         console.log(email, password)
+
+        // Iniciamos sesión
         signInWithEmailAndPassword(auth, email, password).then(
             (userCredential) => {
             // Signed in
             const user = userCredential.user;
             console.log(user)
-            navigate('/dashboard');
+
+            // Setteamos que este logueado
+            setIsSignedIn(true)
+            
+            // Redireccionamos a dashboard
+            navigate('/dashboard')
             
             }
         ).catch((error) => {
