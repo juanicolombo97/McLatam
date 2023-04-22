@@ -11,13 +11,16 @@ function App() {
   
   // Estados para ver si esta loggeado
   const [isSignedIn, setIsSignedIn] = useState(null)
-  
+
+  // Funciones para cambiar el estado a loggeado
   const signin = () => {
     setIsSignedIn(true)
   }
+  // Función para cerrar sesión
   const signout = () => {
     setIsSignedIn(false)
   }
+  
   // Funcion para cerrar sesión al cerrar la ventana
   useEffect(() => {
     const handleBeforeUnload = async () => {

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './SignIn.css'
 import LogoImg from '../../assets/images/logo.jpeg'
 import {signInWithEmailAndPassword} from "firebase/auth";
-import {auth} from '../../firebase'
+import {auth} from '../../firebase/firebase'
 import { useNavigate } from 'react-router-dom';
 
 export const SignIn = ({isSignedIn, setIsSignedIn}) => {
