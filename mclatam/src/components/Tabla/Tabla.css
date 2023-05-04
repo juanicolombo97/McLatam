@@ -49,3 +49,25 @@ tbody tr:hover {
 .modal-fila-detalle-valor {
   margin-left: 5px;
 }
+.modal-fila-detalle-boton {
+  background-color: #FFC107;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.modal-fila-detalle-boton:hover {
+  background-color: #e0a800;
+}
+.modal-fila-documento {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Modal from '../Modal/Modal';
 import './Tabla.css';
 
+// Lista de filtros de cada columna
 const columnas = [
   {
     nombre: 'ID',
@@ -24,13 +25,17 @@ const columnas = [
       { etiqueta: 'Cerrado', valor: (expediente) => expediente.Estado === 'Cerrado' },
     ],
   },
+  {
+    nombre: 'Documento',
+    filtros: [], // No hay filtros para la columna Documento
+  },
 ];
 
+// Lista expedientes para poblar tabla
 const expedientes = [
-  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto' },
-  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado' },
-  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto' },
-  // ...
+  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
+  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
 ];
 
 const Tabla = () => {
@@ -41,18 +46,21 @@ const Tabla = () => {
   const [modalFilaOpen, setModalFilaOpen] = useState(false);
   const [filaSeleccionada, setFilaSeleccionada] = useState(null);
 
+  // Funcion que se encarga de abrir el modal de filtros
   const handleColumnClick = (e, columna) => {
     e.preventDefault();
     setColumnaSeleccionada(columna);
     setModalOpen(true);
   };
 
+  // Funcion que se encarga de abrir el documento en una nueva pestaña
   const handleFilaClick = (e, fila) => {
     e.preventDefault();
     setFilaSeleccionada(fila);
     setModalFilaOpen(true);
   };
 
+  // Funcion que se encarga de filtrar los expedientes segun el filtro seleccionado
   const handleFilterChange = (e, filtro) => {
     const checked = e.target.checked;
     let nuevosExpedientesFiltrados;
@@ -64,6 +72,11 @@ const Tabla = () => {
     }
 
     setExpedientesFiltrados(nuevosExpedientesFiltrados);
+  };
+
+  // Funcion que se encarga de abrir el documento en una nueva pestaña-
+  const openDocument = (url) => {
+    window.open(url, '_blank');
   };
 
   return (
@@ -111,28 +124,37 @@ const Tabla = () => {
       </ul>
     </Modal>
   )}
-
-  {modalFilaOpen && (
-    <Modal
-      onClose={() => setModalFilaOpen(false)}
-      style={{
-        justifyContent: 'center',
-        paddingTop: '5rem',
-      }}
-    >
-      <h3>Detalles del expediente</h3>
-      <div className="modal-fila-detalles">
-        {columnas.map((columna, index) => (
-          <div className="modal-fila-detalle" key={index}>
-            <span className="modal-fila-detalle-nombre">{columna.nombre}:</span>
-            <span className="modal-fila-detalle-valor">{filaSeleccionada[columna.nombre]}</span>
+{modalFilaOpen && (
+        <Modal
+          onClose={() => setModalFilaOpen(false)}
+          style={{
+            justifyContent: 'center',
+            paddingTop: '5rem',
+          }}
+        >
+          <h3>Detalles del expediente</h3>
+          <div className="modal-fila-detalles">
+            {columnas.map((columna, index) => (
+              columna.nombre !== 'Documento' && (
+                <div className="modal-fila-detalle" key={index}>
+                  <span className="modal-fila-detalle-nombre">{columna.nombre}:</span>
+                  <span className="modal-fila-detalle-valor">{filaSeleccionada[columna.nombre]}</span>
+                </div>
+              )
+            ))}
           </div>
-        ))}
-      </div>
-    </Modal>
-  )}
-</div>
-);
+          <div className="modal-fila-documento">
+            <button
+              className="modal-fila-detalle-boton"
+              onClick={() => openDocument(filaSeleccionada.Documento)}
+            >
+              Ver documento
+            </button>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
 };
 
 export default Tabla;
