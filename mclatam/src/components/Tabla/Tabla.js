@@ -38,10 +38,19 @@ const Tabla = () => {
   const [columnaSeleccionada, setColumnaSeleccionada] = useState(null);
   const [expedientesFiltrados, setExpedientesFiltrados] = useState(expedientes);
 
+  const [modalFilaOpen, setModalFilaOpen] = useState(false);
+  const [filaSeleccionada, setFilaSeleccionada] = useState(null);
+
   const handleColumnClick = (e, columna) => {
     e.preventDefault();
     setColumnaSeleccionada(columna);
     setModalOpen(true);
+  };
+
+  const handleFilaClick = (e, fila) => {
+    e.preventDefault();
+    setFilaSeleccionada(fila);
+    setModalFilaOpen(true);
   };
 
   const handleFilterChange = (e, filtro) => {
@@ -71,43 +80,59 @@ const Tabla = () => {
         </thead>
         <tbody>
           {expedientesFiltrados.map((expediente, index) => (
-            <tr key={index}>
+            <tr key={index} onClick={(e) => handleFilaClick(e, expediente)}>
               {columnas.map((columna, colIndex) => (
-                <td key={colIndex}>{expediente[columna.nombre]}</td>
-              ))}
+                <td key={colIndex}>{expediente[columna.nombre]}</td>))}
             </tr>
-          ))}
+            ))}
         </tbody>
-      </table>
+    </table>
+    {modalOpen && (
+    <Modal
+      onClose={() => setModalOpen(false)}
+      style={{
+        alignItems: 'flex-start',
+        paddingTop: '5rem',
+      }}
+    >
+      <h3>Filtrar por {columnaSeleccionada?.nombre}</h3>
+      <ul>
+        {columnaSeleccionada?.filtros.map((filtro, index) => (
+          <li key={index}>
+            <label>
+              <input
+                type="checkbox"
+                onChange={(e) => handleFilterChange(e, filtro)}
+              />
+              {filtro.etiqueta}
+            </label>
+          </li>
+        ))}
+      </ul>
+    </Modal>
+  )}
 
-      {modalOpen && (
-        <Modal
-          onClose={() => setModalOpen(false)}
-          style={{
-            alignItems: 'flex-start',
-            paddingTop: '5rem',
-          }}
-        >
-          <h3>Filtrar por {columnaSeleccionada?.nombre}</h3>
-<ul>
-{columnaSeleccionada?.filtros.map((filtro, index) => (
-<li key={index}>
-<label>
-<input
-type="checkbox"
-onChange={(e) => handleFilterChange(e, filtro)}
-/>
-{filtro.etiqueta}
-</label>
-</li>
-))}
-</ul>
-</Modal>
-)}
+  {modalFilaOpen && (
+    <Modal
+      onClose={() => setModalFilaOpen(false)}
+      style={{
+        justifyContent: 'center',
+        paddingTop: '5rem',
+      }}
+    >
+      <h3>Detalles del expediente</h3>
+      <div className="modal-fila-detalles">
+        {columnas.map((columna, index) => (
+          <div className="modal-fila-detalle" key={index}>
+            <span className="modal-fila-detalle-nombre">{columna.nombre}:</span>
+            <span className="modal-fila-detalle-valor">{filaSeleccionada[columna.nombre]}</span>
+          </div>
+        ))}
+      </div>
+    </Modal>
+  )}
 </div>
 );
 };
 
 export default Tabla;
-
-
