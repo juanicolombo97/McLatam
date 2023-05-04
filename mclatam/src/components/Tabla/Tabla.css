@@ -1,0 +1,35 @@
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  table {
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    width: 80%;
+  }
+  
+  th,
+  td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f7c408;
+    color: #ffffff;
+    font-weight: 600;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f3f3f3;
+  }
+  
+  tr:hover {
+    background-color: #f7c408;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  
