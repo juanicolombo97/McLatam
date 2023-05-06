@@ -22,6 +22,19 @@ const Estadisticas = () => {
 
   return (
     <div className="stats-container">
+
+      <h2>Cantidad de expedientes revisados por semana y por encargado</h2>
+      <div className="chart-container">
+      <LineChart width={600} height={400} data={lineData}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Line dataKey="Encargado_1" stroke="#8884d8" />
+        <Line dataKey="Encargado_2" stroke="#82ca9d" />
+        <Line dataKey="Encargado_3" stroke="#ffc658" />
+      </LineChart>
+      </div>
       <h2>Cantidad de expedientes por página</h2>
       <div className="chart-container">
         <PieChart width={400} height={400}>
@@ -30,18 +43,7 @@ const Estadisticas = () => {
         </PieChart>
       </div>
   
-      <h2>Cantidad de expedientes revisados por semana y por encargado</h2>
-      <div className="chart-container">
-      <LineChart width={600} height={400} data={lineData}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Line dataKey="Encargado_1" stroke="#8884d8" />
-      <Line dataKey="Encargado_2" stroke="#82ca9d" />
-      <Line dataKey="Encargado_3" stroke="#ffc658" />
-    </LineChart>
-      </div>
+      
     </div>
   );
 
