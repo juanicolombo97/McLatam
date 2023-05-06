@@ -4,8 +4,11 @@ import SignIn
 from './components/auth/SignIn';
 import { getAuth, signOut } from 'firebase/auth';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Dashboard from './components/dashboard/Dashboard';
 import Protected from './components/auth/Protected';
+import Estadisticas from './components/Estadisticas/Estadisticas';
+import RevisarExpedientes from './components/RevisarExpedientes/RevisarExpedientes';
+import Navbar from './components/Navbar/Navbar';
+import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
   
@@ -22,26 +25,27 @@ function App() {
   }
   
   // Funcion para cerrar sesión al cerrar la ventana
-  useEffect(() => {
-    const handleBeforeUnload = async () => {
-      const auth = getAuth();
-      if (auth.currentUser) {
-        await signOut(auth);
-        signout();
-      }
-    };
+  // useEffect(() => {
+  //   const handleBeforeUnload = async () => {
+  //     const auth = getAuth();
+  //     if (auth.currentUser) {
+  //       await signOut(auth);
+  //       signout();
+  //     }
+  //   };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
 
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, []);
 
   
   return (
     <div className="App">
       <BrowserRouter>
+        <Navbar  />
         <Routes>
           <Route path='/' element={<SignIn isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} />} />
           <Route
@@ -49,6 +53,22 @@ function App() {
             element={
               <Protected isSignedIn={isSignedIn}>
                 <Dashboard />
+              </Protected>
+            }
+          />
+          <Route
+            path="/revisar-expedientes"
+            element={
+              <Protected isSignedIn={isSignedIn}>
+                <RevisarExpedientes />
+              </Protected>
+            }
+          />
+          <Route
+            path="/estadisticas"
+            element={
+              <Protected isSignedIn={isSignedIn}>
+                <Estadisticas />
               </Protected>
             }
           />

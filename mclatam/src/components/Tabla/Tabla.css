@@ -1,15 +1,17 @@
 
 
 .table-container {
-  width: 100%;
+  max-width: 100%; /* Ajusta este valor según tus necesidades (ejemplo: 100%, 90%, etc.) */
+  margin: 0 auto;
   overflow-x: auto;
 }
 
-table {
-  border-collapse: collapse;
+.table {
+  white-space: nowrap;
   width: 100%;
-  font-size: 14px;
 }
+
+
 
 th,
 td {
