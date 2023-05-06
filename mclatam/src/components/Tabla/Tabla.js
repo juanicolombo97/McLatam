@@ -112,7 +112,7 @@ const Tabla = () => {
 
   return (
     <div className="table-container">
-      <table>
+      <table  style={{ tableLayout: 'auto' }}>
         <thead>
           <tr>
             {columnas.map((columna, index) => (
