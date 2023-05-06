@@ -2,6 +2,8 @@
 import time
 
 from selenium import webdriver
+from selenium.webdriver import ActionChains
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -40,42 +42,69 @@ def obtener_datos_tabla(driver):
     except Exception:
         pass
 
+    # Cambiar el idioma
+    WebDriverWait(driver, 30).until(
+        EC.element_to_be_clickable((By.XPATH, "//*[@id='wholePage']/header/ul/li[2]/button")))
+    boton_idioma = driver.find_element(By.XPATH, "//*[@id='wholePage']/header/ul/li[2]/button")
+    actions = ActionChains(driver)
+    # Mover el mouse al elemento
+    actions.move_to_element(boton_idioma).perform()
+    boton_idioma.click()
+    print("Click idioma")
+    time.sleep(2)
+
+    # Click sobre el idioma que queremos
+    WebDriverWait(driver, 30).until(
+        EC.element_to_be_clickable((By.XPATH, "//*[@id='wholePage']/header/ul/li[2]/button/../ul/li[2]/button")))
+
+    # Ejecutar un código JavaScript para hacer click en el botón utilizando XPath
+    boton_idioma_esp = driver.find_element(By.XPATH, "//*[@id='wholePage']/header/ul/li[2]/button/../ul/li[2]/button")
+    driver.execute_script("arguments[0].click();", boton_idioma_esp)
+    time.sleep(7)
+
+    # Esperar que cargue
+    WebDriverWait(driver, 30).until(EC.invisibility_of_element((By.ID, 'mainThrobber')))
+
+    # Clickear sobre la busqueda avanzada para poder ver los filtros
+    WebDriverWait(driver, 30).until(
+        EC.element_to_be_clickable((By.XPATH, "//*[@id='noticeFilter']/div[1]/div[2]/input")))
+    busqueda_avanzada = driver.find_element(By.XPATH, "//*[@id='noticeFilter']/div[1]/div[2]/input")
+    busqueda_avanzada.click()
+    print("Click Mostrar Busqueda")
+
+    # Seleccionar el filtro que quiero
+    WebDriverWait(driver, 30).until(
+        EC.element_to_be_clickable((By.ID, 'RequestForEoi')))
+    filtro = driver.find_element(By.ID, 'RequestForEoi')
+    filtro.click()
+    time.sleep(2)
+
+    # Buscar
+    WebDriverWait(driver, 30).until(
+        EC.element_to_be_clickable((By.ID, 'lnkSearch')))
+    buscar = driver.find_element(By.ID, 'lnkSearch')
+    buscar.click()
+
+    # Esperar que cargue
+    time.sleep(1)
+    WebDriverWait(driver, 30).until(EC.invisibility_of_element((By.ID, 'mainThrobber')))
+
     # Esperamos que cargue la tabla
     WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.XPATH, "//*[@id='tblNotices']")))
-
     # Obtenemos la tabla de la pagina
-    tabla = driver.find_element(By.XPATH, "//*[@id='tblNotices']/div[1]")
+    tabla = driver.find_element(By.XPATH, "//*[@id='tblNotices']/div[2]")
 
     # Obtenemos las filas de la tabla
-    filas = tabla.find_elements(By.TAG_NAME, "div")
+    filas = tabla.find_elements(By.XPATH, "//*[@role='row']")
+    index = 0
 
     # Obtenemos el numero de filas
     num_filas = len(filas)
     print('Numero de filas: ' + str(num_filas))
 
     # Hacemos for por cada fila
-    for numero_fila in range(0, int(num_filas)):
-        print('Fila actual: ' + str(numero_fila))
-
-        # Iniciamos datos de la fila
-        titulo = ''
-        pais = ''
-
-        # Obtenemos las filas
-        filas = tabla.find_elements(By.TAG_NAME, "div")
-
-        # Obtenemos la fila actual
-        fila_actual = filas[numero_fila]
-
-        # Obtenemos los datos de la fila
-        datos_fila = fila_actual.find_elements(By.TAG_NAME, "div")
-        print(datos_fila[0].text)
-        time.sleep(10)
-
-        # Obtenemos el titulo de la fila
-        # titulo = datos_fila[1].text
-        # print('Titulo: ' + titulo)
+    # TODO
 
 
 if __name__ == '__main__':
