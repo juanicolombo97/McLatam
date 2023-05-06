@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Modal from '../Modal/Modal';
 import './Tabla.css';
 
@@ -58,56 +58,57 @@ const Tabla = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [columnaSeleccionada, setColumnaSeleccionada] = useState(null);
   const [expedientesFiltrados, setExpedientesFiltrados] = useState(expedientes);
-
   const [modalFilaOpen, setModalFilaOpen] = useState(false);
   const [filaSeleccionada, setFilaSeleccionada] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(expedientesFiltrados.length / itemsPerPage);
+  const headerRefs = useRef([]);
 
-  // Funcion que se encarga de abrir el modal de filtros
   const handleColumnClick = (e, columna) => {
     e.preventDefault();
     setColumnaSeleccionada(columna);
     setModalOpen(true);
   };
 
-  // Funcion que se encarga de abrir el documento en una nueva pestaña
   const handleFilaClick = (e, fila) => {
     e.preventDefault();
     setFilaSeleccionada(fila);
     setModalFilaOpen(true);
   };
 
-  // Funcion que se encarga de filtrar los expedientes segun el filtro seleccionado
-  const handleFilterChange = (e, filtro) => {
-    const checked = e.target.checked;
-    let nuevosExpedientesFiltrados;
-
-    if (checked) {
-      nuevosExpedientesFiltrados = expedientes.filter(filtro.valor);
-    } else {
-      nuevosExpedientesFiltrados = expedientes;
-    }
-
-    setExpedientesFiltrados(nuevosExpedientesFiltrados);
-  };
-
-  // Funcion que se encarga de abrir el documento en una nueva pestaña-
-  const openDocument = (url) => {
-    window.open(url, '_blank');
-  };
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-
-  const totalPages = Math.ceil(expedientesFiltrados.length / itemsPerPage);
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
-  };
+  const handleFilterChange = (e, filtro) => { /* Tu función handleFilterChange */ };
+  const openDocument = (url) => { /* Tu función openDocument */ };
+  const handlePageChange = (newPage) => { /* Tu función handlePageChange */ };
 
   const paginatedExpedientes = expedientesFiltrados.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+  const handleResize = (e, index) => {
+    const header = headerRefs.current[index];
+    const handle = header.querySelector(".resize-handle");
+    if (e.target !== handle) return;
+
+    let startWidth = 0;
+    let startX = 0;
+
+    startX = e.clientX;
+    startWidth = header.offsetWidth;
+
+    const handleMouseMove = (event) => {
+      const diff = event.clientX - startX;
+      header.style.width = `${startWidth + diff}px`;
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+  };
+
+  
 
   return (
     <div className="table-container">
@@ -115,8 +116,16 @@ const Tabla = () => {
         <thead>
           <tr>
             {columnas.map((columna, index) => (
-              <th key={index} onClick={(e) => handleColumnClick(e, columna)}>
+              <th
+                key={index}
+                ref={(el) => (headerRefs.current[index] = el)}
+                onClick={(e) => handleColumnClick(e, columna)}
+              >
                 {columna.nombre}
+                <span
+                  className="resize-handle"
+                  onMouseDown={(e) => handleResize(e, index)}
+                ></span>
               </th>
             ))}
           </tr>
@@ -131,6 +140,7 @@ const Tabla = () => {
           ))}
         </tbody>
       </table>
+      
 
     {
     modalOpen && (
