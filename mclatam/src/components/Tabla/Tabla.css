@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 .table-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
   overflow-x: auto;
+  position: relative;
 }
+
 
 table {
   border-collapse: collapse;
@@ -140,4 +146,12 @@ tbody tr:hover {
 .row-count {
   text-align: center;
   margin-bottom: 1rem;
+}
+.table-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1));
 }

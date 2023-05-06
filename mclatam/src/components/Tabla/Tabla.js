@@ -112,7 +112,7 @@ const Tabla = () => {
 
   return (
     <div className="table-container">
-      <table  style={{ tableLayout: 'auto' }}>
+      <table  style={{ tableLayout: 'auto', display: 'inline-table' }}>
         <thead>
           <tr>
             {columnas.map((columna, index) => (
@@ -140,7 +140,7 @@ const Tabla = () => {
           ))}
         </tbody>
       </table>
-      
+      <div className="table-overlay"></div>
 
     {
     modalOpen && (
