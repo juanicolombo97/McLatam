@@ -140,7 +140,6 @@ const Tabla = () => {
           ))}
         </tbody>
       </table>
-      <div className="table-overlay"></div>
 
     {
     modalOpen && (

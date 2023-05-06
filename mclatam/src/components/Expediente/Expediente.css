@@ -1,0 +1,36 @@
+.expediente-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 10%;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.expediente-data {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.expediente-item {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 8px;
+    flex-basis: calc(50% - 10px);
+}
+
+.expediente-item strong {
+    font-weight: bold;
+}
