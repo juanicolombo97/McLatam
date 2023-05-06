@@ -26,61 +26,61 @@ const ExpedienteForm = ({handleEnviar }) => {
 
     return (
         <form className="expediente-form" onSubmit={handleEnviar}>
-                        <label>
-                EI: Nombre de la Consultoría
+            <label>
+                <span>EI: Nombre de la Consultoría</span>
                 <input type="text" name="consultoria" value={formValues.consultoria} onChange={handleChange} />
             </label>
             <label>
-                Lugar
+                <span>Lugar</span>
                 <input type="text" name="lugar" value={formValues.lugar} onChange={handleChange} />
             </label>
             <label>
-                Tipo de Consultoría
+                <span>Tipo de Consultoría</span>
                 <input type="text" name="tipo" value={formValues.tipo} onChange={handleChange} />
             </label>
             <label>
-                Código del Proceso/Prestamo
+                <span>Código del Proceso/Prestamo</span>
                 <input type="text" name="codigoProceso" value={formValues.codigoProceso} onChange={handleChange} />
             </label>
             <label>
-                Código Completo
+                <span>Código Completo</span>
                 <input type="text" name="codigoCompleto" value={formValues.codigoCompleto} onChange={handleChange} />
             </label>
             <label>
-                Proyecto
+                <span>Proyecto</span>
                 <input type="text" name="proyecto" value={formValues.proyecto} onChange={handleChange} />
             </label>
             <label>
-                Deadline
+                <span>Deadline</span>
                 <input type="text" name="deadline" value={formValues.deadline} onChange={handleChange} />
             </label>
             <label>
-                Plazo
+                <span>Plazo</span>
                 <input type="text" name="plazo" value={formValues.plazo} onChange={handleChange} />
             </label>
             <label>
-                Presupuesto
+                <span>Presupuesto</span>
                 <input type="text" name="presupuesto" value={formValues.presupuesto} onChange={handleChange} />
             </label>
             <label>
-                Objetivos
+                <span>Objetivos</span>
                 <textarea name="objetivos" value={formValues.objetivos} onChange={handleChange}></textarea>
             </label>
             <label>
-                Objetivo Específico
+                <span>Objetivo Específico</span>
                 <textarea name="objetivoEspecifico" value={formValues.objetivoEspecifico} onChange={handleChange}></textarea>
             </label>
             <label>
-                Alcance
+                <span>Alcance</span>
                 <textarea name="alcance" value={formValues.alcance} onChange={handleChange}></textarea>
             </label>
             <label>
-                Experiencia
+                <span>Experiencia</span>
                 <textarea name="experiencia" value={formValues.experiencia} onChange={handleChange}></textarea>
             </label>
-
         </form>
     );
 };
+
 
 export default ExpedienteForm;
