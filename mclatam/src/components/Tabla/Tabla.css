@@ -1,17 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 
 
 .table-container {
-  max-width: 100%; /* Ajusta este valor según tus necesidades (ejemplo: 100%, 90%, etc.) */
+  max-width: 66.67%;
   margin: 0 auto;
   overflow-x: auto;
+  font-family: 'Roboto', sans-serif;
+
 }
 
-.table {
+table {
   white-space: nowrap;
   width: 100%;
 }
-
-
 
 th,
 td {
@@ -73,3 +74,42 @@ tbody tr:hover {
   justify-content: center;
   margin-top: 1rem;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+.pagination span {
+  margin: 0 10px;
+}
+
+.pagination button {
+  background-color: #FFC107;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.pagination button:hover {
+  background-color: #e0a800;
+}
+
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.row-count {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+

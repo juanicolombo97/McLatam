@@ -36,6 +36,22 @@ const expedientes = [
   { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
   { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
   { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
+  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
+  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
+  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
+  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
+  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
+  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
+  
 ];
 
 const Tabla = () => {
@@ -79,6 +95,20 @@ const Tabla = () => {
     window.open(url, '_blank');
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(expedientesFiltrados.length / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  const paginatedExpedientes = expedientesFiltrados.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+
   return (
     <div className="table-container">
       <table>
@@ -92,15 +122,18 @@ const Tabla = () => {
           </tr>
         </thead>
         <tbody>
-          {expedientesFiltrados.map((expediente, index) => (
+          {paginatedExpedientes.map((expediente, index) => (
             <tr key={index} onClick={(e) => handleFilaClick(e, expediente)}>
               {columnas.map((columna, colIndex) => (
-                <td key={colIndex}>{expediente[columna.nombre]}</td>))}
+                <td key={colIndex}>{expediente[columna.nombre]}</td>
+              ))}
             </tr>
-            ))}
+          ))}
         </tbody>
-    </table>
-    {modalOpen && (
+      </table>
+
+    {
+    modalOpen && (
     <Modal
       onClose={() => setModalOpen(false)}
       style={{
@@ -123,8 +156,9 @@ const Tabla = () => {
         ))}
       </ul>
     </Modal>
-  )}
-{modalFilaOpen && (
+    )}
+    {
+    modalFilaOpen && (
         <Modal
           onClose={() => setModalFilaOpen(false)}
           style={{
@@ -152,8 +186,24 @@ const Tabla = () => {
             </button>
           </div>
         </Modal>
-      )}
+    )}
+       <div className="pagination">
+        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          Anterior
+        </button>
+        <span>
+          Página {currentPage} de {totalPages}
+        </span>
+        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+          Siguiente
+        </button>
+      </div>
+      <div className="row-count">
+        <p>Total de filas: {expedientesFiltrados.length}</p>
+      </div>
+    
     </div>
+
   );
 };
 

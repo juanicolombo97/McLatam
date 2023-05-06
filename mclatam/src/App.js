@@ -44,7 +44,9 @@ function App() {
   
   return (
     <div className="App">
+      
       <BrowserRouter>
+      
         <Navbar  />
         <Routes>
           <Route path='/' element={<SignIn isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} />} />
