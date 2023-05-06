@@ -28,7 +28,8 @@
   color: #FFFFFF;
 }
 
-.nav-link:active {
-  background-color: rgba(0, 0, 0, 0.2);
+.nav-link.active {
+  background-color: #635a18;
   color: #FFFFFF;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
