@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import Expediente from '../Expediente/Expediente'
 import ExpedienteButtons from '../ExpedienteButtons/ExpedienteButtons'
+import ExpedienteForm from '../ExpedienteForm/ExpedienteForm';
 
 export const RevisarExpedientes = () => {
   
@@ -50,6 +51,8 @@ export const RevisarExpedientes = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
   };
 
+
+
   return (
     <div>
         <ExpedienteButtons
@@ -58,6 +61,7 @@ export const RevisarExpedientes = () => {
             onAvanzar={handleAvanzar}
         />
         <Expediente expediente={expedientes[currentIndex]} />
+        <ExpedienteForm handleEnviar={handleEnviar} />
     </div>
 );
 };
