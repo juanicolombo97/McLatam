@@ -1,8 +1,13 @@
 .buttons-container {
+    position: fixed;
+    left: 10%;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    margin-bottom: 5px;
-    margin-top: 5%;
+    margin: 0;
+    padding: 0;
 }
 
 .button {
@@ -12,9 +17,9 @@
     padding: 12px 24px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: block;
     font-size: 16px;
-    margin: 4px 10px;
+    margin: 10px 0;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.3s;
