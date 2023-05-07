@@ -77,9 +77,24 @@ const Tabla = () => {
     setModalFilaOpen(true);
   };
 
-  const handleFilterChange = (e, filtro) => { /* Tu función handleFilterChange */ };
-  const openDocument = (url) => { /* Tu función openDocument */ };
-  const handlePageChange = (newPage) => { /* Tu función handlePageChange */ };
+  const handleFilterChange = (e, filtro) => {
+    // Si el filtro está chequeado, lo agrega a la lista de filtros aplicados, de lo contrario, lo quita
+    if (e.target.checked) {
+      setExpedientesFiltrados(expedientesFiltrados.filter(filtro.valor));
+    } else {
+      setExpedientesFiltrados(expedientes.filter(filtro.valor));
+    }
+  };
+  
+  const openDocument = (url) => {
+    // Abre el documento en una nueva pestaña
+    window.open(url, '_blank');
+  };
+  
+  const handlePageChange = (newPage) => {
+    // Actualiza el número de página actual
+    setCurrentPage(newPage);
+  };
 
   const paginatedExpedientes = expedientesFiltrados.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
