@@ -47,3 +47,29 @@ h2 {
 .expediente-item strong {
     font-weight: bold;
 }
+.ReactModal__Overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 200ms ease-in-out;
+    opacity: 1;
+}
+
+.ReactModal__Content {
+    position: relative;
+    width: 50%;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    overflow: auto;
+    border-radius: 4px;
+    outline: none;
+    opacity: 1;
+    transition: opacity 200ms ease-in-out;
+}
