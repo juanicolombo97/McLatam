@@ -8,7 +8,19 @@
   position: relative;
 }
 
-
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  min-width: 300px;
+  max-width: 90%;
+  margin: 1rem;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
 table {
   border-collapse: collapse;
   width: auto;
@@ -22,6 +34,12 @@ td {
   padding: 8px;
   border-bottom: 1px solid #ddd;
   min-width: 150px;
+}
+td {
+  max-width: 250px; /* Ajustar este valor según tus necesidades */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 th {
@@ -71,11 +89,15 @@ tbody tr:hover {
   justify-content: space-between;
   max-width: 500px;
   margin: 0 auto;
+  width: 100%; /* Ajusta este valor según tus necesidades */
+
 }
 
 .modal-fila-detalle {
-  width: 48%;
+  width: 80%;
   margin-bottom: 10px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .modal-fila-detalle-nombre {

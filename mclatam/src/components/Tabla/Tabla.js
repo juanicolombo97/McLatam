@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from '../../firebase/firebase';
 import Modal from '../Modal/Modal';
 import './Tabla.css';
 
@@ -7,63 +9,63 @@ const columnas = [
   {
     nombre: 'ID',
     filtros: [
-      { etiqueta: '1 - 100', valor: (expediente) => expediente.ID >= 1 && expediente.ID <= 100 },
-      { etiqueta: '101 - 200', valor: (expediente) => expediente.ID >= 101 && expediente.ID <= 200 },
+      { etiqueta: '1 - 100', valor: (expediente) => expediente.id >= 1 && expediente.id <= 100 },
+      { etiqueta: '101 - 200', valor: (expediente) => expediente.id >= 101 && expediente.id <= 200 },
     ],
   },
   {
-    nombre: 'Nombre',
+    nombre: 'Expediente_id',
     filtros: [
-      { etiqueta: 'A - M', valor: (expediente) => /^[A-M]/.test(expediente.Nombre) },
-      { etiqueta: 'N - Z', valor: (expediente) => /^[N-Z]/.test(expediente.Nombre) },
     ],
   },
   {
-    nombre: 'Estado',
+    nombre: 'Titulo',
     filtros: [
-      { etiqueta: 'Abierto', valor: (expediente) => expediente.Estado === 'Abierto' },
-      { etiqueta: 'Cerrado', valor: (expediente) => expediente.Estado === 'Cerrado' },
+      { etiqueta: 'A - M', valor: (expediente) => /^[A-M]/.test(expediente.Titulo) },
+      { etiqueta: 'N - Z', valor: (expediente) => /^[N-Z]/.test(expediente.Titulo) },
+    ],
+  },
+  {
+    nombre: 'Estado_expediente',
+    filtros: [
+      { etiqueta: 'Revisado', valor: (expediente) => expediente.Estado_expediente === 'Revisado' },
+      { etiqueta: 'NoRevisado', valor: (expediente) => expediente.Estado_expediente === 'NoRevisado' },
     ],
   },
   {
     nombre: 'Documento',
     filtros: [], // No hay filtros para la columna Documento
   },
-];
-
-// Lista expedientes para poblar tabla
-const expedientes = [
-  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
-  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
-  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
-  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
-  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
-  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 1, Nombre: 'Expediente A', Estado: 'Abierto', Documento: 'https://google.com' },
-  { ID: 2, Nombre: 'Expediente B', Estado: 'Cerrado', Documento: 'https://google.com' },
-  { ID: 3, Nombre: 'Expediente C', Estado: 'Abierto', Documento: 'https://google.com' },
   
 ];
+
 
 const Tabla = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [columnaSeleccionada, setColumnaSeleccionada] = useState(null);
-  const [expedientesFiltrados, setExpedientesFiltrados] = useState(expedientes);
+  const [expedientesFiltrados, setExpedientesFiltrados] = useState([]);
   const [modalFilaOpen, setModalFilaOpen] = useState(false);
   const [filaSeleccionada, setFilaSeleccionada] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
   const totalPages = Math.ceil(expedientesFiltrados.length / itemsPerPage);
   const headerRefs = useRef([]);
+
+  // Carga expedientes desde Firestore
+  useEffect(() => {
+    const loadExpedientes = async () => {
+      const querySnapshot = await getDocs(collection(db, "crm")); // Asegúrate de cambiar "crm" por el nombre de tu colección
+      console.log(querySnapshot);
+      const expedientesData = [];
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        expedientesData.push({ id: doc.id, ...doc.data() });
+      });
+      setExpedientesFiltrados(expedientesData);
+    };
+
+    loadExpedientes();
+  }, []);
 
   const handleColumnClick = (e, columna) => {
     e.preventDefault();
@@ -82,7 +84,7 @@ const Tabla = () => {
     if (e.target.checked) {
       setExpedientesFiltrados(expedientesFiltrados.filter(filtro.valor));
     } else {
-      setExpedientesFiltrados(expedientes.filter(filtro.valor));
+      setExpedientesFiltrados(expedientesFiltrados.filter(filtro.valor));
     }
   };
   
@@ -124,7 +126,6 @@ const Tabla = () => {
   };
 
   
-
   return (
     <div className="table-container">
       <table  style={{ tableLayout: 'auto', display: 'inline-table' }}>
@@ -148,9 +149,15 @@ const Tabla = () => {
         <tbody>
           {paginatedExpedientes.map((expediente, index) => (
             <tr key={index} onClick={(e) => handleFilaClick(e, expediente)}>
-              {columnas.map((columna, colIndex) => (
-                <td key={colIndex}>{expediente[columna.nombre]}</td>
-              ))}
+              <td>{expediente.id}</td>
+              <td>{expediente.Expediente_id}</td>
+              <td>{expediente.Titulo}</td>
+              <td>{expediente.Estado_expediente}</td>
+              <td>
+                <a href={expediente.Documento} target="_blank" rel="noreferrer">
+                  Ver Documento
+                </a>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -182,35 +189,40 @@ const Tabla = () => {
     </Modal>
     )}
     {
-    modalFilaOpen && (
-        <Modal
-          onClose={() => setModalFilaOpen(false)}
-          style={{
-            justifyContent: 'center',
-            paddingTop: '5rem',
-          }}
+  modalFilaOpen && (
+    <Modal
+      onClose={() => setModalFilaOpen(false)}
+      style={{
+        alignItems: 'flex-start',
+        paddingTop: '5rem',
+        width: 'auto',
+        maxWidth: '100%',
+        minWidth: '500px',
+      }}
+    >
+      <h3>Detalles del expediente</h3>
+      <div className="modal-fila-detalles">
+        {filaSeleccionada && Object.keys(filaSeleccionada).map((key, index) => (
+          key !== 'Documento' && (
+            <div className="modal-fila-detalle" key={index}>
+              <span className="modal-fila-detalle-nombre">{key}:</span>
+              <span className="modal-fila-detalle-valor">{filaSeleccionada[key]}</span>
+            </div>
+          )
+        ))}
+      </div>
+      <div className="modal-fila-documento">
+        <button
+          className="modal-fila-detalle-boton"
+          onClick={() => openDocument(filaSeleccionada.Documento)}
         >
-          <h3>Detalles del expediente</h3>
-          <div className="modal-fila-detalles">
-            {columnas.map((columna, index) => (
-              columna.nombre !== 'Documento' && (
-                <div className="modal-fila-detalle" key={index}>
-                  <span className="modal-fila-detalle-nombre">{columna.nombre}:</span>
-                  <span className="modal-fila-detalle-valor">{filaSeleccionada[columna.nombre]}</span>
-                </div>
-              )
-            ))}
-          </div>
-          <div className="modal-fila-documento">
-            <button
-              className="modal-fila-detalle-boton"
-              onClick={() => openDocument(filaSeleccionada.Documento)}
-            >
-              Ver documento
-            </button>
-          </div>
-        </Modal>
-    )}
+          Ver documento
+        </button>
+      </div>
+    </Modal>
+  )
+}
+
        <div className="pagination">
         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
           Anterior

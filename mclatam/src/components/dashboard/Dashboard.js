@@ -4,24 +4,16 @@ import './Dashboard.css'; /* Importar el archivo CSS */
 import Tabla from '../Tabla/Tabla';
 
 const Dashboard = () => {
-  const [columnas, setColumnas] = useState([]);
   const [expedientes, setExpedientes] = useState([]);
 
   useEffect(() => {
-    const columnasData = [
-      { nombre: 'id', items: [1, 2, 3] },
-      { nombre: 'nombre', items: ['Juan', 'Maria', 'Carlos'] },
-      { nombre: 'apellido', items: ['Perez', 'Garcia', 'Lopez'] },
-      { nombre: 'edad', items: [25, 30, 35] },
-    ];
-
+  
     const expedientesData = [
       { id: 1, nombre: 'Juan', apellido: 'Perez', edad: 25 },
       { id: 2, nombre: 'Maria', apellido: 'Garcia', edad: 30 },
       { id: 3, nombre: 'Carlos', apellido: 'Lopez', edad: 35 },
     ];
 
-    setColumnas(columnasData);
     setExpedientes(expedientesData);
   }, []);
 
@@ -37,7 +29,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <Tabla columnas={columnas} expedientes={expedientes} />
+      <Tabla expedientes={expedientes} />
     </div>
   );
 };

@@ -1,34 +1,29 @@
-import React, {useState} from 'react'
-import Expediente from '../Expediente/Expediente'
-import ExpedienteButtons from '../ExpedienteButtons/ExpedienteButtons'
+import React, { useState, useEffect } from 'react';
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from '../../firebase/firebase';  // Asegúrate de tener la ruta correcta a tu archivo firebase
+import Expediente from '../Expediente/Expediente';
+import ExpedienteButtons from '../ExpedienteButtons/ExpedienteButtons';
 import ExpedienteForm from '../ExpedienteForm/ExpedienteForm';
 
 export const RevisarExpedientes = () => {
   
-  // Lista expedientes
-  const expedientes = [
-    {
-        'Número': '12345',
-        'Nombre': 'Juan Pérez',
-        'Fecha de Ingreso': '01-01-2023',
-        'Estado': 'Pendiente'
-    },
-    {
-      'Número': '234rqrqe',
-      'Nombre': 'Micky conca',
-      'Fecha de Ingreso': '01-01-2023',
-      'Estado': 'Activo'
-  },
-  {
-    'Número': '12345',
-    'Nombre': 'Pato conca',
-    'Fecha de Ingreso': '01-01-2023',
-    'Estado': 'fwef'
-},
-    // ... más expedientes aquí
-  ];
-
+  const [expedientes, setExpedientes] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+  useEffect(() => {
+    const loadExpedientes = async () => {
+      const expedientesRef = collection(db, "crm"); // Asegúrate de cambiar "crm" por el nombre de tu colección
+      const q = query(expedientesRef, where("Estado_expediente", "==", "NoRevisado"));
+      const querySnapshot = await getDocs(q);
+      const expedientesData = [];
+      querySnapshot.forEach((doc) => {
+        expedientesData.push({ id: doc.id, ...doc.data() });
+      });
+      setExpedientes(expedientesData);
+    };
+
+    loadExpedientes();
+  }, []);
 
   // Boton enviar
   const handleEnviar = () => {
@@ -60,10 +55,10 @@ export const RevisarExpedientes = () => {
             onNoSirve={handleNoSirve}
             onAvanzar={handleAvanzar}
         />
-        <Expediente expediente={expedientes[currentIndex]} />
+        {expedientes.length > 0 && <Expediente expediente={expedientes[currentIndex]} />}
         <ExpedienteForm handleEnviar={handleEnviar} />
     </div>
-);
+  );
 };
 
-export default RevisarExpedientes
+export default RevisarExpedientes;
