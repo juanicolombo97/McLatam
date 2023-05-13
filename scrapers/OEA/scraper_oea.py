@@ -6,6 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
 
+from scrapers.OEA.firebase import agregar_datos, obtener_ids
+
 ANIO_INVALIDO = 2022
 
 
@@ -35,6 +37,10 @@ def main():
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo')
+
+    # Obtenemos ids que ya se guardaron
+    ids_referencia = obtener_ids()
+    print(ids_referencia)
 
     WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.ID, "status")))
@@ -81,13 +87,16 @@ def obtener_datos_tabla(driver):
             # Obtenemos los datos de la fila
             datos_fila = fila_actual.find_elements(By.TAG_NAME, "td")
 
-            # Obtenemos la oficina de la fila
-            oficina = datos_fila[0].text
-            print('Oficina: ' + oficina)
-
             # Obtenemos la referencia de la fila
             referencia = datos_fila[1].text
             print('Referencia: ' + referencia)
+
+            if referencia in ids_referencia:
+                continue
+
+            # Obtenemos la oficina de la fila
+            oficina = datos_fila[0].text
+            print('Oficina: ' + oficina)
 
             # Obtenemos el titulo de la fila
             titulo = datos_fila[2].text
@@ -98,11 +107,13 @@ def obtener_datos_tabla(driver):
             anio = fecha.split('/')[2]
             if int(anio) < ANIO_INVALIDO:
                 print('Fecha invalida')
-                pass
+                continue
 
             # Obtenemos el estado de la fila
             estado = datos_fila[4].text
             print('Estado: ' + estado)
+
+            agregar_datos(oficina, titulo, fecha, estado, referencia)
 
             print('__________________')
 
