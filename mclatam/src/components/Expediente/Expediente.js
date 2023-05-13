@@ -17,7 +17,7 @@ const Expediente = ({ expediente }) => {
             <div className="expediente-data">
                 {Object.entries(expediente).map(([titulo, valor], index) => (
                     <div key={index} className="expediente-item" onClick={() => handleModalOpen(titulo, valor)}>
-                        <strong>{titulo}:</strong> 
+                        <strong>{titulo}: </strong> 
                         {valor.length > 50 
                             ? <span>{`${valor.substring(0, 50)}...`}</span> 
                             : valor
