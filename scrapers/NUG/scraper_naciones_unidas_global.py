@@ -3,7 +3,6 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver import ActionChains
-from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -15,6 +14,10 @@ def main():
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    options.add_argument("--start-maximized")
+    options.add_argument("--window-size=1920x1080")
     options.add_argument("start-maximized")
     options.add_experimental_option('prefs', {
         'download.prompt_for_download': False,
@@ -60,7 +63,7 @@ def obtener_datos_tabla(driver):
     # Ejecutar un código JavaScript para hacer click en el botón utilizando XPath
     boton_idioma_esp = driver.find_element(By.XPATH, "//*[@id='wholePage']/header/ul/li[2]/button/../ul/li[2]/button")
     driver.execute_script("arguments[0].click();", boton_idioma_esp)
-    time.sleep(7)
+    time.sleep(5)
 
     # Esperar que cargue
     WebDriverWait(driver, 30).until(EC.invisibility_of_element((By.ID, 'mainThrobber')))
@@ -96,16 +99,32 @@ def obtener_datos_tabla(driver):
     tabla = driver.find_element(By.XPATH, "//*[@id='tblNotices']/div[2]")
 
     # Obtenemos las filas de la tabla
-    filas = tabla.find_elements(By.XPATH, "//*[@role='row']")
-    index = 0
+    filas = tabla.find_elements(By.XPATH, "div")
 
     # Obtenemos el numero de filas
     num_filas = len(filas)
     print('Numero de filas: ' + str(num_filas))
 
-    # Hacemos for por cada fila
-    # TODO
 
+    # Definir las columnas que se quiere obtener datos
+    columnas_deseadas = [6, 7, 8, 9, 10]
+    # Hacemos for por cada fila
+    for fila in filas:
+        print("FILA")
+        # Obtener las columnas
+        columnas = fila.find_elements(By.XPATH, "div[@role='cell']")
+        for col in columnas:
+            try:
+                print('col: ', col.text)
+                span = col.find_element(By.XPATH,  'span')
+                print('span: ', span.text)
+                time.sleep(3)
+            except Exception as e:
+                pass
+        return
+
+
+    time.sleep(10)
 
 if __name__ == '__main__':
     main()
