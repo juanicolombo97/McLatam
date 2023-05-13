@@ -9,6 +9,8 @@ import Estadisticas from './components/Estadisticas/Estadisticas';
 import RevisarExpedientes from './components/RevisarExpedientes/RevisarExpedientes';
 import Navbar from './components/Navbar/Navbar';
 import Dashboard from './components/Dashboard/Dashboard';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 function App() {
   
@@ -23,25 +25,7 @@ function App() {
   const signout = () => {
     setIsSignedIn(false)
   }
-  
-  // Funcion para cerrar sesión al cerrar la ventana
-  // useEffect(() => {
-  //   const handleBeforeUnload = async () => {
-  //     const auth = getAuth();
-  //     if (auth.currentUser) {
-  //       await signOut(auth);
-  //       signout();
-  //     }
-  //   };
 
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // }, []);
-
-  
   return (
     <div className="App">
       

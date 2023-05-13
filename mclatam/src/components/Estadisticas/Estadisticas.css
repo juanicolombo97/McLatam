@@ -8,7 +8,11 @@ body {
 .stats-container {
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 5%;
   padding: 40px;
+  display: flex;
+  justify-content: space-between; /* Añade espacio entre los elementos */
+  align-items: start; /* Alinea los elementos al inicio del contenedor */
 }
 
 h2 {
@@ -19,11 +23,16 @@ h2 {
 }
 
 .chart-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 50px;
+  flex: 1;
+  margin: 0 20px;
+  transition: transform 0.3s; /* Añade una transición a la transformación */
+  padding: auto;
 }
+
+.chart-container:hover {
+  transform: scale(1.05); /* Aumenta el tamaño del contenedor al pasar el cursor */
+}
+
 
 .chart-container .chart {
   min-width: 300px;
