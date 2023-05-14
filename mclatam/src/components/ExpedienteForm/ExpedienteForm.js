@@ -1,83 +1,67 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ExpedienteForm.css';
 
-const ExpedienteForm = ({handleEnviar }) => {
-
-    const [formValues, setFormValues] = useState({
-        consultoria: '',
-        lugar: '',
-        tipo: '',
-        codigoProceso: '',
-        codigoCompleto: '',
-        proyecto: '',
-        deadline: '',
-        plazo: '',
-        presupuesto: '',
-        objetivos: '',
-        objetivoEspecifico: '',
-        alcance: '',
-        experiencia: ''
-    });
-
+const ExpedienteForm = ({ values, onChange }) => {
     const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+        onChange(event);
     };
-
+    
+    
     return (
-        <form className="expediente-form" onSubmit={handleEnviar}>
+        <form className="expediente-form">
             <label>
                 <span>EI: Nombre de la Consultoría</span>
-                <input type="text" name="consultoria" value={formValues.consultoria} onChange={handleChange} />
+                <input type="text" name="consultoria" value={values.consultoria} onChange={handleChange} required/>
             </label>
             <label>
                 <span>Lugar</span>
-                <input type="text" name="lugar" value={formValues.lugar} onChange={handleChange} />
+                <input type="text" name="lugar" value={values.lugar} onChange={handleChange} required/>
             </label>
             <label>
                 <span>Tipo de Consultoría</span>
-                <input type="text" name="tipo" value={formValues.tipo} onChange={handleChange} />
+                <input type="text" name="tipo" value={values.tipo} onChange={handleChange} required/>
             </label>
             <label>
                 <span>Código del Proceso/Prestamo</span>
-                <input type="text" name="codigoProceso" value={formValues.codigoProceso} onChange={handleChange} />
+                <input type="text" name="codigoProceso" value={values.codigoProceso} onChange={handleChange} required/>
             </label>
             <label>
                 <span>Código Completo</span>
-                <input type="text" name="codigoCompleto" value={formValues.codigoCompleto} onChange={handleChange} />
+                <input type="text" name="codigoCompleto" value={values.codigoCompleto} onChange={handleChange} required />
             </label>
             <label>
                 <span>Proyecto</span>
-                <input type="text" name="proyecto" value={formValues.proyecto} onChange={handleChange} />
+                <input type="text" name="proyecto" value={values.proyecto} onChange={handleChange} required />
             </label>
             <label>
                 <span>Deadline</span>
-                <input type="text" name="deadline" value={formValues.deadline} onChange={handleChange} />
+                <input type="text" name="deadline" value={values.deadline} onChange={handleChange} required/>
             </label>
             <label>
                 <span>Plazo</span>
-                <input type="text" name="plazo" value={formValues.plazo} onChange={handleChange} />
+                <input type="text" name="plazo" value={values.plazo} onChange={handleChange} required/>
             </label>
             <label>
                 <span>Presupuesto</span>
-                <input type="text" name="presupuesto" value={formValues.presupuesto} onChange={handleChange} />
+                <input type="text" name="presupuesto" value={values.presupuesto} onChange={handleChange} required/>
             </label>
             <label>
                 <span>Objetivos</span>
-                <textarea name="objetivos" value={formValues.objetivos} onChange={handleChange}></textarea>
+                <textarea name="objetivos" value={values.objetivos} onChange={handleChange} required></textarea>
             </label>
             <label>
                 <span>Objetivo Específico</span>
-                <textarea name="objetivoEspecifico" value={formValues.objetivoEspecifico} onChange={handleChange}></textarea>
+                <textarea name="objetivoEspecifico" value={values.objetivoEspecifico} onChange={handleChange} required></textarea>
             </label>
             <label>
                 <span>Alcance</span>
-                <textarea name="alcance" value={formValues.alcance} onChange={handleChange}></textarea>
+                <textarea name="alcance" value={values.alcance} onChange={handleChange} required></textarea>
             </label>
             <label>
                 <span>Experiencia</span>
-                <textarea name="experiencia" value={formValues.experiencia} onChange={handleChange}></textarea>
+                <textarea name="experiencia" value={values.experiencia} onChange={handleChange} required></textarea>
             </label>
+
         </form>
     );
 };

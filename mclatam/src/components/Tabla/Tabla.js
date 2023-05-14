@@ -55,10 +55,8 @@ const Tabla = () => {
   useEffect(() => {
     const loadExpedientes = async () => {
       const querySnapshot = await getDocs(collection(db, "crm")); // Asegúrate de cambiar "crm" por el nombre de tu colección
-      console.log(querySnapshot);
       const expedientesData = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
         expedientesData.push({ id: doc.id, ...doc.data() });
       });
       setExpedientesFiltrados(expedientesData);

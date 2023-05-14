@@ -1,6 +1,6 @@
 .buttons-container {
     position: fixed;
-    left: 10%;
+    left: 5%;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
