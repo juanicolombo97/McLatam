@@ -72,7 +72,11 @@ export const RevisarExpedientes = () => {
   const handleNoSirve = async () => {
     // Realizar updates en la base de datos y avanzar al siguiente expediente
     const expedienteRef = doc(db, "crm", expedientes[currentIndex].id);
-  c
+    
+    await updateDoc(expedienteRef, {
+      Estado_expediente: "NoSirve",
+      Fecha_revisado: serverTimestamp()
+    });
 
     if (expedientes.length > 0) {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
