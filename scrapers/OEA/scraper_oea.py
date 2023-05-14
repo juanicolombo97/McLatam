@@ -91,7 +91,7 @@ def obtener_datos_tabla(driver):
             referencia = datos_fila[1].text
             print('Referencia: ' + referencia)
 
-            if referencia in ids_referencia:
+            if ids_referencia is not None and referencia in ids_referencia:
                 continue
 
             # Obtenemos la oficina de la fila
