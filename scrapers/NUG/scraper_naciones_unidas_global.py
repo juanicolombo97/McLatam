@@ -105,26 +105,31 @@ def obtener_datos_tabla(driver):
     num_filas = len(filas)
     print('Numero de filas: ' + str(num_filas))
 
-
-    # Definir las columnas que se quiere obtener datos
-    columnas_deseadas = [6, 7, 8, 9, 10]
     # Hacemos for por cada fila
     for fila in filas:
         print("FILA")
         # Obtener las columnas
         columnas = fila.find_elements(By.XPATH, "div[@role='cell']")
-        for col in columnas:
-            try:
-                print('col: ', col.text)
-                span = col.find_element(By.XPATH,  'span')
-                print('span: ', span.text)
-                time.sleep(3)
-            except Exception as e:
-                pass
+        titulo = columnas[1].text
+        fecha_limite = columnas[2].text
+        publicado = columnas[3].text
+        organismo_onu = columnas[4].text
+        tipo_anuncio = columnas[5].text
+        referencia = columnas[6].text
+        pais = columnas[7].text
+
+        print("titulo" + titulo)
+        print("fech" + fecha_limite)
+        print("publicado" + publicado)
+        print("org_onu" + organismo_onu)
+        print("anuncio" + tipo_anuncio)
+        print("ref" + referencia)
+        print("pais" + pais)
+
         return
 
-
     time.sleep(10)
+
 
 if __name__ == '__main__':
     main()
