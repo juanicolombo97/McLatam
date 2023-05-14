@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f2f2f2;
+}
+
+.stats-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 5%;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between; /* Añade espacio entre los elementos */
+  align-items: start; /* Alinea los elementos al inicio del contenedor */
+}
+
+h2 {
+  font-size: 36px;
+  font-weight: 500;
+  color: #3C3C3C;
+  margin-bottom: 30px;
+}
+
+.chart-container {
+  flex: 1;
+  margin: 0 20px;
+  transition: transform 0.3s; /* Añade una transición a la transformación */
+  padding: auto;
+}
+
+.chart-container:hover {
+  transform: scale(1.05); /* Aumenta el tamaño del contenedor al pasar el cursor */
+}
+
+
+.chart-container .chart {
+  min-width: 300px;
+  height: 400px;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.line-chart {
+  position: relative;
+}
+
+.line-chart .tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 10px;
+  background-color: #3C3C3C;
+  color: #FFFFFF;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.line-chart .tooltip.active {
+  opacity: 1;
+}
+
+.line-chart .tooltip:before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-top: 5px solid #3C3C3C;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+
+.line-chart .axis-label {
+  font-size: 14px;
+  color: #3C3C3C;
+}
+
+.line-chart .axis-line {
+  stroke: #3C3C3C;
+  stroke-width: 1px;
+}
+
+.line-chart .line {
+  fill: none;
+  stroke-width: 2px;
+}
+
+.line-chart .dot {
+  fill: #FFC107;
+  stroke: #FFFFFF;
+  stroke-width: 2px;
+}
+
+.line-chart .dot:hover {
+  cursor: pointer;
+  fill: #FFFFFF;
+}

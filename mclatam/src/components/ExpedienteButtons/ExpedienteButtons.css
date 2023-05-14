@@ -1,0 +1,42 @@
+.buttons-container {
+    position: fixed;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.button {
+    background-color: #ccc;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.enviar {
+    background-color: #4CAF50;
+}
+
+.no-sirve {
+    background-color: #f44336;
+}
+
+.avanzar {
+    background-color: #FFC107;
+}

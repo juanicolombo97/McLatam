@@ -1,0 +1,76 @@
+.expediente-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    max-height: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 3%;
+    margin-top: 10%;
+}
+
+.expediente-container:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.expediente-data {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.expediente-item {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 8px;
+    flex-basis: calc(50% - 10px);
+    transition: all 0.3s ease;
+}
+
+.expediente-item:hover {
+    color: #FFC107;
+    transform: scale(1.05);
+}
+
+.expediente-item strong {
+    font-weight: bold;
+}
+.ReactModal__Overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 200ms ease-in-out;
+    opacity: 1;
+}
+
+.ReactModal__Content {
+    position: relative;
+    width: 50%;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    overflow: auto;
+    border-radius: 4px;
+    outline: none;
+    opacity: 1;
+    transition: opacity 200ms ease-in-out;
+}

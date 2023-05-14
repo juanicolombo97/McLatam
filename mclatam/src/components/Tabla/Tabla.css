@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+.table-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  overflow-x: auto;
+  position: relative;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  min-width: 300px;
+  max-width: 90%;
+  margin: 1rem;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+table {
+  border-collapse: collapse;
+  width: auto;
+  min-width: 100%;
+  white-space: nowrap;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  min-width: 150px;
+}
+td {
+  max-width: 250px; /* Ajustar este valor según tus necesidades */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+th {
+  background-color: #f9d71c;
+  cursor: pointer;
+  position: relative;
+
+}
+
+th::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+  z-index: 1;
+}
+
+th:last-child::after {
+  content: none;
+}
+
+tbody tr:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+/* Estilos para la barra vertical de redimensionamiento */
+.resize-handle {
+  display: inline-block;
+  width: 5px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: col-resize;
+  position: absolute;
+  right: -2.5px;
+  top: 0;
+  z-index: 1;
+}
+
+/* Detalles del expediente modal */
+.modal-fila-detalles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%; /* Ajusta este valor según tus necesidades */
+
+}
+
+.modal-fila-detalle {
+  width: 80%;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.modal-fila-detalle-nombre {
+  font-weight: bold;
+}
+
+.modal-fila-detalle-valor {
+  margin-left: 5px;
+}
+
+.modal-fila-detalle-boton {
+  background-color: #FFC107;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.modal-fila-detalle-boton:hover {
+  background-color: #e0a800;
+}
+
+.modal-fila-documento {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.pagination span {
+  margin: 0 10px;
+}
+
+.pagination button {
+  background-color: #FFC107;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.pagination button:hover {
+  background-color: #e0a800;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.row-count {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.table-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1));
+}
