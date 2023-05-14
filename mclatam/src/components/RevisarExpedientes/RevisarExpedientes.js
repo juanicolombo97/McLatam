@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, query, where, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, updateDoc,serverTimestamp } from "firebase/firestore";
 import { db } from '../../firebase/firebase';  // Asegúrate de tener la ruta correcta a tu archivo firebase
 import Expediente from '../Expediente/Expediente';
 import ExpedienteButtons from '../ExpedienteButtons/ExpedienteButtons';
@@ -57,8 +57,9 @@ export const RevisarExpedientes = () => {
     const expedienteRef = doc(db, "crm", expedientes[currentIndex].id);
     
     await updateDoc(expedienteRef, {
-        Estado_expediente: "Enviar",
-        Reporte: formattedReport
+      Estado_expediente: "Enviar",
+      Reporte: formattedReport,
+      Fecha_revisado: serverTimestamp()
     });
   
     if (expedientes.length > 0) {
@@ -71,9 +72,7 @@ export const RevisarExpedientes = () => {
   const handleNoSirve = async () => {
     // Realizar updates en la base de datos y avanzar al siguiente expediente
     const expedienteRef = doc(db, "crm", expedientes[currentIndex].id);
-    await updateDoc(expedienteRef, {
-        Estado_expediente: "NoSirve"
-    });
+  c
 
     if (expedientes.length > 0) {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
