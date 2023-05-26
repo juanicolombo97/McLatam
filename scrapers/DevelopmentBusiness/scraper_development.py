@@ -27,7 +27,7 @@ import os
 import cv2
 import numpy as np
 
-
+# Funcion que se encarga de correr el scraper
 def main():
 
     url_pagina = 'https://devbusiness.un.org/content/site-search'
@@ -47,6 +47,7 @@ def main():
     # Llamamos funcion que inicia el scrapeo
     iniciar_scrapeo(driver)
 
+# Funcion que se encarga de la logica de scrapeo
 def iniciar_scrapeo(driver):
     print('Iniciando scrapeo')
 
@@ -59,11 +60,11 @@ def iniciar_scrapeo(driver):
     driver.find_element(By.XPATH, "//a[@href='/user/login']").click()
     print('Presionamos boton de loguin')
 
-    # Logueamos
-    while True:
-        resultado = login(driver)
-        if resultado == True:
-            break
+    # # Logueamos
+    # while True:
+    #     resultado = login(driver)
+    #     if resultado == True:
+    #         break
 
 
 
@@ -80,43 +81,114 @@ def iniciar_scrapeo(driver):
     
     # Obtenemos div donde estan los datos
     div_datos = driver.find_element(By.XPATH, "//div[@class='search-results apachesolr_search-results']")
+     
+    # Obtenemos los divs de dichos datos
+    divs_datos = div_datos.find_elements(By.XPATH, "./div")
+    print('Cantidad de datos: ', len(divs_datos))
+
+    cantidad_datos = len(divs_datos)
+    contador = 0
     
     # While mientras dejas scrolear y aparecen nuevos expedietes
     while True:
 
-        # Obtenemos los divs de dichos datos
-        divs_datos = div_datos.find_elements(By.XPATH, "./div")
-        print('Cantidad de datos: ', len(divs_datos))
+        try:
+            # Obtenemos datos de los expedientes
+            obtener_datos_expediente(driver, contador)
 
-        # Recorremos los divs de los datos
-        for expediente in divs_datos:
-
-            pais = ''
-            empresa = ''
-
-
-            # Obtenemos los divs del expediente y nos quedamos con el segundo
-            divs_expediente = expediente.find_elements(By.XPATH, "./div")
-            div_expediente = divs_expediente[1]
+            # Aumentamos contadro
+            contador += 1
+            print('Contador: ', contador)
             
-            # Ahora obtenemos los 3 divs donde se encuentran los datos
-            divs_datos_expediente = div_expediente.find_elements(By.XPATH, "./div")
+        
+            if contador > cantidad_datos:
+                break
+                
+        # Si hubo error, scrolleamos para abajo asi aparecen mas expedientes
+        except Exception as e:
+                print('Error: ', e)
+                # Scrolleamos para abajo hasta llegar al fondo y scrolleamos mas asi cargan nuevos expedinetes
+                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(2)
+                      
 
-            # El primer div es el titulo, y obtenemos los spans dentro de el
-            div_titulo = divs_datos_expediente[0].find_elements(By.TAG_NAME, "span")
-            
-            # El separador | divide el pais y la empresa, obtenemos cada dato
-            pais_empresa = div_titulo[1].text.split('|')
-            pais = pais_empresa[0].strip()
-            empresa = pais_empresa[1].strip()
-            print('Pais: ', pais)
-            print('Empresa: ', empresa)
+# Funcion que se encarga de obtener los datos de un expediente
+def obtener_datos_expediente(driver ,contador):
+    pais = ''
+    empresa = ''
+    deadline = ''
+    titulo = ''
+    proyecto = ''
+    url = ''
 
-            
-            
-            break
-        break
+     # Obtenemos div donde estan los datos
+    div_datos = driver.find_element(By.XPATH, "//div[@class='search-results apachesolr_search-results']")
 
+    # Obtenemos los divs del expediente y nos quedamos con el segundo
+    expediente = div_datos.find_elements(By.XPATH, "./div")
+    print('Cantidad de expedientes: ', len(expediente))
+
+    divs_expediente = expediente[contador].find_elements(By.XPATH, "./div")
+    print('Cantidad de divs del expediente: ', len(divs_expediente))
+    div_expediente = divs_expediente[1]
+                
+    # Ahora obtenemos los 3 divs donde se encuentran los datos
+    divs_datos_expediente = div_expediente.find_elements(By.XPATH, "./div")
+    print('Obtenemos los datos del expediente')
+
+    # El primer div es el titulo, y obtenemos los spans dentro de el
+    div_titulo = divs_datos_expediente[0].find_elements(By.XPATH, "//span[@class='countries']")
+                
+    # El separador | divide el pais y la empresa, obtenemos cada dato
+    try:
+        pais_empresa = div_titulo[1].text
+        pais_empresa = pais_empresa.split('|')
+        pais = pais_empresa[0].strip()
+        empresa = pais_empresa[1].strip()
+        print('Pais: ', pais)
+        print('Empresa: ', empresa)
+    except:
+        print('No se pudo obtener pais y empresa')
+
+    # Obtenemos el segundo div que es donde estan los demas divs, y obtenemos los 4 restantes
+    div_descripcion = divs_datos_expediente[1].find_elements(By.XPATH, "./div")
+
+    # Del primer div obtenemos los dos divs
+    divs_primero = div_descripcion[0].find_elements(By.XPATH, "./div")
+    print('Cantidad de divs del primero: ', len(divs_primero))
+
+    # Obtenemos el url y el titulo 
+    url = divs_primero[0].find_element(By.TAG_NAME, "a").get_attribute('href')
+    print('Url: ', url)
+    titulo = divs_primero[0].find_element(By.TAG_NAME, "a").text
+    print('Titulo: ', titulo)
+
+    # Del segundo div obtenemos el proyecto
+    proyecto = divs_primero[1].text
+                
+    # Hacemos split y sacamos el proyecto y salto linea
+    proyecto = proyecto.split('\n')[1].strip()
+    print('Proyecto: ', proyecto)
+
+    # Obtenemos del segundo div de descripcion para obtener la fecha
+    divs_segundo = div_descripcion[1].text.split('\n')[1].strip()
+    print('Fecha: ', divs_segundo)
+
+    # Obtenemos el status
+    status = div_descripcion[2].text.split('\n')[1].strip()
+    print('Status: ', status)
+
+    # obtenemos el expediente id
+    expediente_id = div_descripcion[3].text.split('\n')[1].strip()
+    print('Expediente id: ', expediente_id)
+    
+    # Obtenemos el tercero que es el del deadline
+    div_deadline = divs_datos_expediente[2]
+    deadline = div_deadline.text
+    deadline = deadline.split('DEADLINE')[1].strip()
+    print('Deadline: ', deadline)
+
+# Funcion que se encarga de loguearse a la pagina
 def login(driver):
     try:
         # Esperamos que cargue el inpout email
@@ -190,6 +262,7 @@ def login(driver):
     except Exception as e:
         print('Error al loguear: ', e)
         return False
+
 
 if __name__ == '__main__':
     main() 
