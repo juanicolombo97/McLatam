@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8c484b6-e607-4064-ab25-905cab7d74af" name="Changes" comment="scraper terminado">
+    <list default="true" id="d8c484b6-e607-4064-ab25-905cab7d74af" name="Changes" comment="gitignore">
+      <change afterPath="$PROJECT_DIR$/scrapers/NUG/clave.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scrapers/NUG/firebase.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scrapers/NUG/scraper_naciones_unidas_global.py" beforeDir="false" afterPath="$PROJECT_DIR$/scrapers/NUG/scraper_naciones_unidas_global.py" afterDir="false" />
     </list>
@@ -49,6 +51,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/scrapers" />
       <recent name="$PROJECT_DIR$/scrapers/BANCO_MUNDIAL" />
     </key>
   </component>

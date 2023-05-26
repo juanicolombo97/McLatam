@@ -1,11 +1,14 @@
-# -------------------------------------- LIBRERIAS ----------------------------------------------------------------------
+# -------------------------------------- LIBRERIAS --------------------------------------------------------------------
 import time
-
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+
+PAISES_VALIDOS = ['Haiti', 'Ecuador', 'El Salvador', 'Colombia', 'República Dominicana',
+                  'Perú', 'Argentina', 'México', 'Brasil', 'Panamá', 'Paraguay', 'Chile', 'Venezuela',
+                  'Cuba', 'Varias localizaciones', 'España']
 
 
 def main():
@@ -43,6 +46,7 @@ def obtener_datos_tabla(driver):
         popup = driver.find_element(By.XPATH, "//*[@id=\"languageSuggestionModal\"]/div[1]/div[1]/input[2]")
         popup.click()
     except Exception:
+        print("Except")
         pass
 
     # Cambiar el idioma
@@ -52,6 +56,8 @@ def obtener_datos_tabla(driver):
     actions = ActionChains(driver)
     # Mover el mouse al elemento
     actions.move_to_element(boton_idioma).perform()
+    WebDriverWait(driver, 30).until(
+        EC.element_to_be_clickable((By.XPATH, "//*[@id='wholePage']/header/ul/li[2]/button")))
     boton_idioma.click()
     print("Click idioma")
     time.sleep(2)
@@ -98,18 +104,33 @@ def obtener_datos_tabla(driver):
     # Obtenemos la tabla de la pagina
     tabla = driver.find_element(By.XPATH, "//*[@id='tblNotices']/div[2]")
 
-    # Obtenemos las filas de la tabla
+    # Obtenemos las filas visibles de la tabla
     filas = tabla.find_elements(By.XPATH, "div")
 
-    # Obtenemos el numero de filas
-    num_filas = len(filas)
-    print('Numero de filas: ' + str(num_filas))
+    # Obtenemos las filas totales a scrapear
+    filas_totales = driver.find_element(By.ID, "noticeSearchTotal")
+    print("Filas totales: " + filas_totales.text)
 
-    # Hacemos for por cada fila
-    for fila in filas:
-        print("FILA")
-        # Obtener las columnas
-        columnas = fila.find_elements(By.XPATH, "div[@role='cell']")
+    filas_scrapeadas = 0
+    fila_actual = filas_scrapeadas
+
+    # Obtener la altura de una fila de la tabla
+    altura_fila = driver.execute_script("return arguments[0].clientHeight;", filas[0]) * 2
+
+    while filas_scrapeadas < int(filas_totales.text):
+        print("FILA" + str(filas_scrapeadas))
+        driver.execute_script("window.scrollBy(0, arguments[0]);", altura_fila)
+        WebDriverWait(driver, 30).until(EC.invisibility_of_element((By.ID, 'mainThrobber')))
+        time.sleep(1)  # Esperar un segundo para que la tabla se actualice después del desplazamiento
+
+        fila_actual += 1
+
+        xpath = f"//*[@id='tblNotices']/div[2]/div[{fila_actual}]"
+        fila_visible = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, xpath)))
+
+        filas_scrapeadas += 1
+
+        columnas = fila_visible.find_elements(By.XPATH, "div[@role='cell']")
         titulo = columnas[1].text
         fecha_limite = columnas[2].text
         publicado = columnas[3].text
@@ -118,17 +139,18 @@ def obtener_datos_tabla(driver):
         referencia = columnas[6].text
         pais = columnas[7].text
 
-        print("titulo" + titulo)
-        print("fech" + fecha_limite)
-        print("publicado" + publicado)
-        print("org_onu" + organismo_onu)
-        print("anuncio" + tipo_anuncio)
-        print("ref" + referencia)
-        print("pais" + pais)
+        if pais not in PAISES_VALIDOS:
+            continue
 
-        return
+        # agregar_datos(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
 
-    time.sleep(10)
+        print("titulo: " + titulo)
+        print("fecha: " + fecha_limite)
+        print("publicado: " + publicado)
+        print("org_onu: " + organismo_onu)
+        print("anuncio: " + tipo_anuncio)
+        print("ref: " + referencia)
+        print("pais: " + pais)
 
 
 if __name__ == '__main__':
