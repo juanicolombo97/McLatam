@@ -6,6 +6,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+from scrapers.NUG.firebase import agregar_datos
+
 PAISES_VALIDOS = ['Haiti', 'Ecuador', 'El Salvador', 'Colombia', 'República Dominicana',
                   'Perú', 'Argentina', 'México', 'Brasil', 'Panamá', 'Paraguay', 'Chile', 'Venezuela',
                   'Cuba', 'Varias localizaciones', 'España']
@@ -118,7 +120,7 @@ def obtener_datos_tabla(driver):
     altura_fila = driver.execute_script("return arguments[0].clientHeight;", filas[0]) * 2
 
     while filas_scrapeadas < int(filas_totales.text):
-        print("FILA" + str(filas_scrapeadas))
+        print("FILA " + str(filas_scrapeadas))
         driver.execute_script("window.scrollBy(0, arguments[0]);", altura_fila)
         WebDriverWait(driver, 30).until(EC.invisibility_of_element((By.ID, 'mainThrobber')))
         time.sleep(1)  # Esperar un segundo para que la tabla se actualice después del desplazamiento
@@ -142,7 +144,7 @@ def obtener_datos_tabla(driver):
         if pais not in PAISES_VALIDOS:
             continue
 
-        # agregar_datos(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
+        agregar_datos(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
 
         print("titulo: " + titulo)
         print("fecha: " + fecha_limite)

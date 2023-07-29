@@ -113,7 +113,7 @@ def obtener_datos_tabla(driver):
             estado = datos_fila[4].text
             print('Estado: ' + estado)
 
-            agregar_datos(oficina, titulo, fecha, estado, referencia)
+            # agregar_datos(oficina, titulo, fecha, estado, referencia)
 
             print('__________________')
 

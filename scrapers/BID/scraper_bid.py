@@ -1,32 +1,23 @@
-
-#-------------------------------------- LIBRERIAS ----------------------------------------------------------------------
+# -------------------------------------- LIBRERIAS ----------------------------------------------------------------------
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from datetime import datetime
-from datetime import date, timedelta
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-from twocaptcha import TwoCaptcha
 import time
-import os
-import sys
 
 
 LISTA_TITULOS_MALOS = [
     'LGTBI+'
 ]
 
-def main():
 
+def main():
     url_pagina = 'https://beo-procurement.iadb.org/home'
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-    options.add_argument('headless')
+    # options.add_argument('headless')
     options.add_argument("start-maximized")
     options.add_experimental_option('prefs', {
         'download.prompt_for_download': False,
@@ -34,15 +25,14 @@ def main():
         'plugins.always_open_pdf_externally': True  # Abrir PDF en lugar de descargar
     })
 
-
     # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='scrapers/chromedriver',  chrome_options=options)
+    driver = webdriver.Chrome(executable_path='scrapers/chromedriver', chrome_options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
 
     # Llamamos funcion que inicia el scrapeo
-    obtener_datos_tabla(driver) 
+    obtener_datos_tabla(driver)
 
 
 # Funcion que obtiene los datos de la tabla
@@ -50,11 +40,12 @@ def obtener_datos_tabla(driver):
     print('Iniciando scrapeo')
 
     # Esperamos que cargue la tabla
-    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//th[contains(text(), 'Title of Consultancy')]/../../../tbody")))
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "//th[contains(text(), 'Title of Consultancy')]/../../../tbody")))
 
     # Obtenemos la tabla de la pagina
     tabla = driver.find_element(By.XPATH, "//th[contains(text(), 'Title of Consultancy')]/../../../tbody")
-                    
+
     # Obtenemos las filas de la tabla
     filas = tabla.find_elements(By.TAG_NAME, "tr")
 
@@ -67,7 +58,8 @@ def obtener_datos_tabla(driver):
         print('Fila actual: ' + str(numero_fila))
 
         # Esperamos que cargue la tabla
-        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//th[contains(text(), 'Title of Consultancy')]/../../../tbody")))
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//th[contains(text(), 'Title of Consultancy')]/../../../tbody")))
 
         # Iniciamos datos de la fila
         id_fila = ''
@@ -85,7 +77,6 @@ def obtener_datos_tabla(driver):
         sub_sector = ''
         fund = ''
         fecha_publicacion = ''
-
 
         # Obtenemos las filas
         filas = tabla.find_elements(By.TAG_NAME, "tr")
@@ -127,14 +118,14 @@ def obtener_datos_tabla(driver):
 
         # Obtenemos los datos de la primer columna
         datos_apertura = datos_fila.find_element(By.TAG_NAME, "div")
-        
+
         # Hacemosun split de los datos_apertura con un salto de linea
         lista_datos_apertura = datos_apertura.text.split('\n')
 
         # Obtenemos el sub-sector que es el primer item, apartir de los :
         sub_sector = lista_datos_apertura[0].split(':')[1].strip()
         print('Sub-sector: ', sub_sector)
-        
+
         # Obtenemos la fecha de publicacion que es el segundo item, apartir de los :
         fecha_publicacion = lista_datos_apertura[1].split(':')[1].strip()
         print('Fecha publicacion: ', fecha_publicacion)
@@ -147,7 +138,6 @@ def obtener_datos_tabla(driver):
         fund = lista_datos_apertura[3].split(':')[1].strip()
         print('Funding source: ', fund)
 
-
         # Obtenemos el link del a
         link_datos = datos_apertura.find_element(By.TAG_NAME, "a").get_attribute('href')
         print('Link a obtenido: ', link_datos)
@@ -159,7 +149,8 @@ def obtener_datos_tabla(driver):
         print('Pagina abierta')
 
         # Esperamos que cargue la pagina
-        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(text(),  'Project Detail')]")))
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//h2[contains(text(),  'Project Detail')]")))
         print('Pagina cargada')
 
         # Obtenemos el aproval date
@@ -187,7 +178,8 @@ def obtener_datos_tabla(driver):
         time.sleep(3)
 
         # Esperamos que cargue el fund
-        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(),  'Fund')]/../span")))
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//div[contains(text(),  'Fund')]/../span")))
 
         # Obtenemos el fund
         fund = driver.find_element(By.XPATH, "//div[contains(text(),  'Fund')]/../span").text
@@ -210,20 +202,13 @@ def obtener_datos_tabla(driver):
 # Funcion que se encarga de ver si el titulo es valido
 # Devuelve True si es valido, False si no lo es
 def titulo_valido(titulo):
-    
     # Hacemos for por cada titulo malo
     for titulo_malo in LISTA_TITULOS_MALOS:
         if titulo_malo in titulo:
             return False
 
-    return True 
+    return True
 
-    
 
- 
-
-    
-    
- 
 if __name__ == '__main__':
-    main() 
+    main()
