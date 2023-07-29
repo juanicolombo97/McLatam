@@ -1,10 +1,11 @@
-# -------------------------------------- LIBRERIAS ----------------------------------------------------------------------
+# ------------------------------------- LIBRERIAS ---------------------------------------------------------------------
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 import time
+
+from scrapers.ComunidadAndina.firebase import agregar_datos
 
 
 def main():
@@ -12,7 +13,7 @@ def main():
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-    # options.add_argument('headless')
+    options.add_argument('headless')
     options.add_argument("start-maximized")
     options.add_experimental_option('prefs', {
         'download.prompt_for_download': False,
@@ -72,6 +73,8 @@ def obtener_datos_tabla(driver):
 
         documento = fila.find_element(By.XPATH, f"../div[@class='content-2col-grid '][{num_doc}]/div/div/div[@class='di-content']/h4/a").get_attribute("href")
         print(documento)
+
+        agregar_datos(nombre, fecha_limite, hora, contacto, documento)
 
         time.sleep(.5)
         num_fila += 1

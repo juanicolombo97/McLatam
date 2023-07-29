@@ -8,7 +8,7 @@ db = firestore.client()
 
 
 def agregar_datos(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais):
-    data = {"prestamo": prestamo, "modalidad": modalidad, "objeto": objeto, "descripcion": descripcion,
+    data = {"expediente_id": prestamo, "modalidad": modalidad, "objeto": objeto, "descripcion": descripcion,
             "presupuesto": presupuesto, "fecha_publicacion": fecha_publicacion, "pais": pais,
             "fecha_presentacion": fecha_presentacion, "pagina": "https://www.fonplata.org/es/adquisiciones-en-proyectos",
             "estado_expediente": "NoRevisado"}
