@@ -1,11 +1,10 @@
-# -------------------------------------- LIBRERIAS ----------------------------------------------------------------------
+# -------------------------------------- LIBRERIAS --------------------------------------------------------------------
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
-
 
 LISTA_TITULOS_MALOS = [
     'LGTBI+'
@@ -17,7 +16,7 @@ def main():
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-    # options.add_argument('headless')
+    options.add_argument('headless')
     options.add_argument("start-maximized")
     options.add_experimental_option('prefs', {
         'download.prompt_for_download': False,

@@ -5,14 +5,17 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
+from scrapers.FONPLATA.firebase import agregar_datos
+
 
 def main():
     url_pagina = 'https://www.fonplata.org/es/adquisiciones-en-proyectos'
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-    # options.add_argument('headless')
+    options.add_argument('headless')
     options.add_argument("start-maximized")
+    options.add_argument(f"--window-size=1200,800")
     options.add_experimental_option('prefs', {
         'download.prompt_for_download': False,
         'download.directory_upgrade': True,
@@ -85,6 +88,8 @@ def obtener_datos_tabla(driver):
                 print("presupuesto " + presupuesto)
                 print("fecha_publicacion " + fecha_publicacion)
                 print("fecha_presentacion " + fecha_presentacion)
+
+                agregar_datos(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
 
         time.sleep(0.5)
 
