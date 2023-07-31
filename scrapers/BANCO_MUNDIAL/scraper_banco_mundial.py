@@ -33,7 +33,7 @@ def main():
     })
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='../chromedriver', options=options)
+    driver = webdriver.Chrome(executable_path='scrapers/chromedriver', options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
