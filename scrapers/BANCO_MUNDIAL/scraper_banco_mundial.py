@@ -89,6 +89,7 @@ def obtener_datos_tabla(driver):
     cadena_sin_coma = filas_totales.replace(",", "")
     # Convertir la cadena sin coma en un número entero
     filas_totales = int(cadena_sin_coma)
+    numero_pagina = 0
 
     while fila_actual < int(filas_totales):
         # Esperamos que cargue la tabla
@@ -100,6 +101,8 @@ def obtener_datos_tabla(driver):
 
         # Obtenemos las filas de la tabla
         filas = tabla.find_elements(By.TAG_NAME, "tr")
+
+        print("Numero de pagina: " + str(numero_pagina))
 
         # Recorremos las filas
         for numero_fila in range(0, int(len(filas))):
@@ -154,6 +157,7 @@ def obtener_datos_tabla(driver):
         siguiente = driver.find_elements(By.XPATH, "//ul[@class='pagination ng-star-inserted']/li")
         siguiente[-2].click()
         print("click siguiente")
+        numero_pagina += 1
         time.sleep(3)
 
 
