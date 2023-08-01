@@ -6,6 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
+from scrapers.BANCO_MUNDIAL.firebase import agregar_datos
+
 LISTA_PAISES_INVALIDOS = [
     'Brazil'
 ]
@@ -153,6 +155,9 @@ def obtener_datos_tabla(driver):
             print('tipo noticia: ' + tipo_noticia)
             print('idioma: ' + idioma)
             print('Fecha: ' + fecha)
+            expediente_id = str(numero_pagina) + str(numero_fila)
+            print('Expediente id: ' + expediente_id)
+            # agregar_datos(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha)
 
         siguiente = driver.find_elements(By.XPATH, "//ul[@class='pagination ng-star-inserted']/li")
         siguiente[-2].click()
