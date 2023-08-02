@@ -2,7 +2,7 @@
 import time
 
 from selenium import webdriver
-from selenium.webdriver import ActionChains
+from selenium.common import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -56,6 +56,7 @@ def obtener_datos_tabla(driver):
 
     boton_ingresar = driver.find_element(By.XPATH, "//button[@class='btn btn-block btn-institution']")
     boton_ingresar.click()
+    print("Inicio de sesion")
     time.sleep(.5)
 
     # Buscamos el boton para filtrar por procesos abiertos
@@ -64,6 +65,33 @@ def obtener_datos_tabla(driver):
     procesos_abiertos = driver.find_element(By.XPATH,
                                             "//li[@class='open-templates-postulations hidden-xs nav-wrapper']")
     procesos_abiertos.click()
+    print("Click procesos abiertos")
+
+    # Hacemos click sobre los filtros
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "//div[@class='form-group grouped_select optional filters_web_tags']")))
+    boton_filtros = driver.find_element(By.XPATH, "//div[@class='form-group grouped_select optional filters_web_tags']")
+    boton_filtros.click()
+    print("Click filtros")
+
+    # Elegimos el filtro
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "//div[@class='form-group grouped_select optional filters_web_tags']/div/div")))
+    filtro = boton_filtros.find_element(By.XPATH, "div/div/div[@class='inner open']/ul/li[3]")
+    filtro.click()
+    print("Seleccionamos filtro")
+
+    # Esperamos que cargue el contenido
+    time.sleep(5)
+
+    # Chequeamos que haya contenido
+    try:
+        driver.find_element(By.XPATH, "//i[@class='fa fa-exclamation-triangle']")
+        print("Vacio")
+    except NoSuchElementException:
+        print("Hay contenido")
+
+    time.sleep(4)
 
 
 if __name__ == '__main__':
