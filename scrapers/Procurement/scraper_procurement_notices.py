@@ -5,8 +5,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-from scrapers.Procurement.firebase import agregar_datos
+from scrapers.Procurement.firebase import agregar_datos, obtener_ids
 
+LISTA_PAISES_INVALIDOS = [
+    'AFGHANISTAN', 'ALGERIA', 'BANGLADESH', 'BHUTAN', 'BOTSWANA', 'DJIBOUTI', 'EGYPT', 'FIJI', 'GABON', 'IRAQ', 'JORDAN',
+    'THAILAND', 'LAO PDR', 'LIBYA', 'MALAWI', 'MALI', 'NEPAL', 'SRI LANKA', 'KYRGYZSTAN', 'UZBEKISTAN', 'MADAGASCAR',
+    'PAKISTAN', 'PHILIPPINES', 'SOMALIA', 'TUNISIA', 'TURKMENISTAN', 'UGANDA', 'UKRAINE', 'UNITED STATES OF AMERICA', 'YEMEN'
+]
 
 def main():
     url_pagina = 'https://procurement-notices.undp.org/search.cfm'
@@ -34,6 +39,10 @@ def main():
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo')
+
+    # Obtenemos ids que ya se guardaron
+    ids_referencia = obtener_ids()
+    print(ids_referencia)
 
     # Esperamos que cargue el buscador
     WebDriverWait(driver, 30).until(
@@ -93,6 +102,10 @@ def obtener_datos_tabla(driver):
         numero_referencia = datos_fila[2].text
         print('Referencia: ' + numero_referencia)
 
+        if ids_referencia is not None and numero_referencia in ids_referencia:
+            print("Ya existe")
+            continue
+
         # Obtenemos el titulo de la fila
         titulo = datos_fila[3].text
         print('Titulo: ' + titulo)
@@ -104,6 +117,11 @@ def obtener_datos_tabla(driver):
         # Obtenemos el pais de la fila
         pais = datos_fila[5].text
         print('Pais: ' + pais)
+
+        # Nos fijamos si el titulo es malo o no
+        if not pais_valido(pais):
+            print('************* Pais invalido *************')
+            continue
 
         # Obtenemos el proceso de la fila
         proceso = datos_fila[6].text
@@ -118,6 +136,15 @@ def obtener_datos_tabla(driver):
         print('Fecha publicacion: ' + fecha_publicacion)
 
         agregar_datos(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion)
+        break
+
+def pais_valido(pais):
+    # Hacemos for por cada titulo malo
+    for pais_invalido in LISTA_PAISES_INVALIDOS:
+        if pais_invalido in pais:
+            return False
+
+    return True
 
 
 if __name__ == '__main__':

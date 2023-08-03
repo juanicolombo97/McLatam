@@ -1,4 +1,4 @@
-# -------------------------------------- LIBRERIAS ----------------------------------------------------------------------
+# ------------------------------------- LIBRERIAS ----------------------------------------------------------------------
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -92,6 +92,7 @@ def obtener_datos_tabla(driver):
             print('Referencia: ' + referencia)
 
             if ids_referencia is not None and referencia in ids_referencia:
+                print("Ya existe")
                 continue
 
             # Obtenemos la oficina de la fila

@@ -25,6 +25,8 @@ def obtener_ids():
 
     # Itera sobre los documentos y extrae el valor del campo deseado
     for documento in documentos:
-        valor = documento.get("Expediente_id")
-        valores_campo.append(valor)
+        expediente_id = documento.get("expediente_id")
+        pagina = documento.get("pagina")
+        if pagina == 'https://oei.int/contrataciones':
+            valores_campo.append(expediente_id)
     return valores_campo
