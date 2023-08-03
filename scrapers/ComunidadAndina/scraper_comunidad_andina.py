@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-from scrapers.ComunidadAndina.firebase import agregar_datos
+from scrapers.ComunidadAndina.firebase import agregar_datos, obtener_ids
 
 
 def main():
@@ -35,6 +35,10 @@ def main():
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo')
 
+    # Obtenemos ids que ya se guardaron
+    expediente_ids = obtener_ids()
+    print(expediente_ids)
+
     # Esperamos que cargue la tabla
     WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.XPATH, "//div[@class='page-content page-content-fullwidth']/div")))
@@ -61,6 +65,11 @@ def obtener_datos_tabla(driver):
 
         nombre = datos_fila.find_element(By.XPATH, "h4[1]/strong[2]").text
         print(nombre)
+        if expediente_ids is not None and nombre in expediente_ids:
+            num_fila += 1
+            num_doc += 2
+            print("Ya existe")
+            continue
 
         fecha_limite = datos_fila.find_element(By.XPATH, "h4[2]/strong[2]").text
         print(fecha_limite)
