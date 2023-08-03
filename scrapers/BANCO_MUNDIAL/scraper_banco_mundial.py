@@ -25,9 +25,8 @@ def main():
     options.add_argument('headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
-    options.add_argument("--start-maximized")
-    options.add_argument("--window-size=1920x1080")
     options.add_argument("start-maximized")
+    options.add_argument("--window-size=1920x1080")
     options.add_experimental_option('prefs', {
         'download.prompt_for_download': False,
         'download.directory_upgrade': True,
@@ -160,8 +159,13 @@ def obtener_datos_tabla(driver):
             # agregar_datos(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha)
 
         siguiente = driver.find_elements(By.XPATH, "//ul[@class='pagination ng-star-inserted']/li")
-        siguiente[-2].click()
+        print("Cantidad siguiente: ", len(siguiente))
+
+        actions = ActionChains(driver)
+        actions.move_to_element(siguiente[-2]).perform()
+        actions.click(siguiente[-2]).perform()
         print("click siguiente")
+
         numero_pagina += 1
         time.sleep(3)
 
