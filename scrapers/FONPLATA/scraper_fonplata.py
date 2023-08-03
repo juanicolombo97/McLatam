@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-from scrapers.FONPLATA.firebase import agregar_datos
+from scrapers.FONPLATA.firebase import agregar_datos, obtener_ids
 
 
 def main():
@@ -35,6 +35,11 @@ def main():
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo')
+
+    # Obtenemos ids que ya se guardaron
+    expediente_ids = obtener_ids()
+    print(expediente_ids)
+
     paises = driver.find_elements(By.XPATH, "//ul[@class='nav nav-tabs']/li")
     datos_paises = driver.find_elements(By.XPATH, "//div[@class='tab-content']/div")
 
@@ -75,6 +80,10 @@ def obtener_datos_tabla(driver):
                 datos_fila = filas[numero_fila].find_elements(By.TAG_NAME, "td")
 
                 prestamo = datos_fila[0].text
+                if expediente_ids is not None and prestamo in expediente_ids:
+                    print("Ya existe")
+                    continue
+
                 modalidad = datos_fila[1].text
                 objeto = datos_fila[2].text
                 descripcion = datos_fila[3].text
