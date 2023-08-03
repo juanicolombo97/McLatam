@@ -8,10 +8,13 @@ import time
 from scrapers.Procurement.firebase import agregar_datos, obtener_ids
 
 LISTA_PAISES_INVALIDOS = [
-    'AFGHANISTAN', 'ALGERIA', 'BANGLADESH', 'BHUTAN', 'BOTSWANA', 'DJIBOUTI', 'EGYPT', 'FIJI', 'GABON', 'IRAQ', 'JORDAN',
+    'AFGHANISTAN', 'ALGERIA', 'BANGLADESH', 'BHUTAN', 'BOTSWANA', 'DJIBOUTI', 'EGYPT', 'FIJI', 'GABON', 'IRAQ',
+    'JORDAN',
     'THAILAND', 'LAO PDR', 'LIBYA', 'MALAWI', 'MALI', 'NEPAL', 'SRI LANKA', 'KYRGYZSTAN', 'UZBEKISTAN', 'MADAGASCAR',
-    'PAKISTAN', 'PHILIPPINES', 'SOMALIA', 'TUNISIA', 'TURKMENISTAN', 'UGANDA', 'UKRAINE', 'UNITED STATES OF AMERICA', 'YEMEN'
+    'PAKISTAN', 'PHILIPPINES', 'SOMALIA', 'TUNISIA', 'TURKMENISTAN', 'UGANDA', 'UKRAINE', 'UNITED STATES OF AMERICA',
+    'YEMEN'
 ]
+
 
 def main():
     url_pagina = 'https://procurement-notices.undp.org/search.cfm'
@@ -136,7 +139,7 @@ def obtener_datos_tabla(driver):
         print('Fecha publicacion: ' + fecha_publicacion)
 
         agregar_datos(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion)
-        break
+
 
 def pais_valido(pais):
     # Hacemos for por cada titulo malo

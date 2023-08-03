@@ -6,7 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from scrapers.NUG.firebase import agregar_datos
+from scrapers.NUG.firebase import agregar_datos, obtener_ids
 
 PAISES_VALIDOS = ['Haiti', 'Ecuador', 'El Salvador', 'Colombia', 'República Dominicana',
                   'Perú', 'Argentina', 'México', 'Brasil', 'Panamá', 'Paraguay', 'Chile', 'Venezuela',
@@ -43,6 +43,10 @@ def main():
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo')
+
+    # Obtenemos ids que ya se guardaron
+    ids_referencia = obtener_ids()
+    print(ids_referencia)
 
     try:
         popup = driver.find_element(By.XPATH, "//*[@id=\"languageSuggestionModal\"]/div[1]/div[1]/input[2]")
@@ -133,18 +137,22 @@ def obtener_datos_tabla(driver):
         filas_scrapeadas += 1
 
         columnas = fila_visible.find_elements(By.XPATH, "div[@role='cell']")
+        referencia = columnas[6].text
+        if ids_referencia is not None and referencia in ids_referencia:
+            print("Ya existe")
+            continue
+
         titulo = columnas[1].text
         fecha_limite = columnas[2].text
         publicado = columnas[3].text
         organismo_onu = columnas[4].text
         tipo_anuncio = columnas[5].text
-        referencia = columnas[6].text
         pais = columnas[7].text
 
+        print("pais: " + pais)
         if pais not in PAISES_VALIDOS:
+            print("Pais invalido")
             continue
-
-        agregar_datos(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
 
         print("titulo: " + titulo)
         print("fecha: " + fecha_limite)
@@ -152,7 +160,8 @@ def obtener_datos_tabla(driver):
         print("org_onu: " + organismo_onu)
         print("anuncio: " + tipo_anuncio)
         print("ref: " + referencia)
-        print("pais: " + pais)
+
+        agregar_datos(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
 
 
 if __name__ == '__main__':
