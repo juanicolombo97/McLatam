@@ -1,5 +1,4 @@
-
-#-------------------------------------- LIBRERIAS ----------------------------------------------------------------------
+# -------------------------------------- LIBRERIAS --------------------------------------------------------------------
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -27,25 +26,25 @@ import os
 import cv2
 import numpy as np
 
+
 # Funcion que se encarga de correr el scraper
 def main():
-
     url_pagina = 'https://devbusiness.un.org/content/site-search'
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-   # options.add_argument('headless')
+    # options.add_argument('headless')
     options.add_argument("start-maximized")
 
-
     # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='scrapers/chromedriver',  options=options)
+    driver = webdriver.Chrome(executable_path='scrapers/chromedriver', options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
-    
+
     # Llamamos funcion que inicia el scrapeo
     iniciar_scrapeo(driver)
+
 
 # Funcion que se encarga de la logica de scrapeo
 def iniciar_scrapeo(driver):
@@ -66,8 +65,6 @@ def iniciar_scrapeo(driver):
     #     if resultado == True:
     #         break
 
-
-
     # Volvemos a la paigna inicial
     driver.get('https://devbusiness.un.org/content/site-search')
     print('Volvemos a la pagina inicial')
@@ -78,17 +75,17 @@ def iniciar_scrapeo(driver):
             By.XPATH, "//div[@class='row views-row ']"
         ))
     )
-    
+
     # Obtenemos div donde estan los datos
     div_datos = driver.find_element(By.XPATH, "//div[@class='search-results apachesolr_search-results']")
-     
+
     # Obtenemos los divs de dichos datos
     divs_datos = div_datos.find_elements(By.XPATH, "./div")
     print('Cantidad de datos: ', len(divs_datos))
 
     cantidad_datos = len(divs_datos)
     contador = 0
-    
+
     # While mientras dejas scrolear y aparecen nuevos expedietes
     while True:
 
@@ -99,21 +96,20 @@ def iniciar_scrapeo(driver):
             # Aumentamos contadro
             contador += 1
             print('Contador: ', contador)
-            
-        
+
             if contador > cantidad_datos:
                 break
-                
+
         # Si hubo error, scrolleamos para abajo asi aparecen mas expedientes
         except Exception as e:
-                print('Error: ', e)
-                # Scrolleamos para abajo hasta llegar al fondo y scrolleamos mas asi cargan nuevos expedinetes
-                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                time.sleep(2)
-                      
+            print('Error: ', e)
+            # Scrolleamos para abajo hasta llegar al fondo y scrolleamos mas asi cargan nuevos expedinetes
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)
+
 
 # Funcion que se encarga de obtener los datos de un expediente
-def obtener_datos_expediente(driver ,contador):
+def obtener_datos_expediente(driver, contador):
     pais = ''
     empresa = ''
     deadline = ''
@@ -121,7 +117,7 @@ def obtener_datos_expediente(driver ,contador):
     proyecto = ''
     url = ''
 
-     # Obtenemos div donde estan los datos
+    # Obtenemos div donde estan los datos
     div_datos = driver.find_element(By.XPATH, "//div[@class='search-results apachesolr_search-results']")
 
     # Obtenemos los divs del expediente y nos quedamos con el segundo
@@ -131,14 +127,14 @@ def obtener_datos_expediente(driver ,contador):
     divs_expediente = expediente[contador].find_elements(By.XPATH, "./div")
     print('Cantidad de divs del expediente: ', len(divs_expediente))
     div_expediente = divs_expediente[1]
-                
+
     # Ahora obtenemos los 3 divs donde se encuentran los datos
     divs_datos_expediente = div_expediente.find_elements(By.XPATH, "./div")
     print('Obtenemos los datos del expediente')
 
     # El primer div es el titulo, y obtenemos los spans dentro de el
     div_titulo = divs_datos_expediente[0].find_elements(By.XPATH, "//span[@class='countries']")
-                
+
     # El separador | divide el pais y la empresa, obtenemos cada dato
     try:
         pais_empresa = div_titulo[1].text
@@ -165,7 +161,7 @@ def obtener_datos_expediente(driver ,contador):
 
     # Del segundo div obtenemos el proyecto
     proyecto = divs_primero[1].text
-                
+
     # Hacemos split y sacamos el proyecto y salto linea
     proyecto = proyecto.split('\n')[1].strip()
     print('Proyecto: ', proyecto)
@@ -181,12 +177,13 @@ def obtener_datos_expediente(driver ,contador):
     # obtenemos el expediente id
     expediente_id = div_descripcion[3].text.split('\n')[1].strip()
     print('Expediente id: ', expediente_id)
-    
+
     # Obtenemos el tercero que es el del deadline
     div_deadline = divs_datos_expediente[2]
     deadline = div_deadline.text
     deadline = deadline.split('DEADLINE')[1].strip()
     print('Deadline: ', deadline)
+
 
 # Funcion que se encarga de loguearse a la pagina
 def login(driver):
@@ -237,7 +234,7 @@ def login(driver):
                     print('Cantidad de usuarios: ', len(cantidad_usuarios))
                     if len(cantidad_usuarios) == 0:
                         break
-                    
+
                     # Loopeamos los usuarios
                     for usuario in cantidad_usuarios:
 
@@ -254,10 +251,10 @@ def login(driver):
                         boton_cerrar_sesion = driver.find_element(By.XPATH, "//button[@id='edit-submit']")
                         boton_cerrar_sesion.click()
                         time.sleep(2)
-                
+
                 except:
                     pass
-                        
+
         return True
     except Exception as e:
         print('Error al loguear: ', e)
@@ -265,4 +262,4 @@ def login(driver):
 
 
 if __name__ == '__main__':
-    main() 
+    main()

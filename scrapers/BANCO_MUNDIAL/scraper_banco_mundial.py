@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
-from scrapers.BANCO_MUNDIAL.firebase import agregar_datos
+from scrapers.BANCO_MUNDIAL.firebase import agregar_datos, obtener_ids
 
 LISTA_PAISES_INVALIDOS = [
     'Brazil'
@@ -22,7 +22,7 @@ def main():
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-    options.add_argument('headless')
+    # options.add_argument('headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument("start-maximized")
@@ -60,12 +60,14 @@ def aplicar_filtros(driver):
     time.sleep(1)
 
     # Esperamos que cargue el segundo filtro y nos movemos por si no esta a la vista
+    WebDriverWait(driver, 30).until(
+        EC.element_to_be_clickable((By.XPATH, "//a[text()='Notice Type']")))
     tipo_noticia = driver.find_element(By.XPATH, "//a[text()='Notice Type']")
     actions = ActionChains(driver)
+    time.sleep(1)
     actions.move_to_element(tipo_noticia).perform()
-    WebDriverWait(driver, 30).until(
-        EC.element_to_be_clickable((By.XPATH, "//a[text()='Notice Type']/..")))
     tipo_noticia.click()
+    print("Click tipo noticia")
     time.sleep(1)
 
     # Selecciono el filtro
@@ -83,8 +85,14 @@ def aplicar_filtros(driver):
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo')
 
+    # Obtenemos ids que ya se guardaron
+    expediente_ids = obtener_ids()
+    print(expediente_ids)
+
     fila_actual = 0
     # Obtengo la cantidad de filas totales a scrapear
+    WebDriverWait(driver, 30).until(
+        EC.element_to_be_clickable((By.XPATH, "//p[@class='blurb-text ng-star-inserted']")))
     filas_totales = driver.find_element(By.XPATH, "//p[@class='blurb-text ng-star-inserted']").text
     filas_totales = filas_totales.split("of")[1].split()[0]
     cadena_sin_coma = filas_totales.replace(",", "")
@@ -109,6 +117,12 @@ def obtener_datos_tabla(driver):
         for numero_fila in range(0, int(len(filas))):
             print('FILA ACTUAL: ' + str(numero_fila))
             fila_actual += 1
+
+            expediente_id = str(numero_pagina) + str(numero_fila)
+            if expediente_ids is not None and expediente_id in expediente_ids:
+                print("Ya existe")
+                continue
+
             # Iniciamos datos de la fila
             descripcion = ''
             pais = ''
@@ -154,16 +168,16 @@ def obtener_datos_tabla(driver):
             print('tipo noticia: ' + tipo_noticia)
             print('idioma: ' + idioma)
             print('Fecha: ' + fecha)
-            expediente_id = str(numero_pagina) + str(numero_fila)
             print('Expediente id: ' + expediente_id)
-            # agregar_datos(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha)
+            agregar_datos(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha)
 
+        wait(driver)
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//ul[@class='pagination ng-star-inserted']/li")))
         siguiente = driver.find_elements(By.XPATH, "//ul[@class='pagination ng-star-inserted']/li")
         print("Cantidad siguiente: ", len(siguiente))
 
-        actions = ActionChains(driver)
-        actions.move_to_element(siguiente[-2]).perform()
-        actions.click(siguiente[-2]).perform()
+        driver.execute_script("arguments[0].scrollIntoView();", siguiente[-2])
         print("click siguiente")
 
         numero_pagina += 1
@@ -178,6 +192,18 @@ def elemento_valido(elemento, lista_invalida):
         if elemento_invalido in elemento:
             return False
     return True
+
+
+# Esperamos que se deje de cargar la pagina asi podemos clickear en el siguiente
+def wait(driver):
+    try:
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.XPATH, "//img[@class='ajax-loader']")))
+        print("Loading encontrado")
+        WebDriverWait(driver, 100).until(EC.invisibility_of_element("//img[@class='ajax-loader']"))
+        print("Loading desaparecio")
+    except:
+        return
 
 
 if __name__ == '__main__':
