@@ -8,7 +8,7 @@ import Protected from './components/auth/Protected';
 import Estadisticas from './components/Estadisticas/Estadisticas';
 import RevisarExpedientes from './components/RevisarExpedientes/RevisarExpedientes';
 import Navbar from './components/Navbar/Navbar';
-import Dashboard from './components/Dashboard/Dashboard';
+import Dashboard from './components/dashboard/Dashboard';
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import './Dashboard.css'; /* Importar el archivo CSS */
 import Tabla from '../Tabla/Tabla';
 
 const Dashboard = () => {

@@ -51,6 +51,29 @@ const Tabla = () => {
   const totalPages = Math.ceil(expedientesFiltrados.length / itemsPerPage);
   const headerRefs = useRef([]);
 
+  // Use effect para cerrar el modal de detalles al precionar afuera o escape
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        setModalFilaOpen(false);
+      }
+    };
+
+    const handleClick = (e) => {
+      if (e.target.classList.contains('modal')) {
+        setModalFilaOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
+  
   // Carga expedientes desde Firestore
   useEffect(() => {
     const loadExpedientes = async () => {
