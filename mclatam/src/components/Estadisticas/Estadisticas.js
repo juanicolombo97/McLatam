@@ -1,50 +1,82 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Legend, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from '../../firebase/firebase';
 import './Estadisticas.css';
 
 const Estadisticas = () => {
-  // Datos para el PieChart
-  const pieData = [
-    { name: 'Página 1', value: 30, fill: '#8884d8' },
-    { name: 'Página 2', value: 15, fill: '#83a6ed' },
-    { name: 'Página 3', value: 25, fill: '#8dd1e1' },
-    { name: 'Página 4', value: 20, fill: '#82ca9d' },
-    { name: 'Página 5', value: 10, fill: '#a4de6c' }
-  ];
+  const [pieNotReviewedData, setPieNotReviewedData] = useState([]);
+  const [pieReviewedData, setPieReviewedData] = useState([]);
+  const [lineData, setLineData] = useState([]);
 
-  // Datos para el LineChart
-  const lineData = [
-    { name: 'Semana 1', Encargado_1: 10, Encargado_2: 5, Encargado_3: 20 },
-    { name: 'Semana 2', Encargado_1: 20, Encargado_2: 15, Encargado_3: 25 },
-    { name: 'Semana 3', Encargado_1: 15, Encargado_2: 10, Encargado_3: 30 },
-    { name: 'Semana 4', Encargado_1: 30, Encargado_2: 20, Encargado_3: 25 },
-  ];
+  // Función para extraer el nombre de dominio del URL
+  const extractDomain = (url) => {
+    const match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
+      return match[2].split('.')[0];
+    } else {
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const crmRef = collection(db, "crm");
+      const allDocs = await getDocs(crmRef);
+
+      const notReviewedPagesData = {};
+      const reviewedPagesData = {};
+
+      allDocs.forEach(doc => {
+        const data = doc.data();
+
+        const pageName = extractDomain(data.pagina);
+
+        if (data.estado_expediente === 'NoRevisado') {
+          notReviewedPagesData[pageName] = (notReviewedPagesData[pageName] || 0) + 1;
+        } else {
+          reviewedPagesData[pageName] = (reviewedPagesData[pageName] || 0) + 1;
+        }
+      });
+
+      const pieNotReviewedResults = Object.keys(notReviewedPagesData).map((page, idx) => ({ name: page, value: notReviewedPagesData[page], fill: `#${Math.floor(Math.random()*16777215).toString(16)}` }));
+      const pieReviewedResults = Object.keys(reviewedPagesData).map((page, idx) => ({ name: page, value: reviewedPagesData[page], fill: `#${Math.floor(Math.random()*16777215).toString(16)}` }));
+
+      setPieNotReviewedData(pieNotReviewedResults);
+      setPieReviewedData(pieReviewedResults);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="stats-container">
-
+      // ... (Mantenemos el código de LineChart aquí)
       <div className="chart-container">
-          <h2>Cantidad de expedientes revisados por semana y por encargado</h2>
-          <LineChart width={600} height={400} data={lineData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Line dataKey="Encargado_1" stroke="#8884d8" />
-            <Line dataKey="Encargado_2" stroke="#82ca9d" />
-            <Line dataKey="Encargado_3" stroke="#ffc658" />
-          </LineChart>
-      </div>
-      <div className="chart-container">
-          <h2>Cantidad de expedientes por página</h2>
+        <h2>Expedientes no revisados por página</h2>
+        {pieNotReviewedData.length > 0 ? (
           <PieChart width={400} height={400}>
-            <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label />
+            <Pie data={pieNotReviewedData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label />
             <Legend />
           </PieChart>
+        ) : (
+          <p>Sin expedientes disponibles</p>
+        )}
+      </div>
+
+      <div className="chart-container">
+        <h2>Expedientes revisados por página</h2>
+        {pieReviewedData.length > 0 ? (
+          <PieChart width={400} height={400}>
+            <Pie data={pieReviewedData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label />
+            <Legend />
+          </PieChart>
+        ) : (
+          <p>Sin expedientes disponibles</p>
+        )}
       </div>
     </div>
   );
-
 };
 
 export default Estadisticas;

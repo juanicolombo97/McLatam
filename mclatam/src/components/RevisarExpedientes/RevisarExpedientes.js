@@ -9,7 +9,9 @@ export const RevisarExpedientes = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [expedientes, setExpedientes] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [formValues, setFormValues] = useState({
+
+  // Formulario de reporte 
+  const initialFormValues = {
     consultoria: '',
     lugar: '',
     tipo: '',
@@ -23,7 +25,9 @@ export const RevisarExpedientes = () => {
     objetivoEspecifico: '',
     alcance: '',
     experiencia: ''
-  });
+  };
+  const [formValues, setFormValues] = useState(initialFormValues);
+
 
   useEffect(() => {
     const loadExpedientes = async () => {
@@ -72,8 +76,8 @@ export const RevisarExpedientes = () => {
     if (expedientes.length > 0) {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
     }
-    setFormValues({});
     setIsLoading(false);
+    setFormValues(initialFormValues);
 
   };
   
@@ -93,6 +97,7 @@ export const RevisarExpedientes = () => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
     }
     setIsLoading(false);
+    setFormValues(initialFormValues);
 
   };
 
@@ -106,6 +111,7 @@ export const RevisarExpedientes = () => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
     }        
     setIsLoading(false);
+    setFormValues(initialFormValues);
 
   };
 

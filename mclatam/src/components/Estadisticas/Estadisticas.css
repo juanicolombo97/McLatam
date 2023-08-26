@@ -13,6 +13,8 @@ body {
   display: flex;
   justify-content: space-between; /* Añade espacio entre los elementos */
   align-items: start; /* Alinea los elementos al inicio del contenedor */
+  flex-wrap: wrap; /* Permite que los elementos se ajusten al siguiente renglón si no hay suficiente espacio */
+
 }
 
 h2 {
@@ -27,6 +29,8 @@ h2 {
   margin: 0 20px;
   transition: transform 0.3s; /* Añade una transición a la transformación */
   padding: auto;
+    width: calc(50% - 40px); /* Ocupa la mitad del espacio menos los márgenes */
+
 }
 
 .chart-container:hover {
