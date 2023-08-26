@@ -5,6 +5,10 @@ import './Expediente.css';
 const Expediente = ({ expediente }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
+    const [titulo, ...contenidoArr] = modalContent.split(":");
+    const contenido = contenidoArr.join(":"); 
+    
+    
     console.log('expediente', expediente);
     const handleModalOpen = (titulo, valor) => {
         setModalContent(`${titulo}: ${valor}`);
@@ -37,9 +41,9 @@ const Expediente = ({ expediente }) => {
                 minWidth: '500px',
               }}
             >
-              <h3>Texto completo</h3>
               <div className="modal-fila-detalles">
-                <span className="modal-fila-detalle-valor">{modalContent}</span>
+                <span className="modal-fila-detalle-nombre">{titulo}</span>
+                <span className="modal-fila-detalle-valor">{contenido}</span>
               </div>
             </Modal>
             )}

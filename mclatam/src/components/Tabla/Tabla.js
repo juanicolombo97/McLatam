@@ -42,10 +42,12 @@ const columnas = [
 const Tabla = ({expedientes}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [columnaSeleccionada, setColumnaSeleccionada] = useState(null);
-  const [expedientesFiltrados, setExpedientesFiltrados] = useState(expedientes);
+  const [expedientesFiltrados, setExpedientesFiltrados] = useState([]);
   const [modalFilaOpen, setModalFilaOpen] = useState(false);
   const [filaSeleccionada, setFilaSeleccionada] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
   const itemsPerPage = 15;
   const totalPages = Math.ceil(expedientesFiltrados.length / itemsPerPage);
   const headerRefs = useRef([]);
@@ -72,7 +74,14 @@ const Tabla = ({expedientes}) => {
       document.removeEventListener('click', handleClick);
     };
   }, []);
-  
+
+  // USEefect pra ver si cargaron los datos
+  useEffect(() => {
+    if (expedientes && expedientes.length > 0) {
+        setDataLoaded(true);
+        setExpedientesFiltrados(expedientes);
+    }
+  }, [expedientes]);
   
   const handleColumnClick = (e, columna) => {
     e.preventDefault();
@@ -132,7 +141,13 @@ const Tabla = ({expedientes}) => {
     document.addEventListener("mouseup", handleMouseUp);
   };
 
-  
+  if (!dataLoaded) {
+    return (
+      <div className="transparent-modal">
+        <div className="loading-icon"></div>
+      </div>
+    );
+  }
   return (
     <div className="table-container">
       <table  style={{ tableLayout: 'auto', display: 'inline-table' }}>
@@ -229,7 +244,6 @@ const Tabla = ({expedientes}) => {
     </Modal>
   )
 }
-
        <div className="pagination">
         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
           Anterior

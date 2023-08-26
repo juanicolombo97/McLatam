@@ -74,3 +74,25 @@ h2 {
     transition: opacity 200ms ease-in-out;
 }
 
+
+/* Estilos para el contenedor de detalles */
+.modal-fila-detalles {
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos hijos se apilen verticalmente */
+    align-items: start;     /* Alinea los elementos hijos a la izquierda */
+    padding: 10px;          /* Proporciona algo de espacio interno */
+}
+
+/* Estilos para el título */
+.modal-fila-detalle-nombre {
+    font-weight: bold;      /* Hace que el título sea en negrita */
+    margin-bottom: 8px;     /* Añade algo de margen en la parte inferior para separarlo del contenido */
+    font-size: 1.2em;       /* Aumenta el tamaño del texto para destacarlo */
+    color: #333;            /* Color oscuro para el texto */
+}
+
+/* Estilos para el contenido */
+.modal-fila-detalle-valor {
+    font-size: 1em;         /* Tamaño estándar del texto */
+    color: #555;            /* Color más claro que el título */
+}

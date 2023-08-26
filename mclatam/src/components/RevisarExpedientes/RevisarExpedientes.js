@@ -6,7 +6,7 @@ import ExpedienteButtons from '../ExpedienteButtons/ExpedienteButtons';
 import ExpedienteForm from '../ExpedienteForm/ExpedienteForm';
 
 export const RevisarExpedientes = () => {
-  
+  const [isLoading, setIsLoading] = useState(true);
   const [expedientes, setExpedientes] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [formValues, setFormValues] = useState({
@@ -28,7 +28,7 @@ export const RevisarExpedientes = () => {
   useEffect(() => {
     const loadExpedientes = async () => {
       const expedientesRef = collection(db, "crm"); // Asegúrate de cambiar "crm" por el nombre de tu colección
-      const q = query(expedientesRef, where("Estado_expediente", "==", "NoRevisado"));
+      const q = query(expedientesRef, where("estado_expediente", "==", "NoRevisado"));
       const querySnapshot = await getDocs(q);
       const expedientesData = [];
       querySnapshot.forEach((doc) => {
@@ -40,8 +40,15 @@ export const RevisarExpedientes = () => {
     loadExpedientes();
   }, []);
 
-  
+  useEffect(() => {
+    if (expedientes && expedientes.length > 0) {
+      setIsLoading(false);
+    }
+  }, [expedientes]);
+
   const handleEnviar = async () => {
+    setIsLoading(true);
+
     const allFieldsFilled = Object.values(formValues).every(field => field !== '');
     if (!allFieldsFilled) {
       alert("Por favor, completa todos los campos antes de enviar.");
@@ -66,10 +73,14 @@ export const RevisarExpedientes = () => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
     }
     setFormValues({});
+    setIsLoading(false);
+
   };
   
   // Boton no sirve
   const handleNoSirve = async () => {
+    setIsLoading(true);
+
     // Realizar updates en la base de datos y avanzar al siguiente expediente
     const expedienteRef = doc(db, "crm", expedientes[currentIndex].id);
     
@@ -81,15 +92,21 @@ export const RevisarExpedientes = () => {
     if (expedientes.length > 0) {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
     }
+    setIsLoading(false);
+
   };
 
   // Boton avanzar
   const handleAvanzar = () => {
+    setIsLoading(true);
+
         // Avanzar al siguiente expediente
     console.log('Avanzar');
     if (expedientes.length > 0) {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
     }        
+    setIsLoading(false);
+
   };
 
   const handleChange = (event) => {
@@ -100,6 +117,11 @@ export const RevisarExpedientes = () => {
 
 return (
   <div>
+     {isLoading && (
+        <div className="loading-modal">
+          <div className="loading-icon"></div>
+        </div>
+      )}
    <ExpedienteButtons
       onEnviar={handleEnviar}
       onNoSirve={handleNoSirve}
