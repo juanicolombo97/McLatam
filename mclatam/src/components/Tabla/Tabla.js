@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { collection, getDocs } from "firebase/firestore";
-import { db } from '../../firebase/firebase';
+
 import Modal from '../Modal/Modal';
 import './Tabla.css';
 
@@ -40,10 +39,10 @@ const columnas = [
 ];
 
 
-const Tabla = () => {
+const Tabla = ({expedientes}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [columnaSeleccionada, setColumnaSeleccionada] = useState(null);
-  const [expedientesFiltrados, setExpedientesFiltrados] = useState([]);
+  const [expedientesFiltrados, setExpedientesFiltrados] = useState(expedientes);
   const [modalFilaOpen, setModalFilaOpen] = useState(false);
   const [filaSeleccionada, setFilaSeleccionada] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -74,20 +73,7 @@ const Tabla = () => {
     };
   }, []);
   
-  // Carga expedientes desde Firestore
-  useEffect(() => {
-    const loadExpedientes = async () => {
-      const querySnapshot = await getDocs(collection(db, "crm")); // Asegúrate de cambiar "crm" por el nombre de tu colección
-      const expedientesData = [];
-      querySnapshot.forEach((doc) => {
-        expedientesData.push({ id: doc.id, ...doc.data() });
-      });
-      setExpedientesFiltrados(expedientesData);
-    };
-
-    loadExpedientes();
-  }, []);
-
+  
   const handleColumnClick = (e, columna) => {
     e.preventDefault();
     setColumnaSeleccionada(columna);

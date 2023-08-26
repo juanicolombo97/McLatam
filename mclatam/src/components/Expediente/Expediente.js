@@ -5,7 +5,7 @@ import './Expediente.css';
 const Expediente = ({ expediente }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
-
+    console.log('expediente', expediente);
     const handleModalOpen = (titulo, valor) => {
         setModalContent(`${titulo}: ${valor}`);
         setIsModalOpen(true);
