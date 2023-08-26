@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Legend, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from '../../firebase/firebase';
 import './Estadisticas.css';
 
@@ -9,7 +9,6 @@ const Estadisticas = () => {
   const [pieReviewedData, setPieReviewedData] = useState([]);
   const [lineData, setLineData] = useState([]);
 
-  // Función para extraer el nombre de dominio del URL
   const extractDomain = (url) => {
     const match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
     if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
@@ -18,6 +17,41 @@ const Estadisticas = () => {
       return null;
     }
   }
+
+  // Nuevas funciones adicionales
+  const getWeekNumber = (d) => {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+    return weekNo;
+  }
+
+  const processLineData = (data) => {
+    let processedData = {};
+
+    data.forEach(expediente => {
+      let week = getWeekNumber(new Date(expediente.Fecha_revisado));
+      let year = new Date(expediente.Fecha_revisado).getFullYear();
+      let key = `${year}-W${week}`;
+
+      if (!processedData[key]) {
+        processedData[key] = {};
+      }
+      
+      if (!processedData[key][expediente.encargado]) {
+        processedData[key][expediente.encargado] = 0;
+      }
+
+      processedData[key][expediente.encargado]++;
+    });
+
+    const finalData = Object.keys(processedData).map(key => {
+      return { name: key, ...processedData[key] };
+    });
+
+    setLineData(finalData);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +63,6 @@ const Estadisticas = () => {
 
       allDocs.forEach(doc => {
         const data = doc.data();
-
         const pageName = extractDomain(data.pagina);
 
         if (data.estado_expediente === 'NoRevisado') {
@@ -44,6 +77,16 @@ const Estadisticas = () => {
 
       setPieNotReviewedData(pieNotReviewedResults);
       setPieReviewedData(pieReviewedResults);
+
+      // Obtener los datos para el gráfico de líneas de los últimos 3 meses
+      const threeMonthsAgo = new Date();
+      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+      const q = query(crmRef, where("Fecha_revisado", ">=", threeMonthsAgo));
+      const snapshot = await getDocs(q);
+
+      const lineChartData = snapshot.docs.map(doc => doc.data());
+      processLineData(lineChartData);
     };
 
     fetchData();
@@ -51,7 +94,6 @@ const Estadisticas = () => {
 
   return (
     <div className="stats-container">
-      // ... (Mantenemos el código de LineChart aquí)
       <div className="chart-container">
         <h2>Expedientes no revisados por página</h2>
         {pieNotReviewedData.length > 0 ? (
@@ -74,6 +116,21 @@ const Estadisticas = () => {
         ) : (
           <p>Sin expedientes disponibles</p>
         )}
+      </div>
+
+      <div className="chart-container">
+        <h2>Cantidad de expedientes revisados por semana y por encargado</h2>
+        <LineChart width={600} height={400} data={lineData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          {
+            Object.keys(lineData[0] || {}).filter(key => key !== 'name').map((encargado, index) => (
+              <Line key={encargado} dataKey={encargado} stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} />
+            ))
+          }
+        </LineChart>
       </div>
     </div>
   );
