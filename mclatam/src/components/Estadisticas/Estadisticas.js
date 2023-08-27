@@ -4,6 +4,16 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from '../../firebase/firebase';
 import './Estadisticas.css';
 
+
+const MOCKED_LINE_DATA = [
+  { name: '2023-W25', 'Juan': 3, 'María': 5, 'Pedro': 2 },
+  { name: '2023-W26', 'Juan': 4, 'María': 6, 'Pedro': 1 },
+  { name: '2023-W27', 'Juan': 6, 'María': 3, 'Pedro': 4 },
+  { name: '2023-W28', 'Juan': 5, 'María': 7, 'Pedro': 2 },
+  { name: '2023-W29', 'Juan': 2, 'María': 4, 'Pedro': 6 },
+  { name: '2023-W30', 'Juan': 7, 'María': 2, 'Pedro': 5 },
+];
+
 const Estadisticas = () => {
   const [pieNotReviewedData, setPieNotReviewedData] = useState([]);
   const [pieReviewedData, setPieReviewedData] = useState([]);
@@ -51,6 +61,8 @@ const Estadisticas = () => {
     });
 
     setLineData(finalData);
+    setLineData(MOCKED_LINE_DATA);
+
   };
 
   useEffect(() => {
@@ -87,6 +99,7 @@ const Estadisticas = () => {
 
       const lineChartData = snapshot.docs.map(doc => doc.data());
       processLineData(lineChartData);
+      
     };
 
     fetchData();
@@ -119,17 +132,20 @@ const Estadisticas = () => {
       </div>
 
       <div className="chart-container">
-        <h2>Cantidad de expedientes revisados por semana y por encargado</h2>
-        <LineChart width={600} height={400} data={lineData}>
+        <h2>Expedientes revisados por encargado y semana</h2>
+        <LineChart width={600} height={400} data={MOCKED_LINE_DATA}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis 
+            dataKey="name"
+            label={{ value: 'Semanas (Inicio - Fin)', position: 'bottom' }}
+          />
+          <YAxis 
+            label={{ value: 'Número de Expedientes', angle: -90, position: 'insideLeft' }}
+          />
           <Tooltip />
-          {
-            Object.keys(lineData[0] || {}).filter(key => key !== 'name').map((encargado, index) => (
-              <Line key={encargado} dataKey={encargado} stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} />
-            ))
-          }
+          <Line dataKey="Juan" stroke="#8884d8" />
+          <Line dataKey="María" stroke="#82ca9d" />
+          <Line dataKey="Pedro" stroke="#ffc658" />
         </LineChart>
       </div>
     </div>

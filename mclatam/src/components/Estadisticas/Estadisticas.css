@@ -14,7 +14,8 @@ body {
   justify-content: space-between; /* Añade espacio entre los elementos */
   align-items: start; /* Alinea los elementos al inicio del contenedor */
   flex-wrap: wrap; /* Permite que los elementos se ajusten al siguiente renglón si no hay suficiente espacio */
-
+  flex-direction: column; /* Cambia la dirección de flex a columna */
+  align-items: center;   
 }
 
 h2 {
