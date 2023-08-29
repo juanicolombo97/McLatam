@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
-from scrapers.BANCO_MUNDIAL.firebase import agregar_datos, obtener_ids
+from scrapers.firebase import obtener_ids, agregar_datos
 
 LISTA_PAISES_INVALIDOS = [
     'Brazil'
@@ -35,7 +35,7 @@ def main():
     })
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(service=Service('/Users/mickyconca/Desktop/McLatam//Users/mickyconca/Desktop/McLatam/scrapers/chromedriver'), options=options)
+    driver = webdriver.Chrome(service=Service('/Users/mickyconca/Desktop/McLatam/scrapers/chromedriver'), options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
@@ -84,7 +84,7 @@ def aplicar_filtros(driver):
 
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
-    print('Iniciando scrapeo')
+    print('Iniciando scrapeo Banco Mundial')
 
     # Obtenemos ids que ya se guardaron
     expediente_ids = obtener_ids()
