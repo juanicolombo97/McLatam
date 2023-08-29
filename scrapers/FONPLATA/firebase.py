@@ -12,7 +12,8 @@ def agregar_datos(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_p
             "presupuesto": presupuesto, "fecha_publicacion": fecha_publicacion, "pais": pais,
             "fecha_presentacion": fecha_presentacion,
             "pagina": "https://www.fonplata.org/es/adquisiciones-en-proyectos",
-            "estado_expediente": "NoRevisado"}
+            "estado_expediente": "NoRevisado", "Nombre_pagina": "Fonplata", "Fecha_revisado": "", "Encargado": "",
+            "Reporte": ""}
     db.collection("crm").add(data)
 
 

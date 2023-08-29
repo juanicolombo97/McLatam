@@ -11,8 +11,10 @@ def agregar_datos(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma
     data = {"expediente_id": expediente_id, "descripcion": descripcion, "pais": pais,
             "titulo": titulo, "tipo_noticia": tipo_noticia, "idioma": idioma, "fecha": fecha,
             "pagina": "https://projects.worldbank.org/en/projects-operations/procurement?lang=en&qterm=&showrecent=true&srce=notices",
-            "estado_expediente": "NoRevisado"}
+            "estado_expediente": "NoRevisado", "Nombre_pagina": "Banco Mundial", "Fecha_revisado": "", "Encargado": "",
+            "Reporte": ""}
     db.collection("crm").add(data)
+
 
 def obtener_ids():
     # Obtén una referencia a la instancia de Firestore

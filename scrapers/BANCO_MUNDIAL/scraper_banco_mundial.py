@@ -35,7 +35,7 @@ def main():
     })
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(service=Service('/Users/mickyconca/Desktop/McLatam/scrapers/chromedriver'), options=options)
+    driver = webdriver.Chrome(service=Service('/Users/mickyconca/Desktop/McLatam//Users/mickyconca/Desktop/McLatam/scrapers/chromedriver'), options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)

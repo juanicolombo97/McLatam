@@ -10,7 +10,8 @@ db = firestore.client()
 def agregar_datos(nombre, fecha_limite, hora, contacto, documento):
     data = {"expediente_id": nombre, "fecha_limite": fecha_limite, "hora": hora, "contacto": contacto,
             "documento": documento, "pagina": "https://www.comunidadandina.org/convocatorias/",
-            "estado_expediente": "NoRevisado"}
+            "estado_expediente": "NoRevisado", "Nombre_pagina": "Comunidad Andina", "Fecha_revisado": "",
+            "Encargado": "", "Reporte": ""}
     db.collection("crm").add(data)
 
 

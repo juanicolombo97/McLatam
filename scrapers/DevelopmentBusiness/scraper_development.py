@@ -37,7 +37,7 @@ def main():
     options.add_argument("start-maximized")
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='scrapers/chromedriver', options=options)
+    driver = webdriver.Chrome(executable_path='/Users/mickyconca/Desktop/McLatam/scrapers/chromedriver', options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
