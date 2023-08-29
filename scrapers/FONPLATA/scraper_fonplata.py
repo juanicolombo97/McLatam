@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-from scrapers.FONPLATA.firebase import agregar_datos, obtener_ids
+from scrapers.firebase import obtener_ids_fonplata, agregar_datos_fonplata
 
 
 def main():
@@ -34,10 +34,10 @@ def main():
 
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
-    print('Iniciando scrapeo')
+    print('Iniciando scrapeo FONPLATA')
 
     # Obtenemos ids que ya se guardaron
-    expediente_ids = obtener_ids()
+    expediente_ids = obtener_ids_fonplata()
     print(expediente_ids)
 
     paises = driver.find_elements(By.XPATH, "//ul[@class='nav nav-tabs']/li")
@@ -98,7 +98,7 @@ def obtener_datos_tabla(driver):
                 print("fecha_publicacion " + fecha_publicacion)
                 print("fecha_presentacion " + fecha_presentacion)
 
-                agregar_datos(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
+                agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
 
         time.sleep(0.5)
 

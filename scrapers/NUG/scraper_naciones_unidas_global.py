@@ -6,7 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from scrapers.NUG.firebase import agregar_datos, obtener_ids
+from scrapers.firebase import agregar_datos_NUG, obtener_ids_NUG
 
 PAISES_VALIDOS = ['Haiti', 'Ecuador', 'El Salvador', 'Colombia', 'República Dominicana',
                   'Perú', 'Argentina', 'México', 'Brasil', 'Panamá', 'Paraguay', 'Chile', 'Venezuela',
@@ -42,10 +42,10 @@ def main():
 
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
-    print('Iniciando scrapeo')
+    print('Iniciando scrapeo NUG')
 
     # Obtenemos ids que ya se guardaron
-    ids_referencia = obtener_ids()
+    ids_referencia = obtener_ids_NUG()
     print(ids_referencia)
 
     try:
@@ -161,7 +161,7 @@ def obtener_datos_tabla(driver):
         print("anuncio: " + tipo_anuncio)
         print("ref: " + referencia)
 
-        agregar_datos(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
+        agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
 
 
 if __name__ == '__main__':

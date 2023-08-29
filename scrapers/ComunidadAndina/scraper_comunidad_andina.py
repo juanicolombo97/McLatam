@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-from scrapers.ComunidadAndina.firebase import agregar_datos, obtener_ids
+from scrapers.firebase import agregar_datos_comunidad_andina, obtener_ids_comunidad_andina
 
 
 def main():
@@ -33,10 +33,10 @@ def main():
 
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
-    print('Iniciando scrapeo')
+    print('Iniciando scrapeo Comunidad Andina')
 
     # Obtenemos ids que ya se guardaron
-    expediente_ids = obtener_ids()
+    expediente_ids = obtener_ids_comunidad_andina()
     print(expediente_ids)
 
     # Esperamos que cargue la tabla
@@ -83,7 +83,7 @@ def obtener_datos_tabla(driver):
         documento = fila.find_element(By.XPATH, f"../div[@class='content-2col-grid '][{num_doc}]/div/div/div[@class='di-content']/h4/a").get_attribute("href")
         print(documento)
 
-        agregar_datos(nombre, fecha_limite, hora, contacto, documento)
+        agregar_datos_comunidad_andina(nombre, fecha_limite, hora, contacto, documento)
 
         time.sleep(.5)
         num_fila += 1

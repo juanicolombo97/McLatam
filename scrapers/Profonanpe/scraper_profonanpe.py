@@ -34,7 +34,7 @@ def main():
 
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
-    print('Iniciando scrapeo')
+    print('Iniciando scrapeo Profonanpe')
 
     WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.ID, "home-sign-in")))
@@ -50,6 +50,7 @@ def obtener_datos_tabla(driver):
     input_email.clear()
     input_email.send_keys('comercial@mclatam.com')
 
+    time.sleep(1)
     input_password = driver.find_element(By.ID, "applicant_password")
     input_password.clear()
     input_password.send_keys("Adquisiciones2023")
