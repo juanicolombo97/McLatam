@@ -1,5 +1,6 @@
 # -------------------------------------- LIBRERIAS --------------------------------------------------------------------
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -34,7 +35,7 @@ def main():
     })
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='scrapers/chromedriver', options=options)
+    driver = webdriver.Chrome(service=Service('/Users/mickyconca/Desktop/McLatam/scrapers/chromedriver'), options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
