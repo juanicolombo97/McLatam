@@ -228,7 +228,9 @@ const Tabla = ({expedientes}) => {
           key !== 'Documento' && (
             <div className="modal-fila-detalle" key={index}>
               <span className="modal-fila-detalle-nombre">{key}:</span>
-              <span className="modal-fila-detalle-valor">{filaSeleccionada[key]}</span>
+              <span className="modal-fila-detalle-valor">
+                {typeof filaSeleccionada[key] === 'object' ? JSON.stringify(filaSeleccionada[key]) : filaSeleccionada[key]}
+              </span>
             </div>
           )
         ))}
