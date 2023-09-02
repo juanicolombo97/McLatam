@@ -25,7 +25,7 @@ def main():
     })
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='/Users/mickyconca/Desktop/McLatam/scrapers/chromedriver', chrome_options=options)
+    driver = webdriver.Chrome(options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
@@ -108,7 +108,12 @@ def obtener_datos_tabla(driver):
         print('URL ID: ' + url_id)
 
         # Presionamos el boton de la fila para abrir la informacion
-        datos_fila[0].click()
+        actions = ActionChains(driver)
+        boton_expandir = datos_fila[0]
+        actions.move_to_element(boton_expandir).perform()
+        print("actionss")
+        time.sleep(10)
+        boton_expandir.click()
         print('Boton fila presionado')
         time.sleep(3)
 

@@ -29,11 +29,7 @@ def main():
         'plugins.always_open_pdf_externally': True  # Abrir PDF en lugar de descargar
     })
 
-    # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='/Users/mickyconca/Desktop/McLatam/scrapers/chromedriver', options=options)
-
-    # Abrimos la pagina
-    driver.get(url_pagina)
+    driver = webdriver.Chrome(options=options)
 
     # Llamamos funcion que inicia el scrapeo
     obtener_datos_tabla(driver)

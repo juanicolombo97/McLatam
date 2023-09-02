@@ -25,7 +25,7 @@ def main():
     })
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='/Users/mickyconca/Desktop/McLatam/scrapers/chromedriver', options=options)
+    driver = webdriver.Chrome(options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)

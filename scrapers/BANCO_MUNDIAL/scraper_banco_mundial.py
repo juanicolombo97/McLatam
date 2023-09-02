@@ -35,7 +35,7 @@ def main():
     })
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(service=Service('/Users/mickyconca/Desktop/McLatam/scrapers/chromedriver'), options=options)
+    driver = webdriver.Chrome(options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
@@ -170,7 +170,7 @@ def obtener_datos_tabla(driver):
             print('idioma: ' + idioma)
             print('Fecha: ' + fecha)
             print('Expediente id: ' + expediente_id)
-            agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha)
+            # agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha)
 
         wait(driver)
         WebDriverWait(driver, 30).until(

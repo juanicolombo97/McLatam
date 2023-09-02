@@ -9,22 +9,11 @@ from datetime import datetime
 from datetime import date, timedelta
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-from twocaptcha import TwoCaptcha
 import time
 import os
 import sys
 import requests
 from io import BytesIO
-from PIL import Image
-import pytesseract
-import re
-import cv2
-from PIL import Image
-import pytesseract
-import re
-import os
-import cv2
-import numpy as np
 
 
 # Funcion que se encarga de correr el scraper
@@ -37,7 +26,7 @@ def main():
     options.add_argument("start-maximized")
 
     # Obtenemos el driver
-    driver = webdriver.Chrome(executable_path='/Users/mickyconca/Desktop/McLatam/scrapers/chromedriver', options=options)
+    driver = webdriver.Chrome(options=options)
 
     # Abrimos la pagina
     driver.get(url_pagina)
