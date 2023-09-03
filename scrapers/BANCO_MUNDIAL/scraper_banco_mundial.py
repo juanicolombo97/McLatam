@@ -1,13 +1,12 @@
 # -------------------------------------- LIBRERIAS --------------------------------------------------------------------
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
-from scrapers.firebase import obtener_ids_banco_mundial, agregar_datos_banco_mundial
+from scrapers.firebase import agregar_datos_banco_mundial, obtener_expediente
 
 LISTA_PAISES_INVALIDOS = [
     'Brazil'
@@ -86,10 +85,6 @@ def aplicar_filtros(driver):
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo Banco Mundial')
 
-    # Obtenemos ids que ya se guardaron
-    expediente_ids = obtener_ids_banco_mundial()
-    print(expediente_ids)
-
     fila_actual = 0
     # Obtengo la cantidad de filas totales a scrapear
     WebDriverWait(driver, 30).until(
@@ -120,7 +115,7 @@ def obtener_datos_tabla(driver):
             fila_actual += 1
 
             expediente_id = str(numero_pagina) + str(numero_fila)
-            if expediente_ids is not None and expediente_id in expediente_ids:
+            if obtener_expediente(expediente_id):
                 print("Ya existe")
                 continue
 

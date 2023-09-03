@@ -6,7 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from scrapers.firebase import agregar_datos_NUG, obtener_ids_NUG
+from scrapers.firebase import agregar_datos_NUG, obtener_expediente
 
 PAISES_VALIDOS = ['Haiti', 'Ecuador', 'El Salvador', 'Colombia', 'República Dominicana',
                   'Perú', 'Argentina', 'México', 'Brasil', 'Panamá', 'Paraguay', 'Chile', 'Venezuela',
@@ -43,10 +43,6 @@ def main():
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo NUG')
-
-    # Obtenemos ids que ya se guardaron
-    ids_referencia = obtener_ids_NUG()
-    print(ids_referencia)
 
     try:
         popup = driver.find_element(By.XPATH, "//*[@id=\"languageSuggestionModal\"]/div[1]/div[1]/input[2]")
@@ -138,7 +134,7 @@ def obtener_datos_tabla(driver):
 
         columnas = fila_visible.find_elements(By.XPATH, "div[@role='cell']")
         referencia = columnas[6].text
-        if ids_referencia is not None and referencia in ids_referencia:
+        if obtener_expediente(referencia):
             print("Ya existe")
             continue
 
@@ -161,7 +157,7 @@ def obtener_datos_tabla(driver):
         print("anuncio: " + tipo_anuncio)
         print("ref: " + referencia)
 
-        agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
+        # agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
 
 
 if __name__ == '__main__':

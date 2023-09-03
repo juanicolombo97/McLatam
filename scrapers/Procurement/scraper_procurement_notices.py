@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-from scrapers.firebase import obtener_ids_PROCUREMENT, agregar_datos_PROCUREMENT
+from scrapers.firebase import agregar_datos_PROCUREMENT, obtener_expediente
 
 LISTA_PAISES_INVALIDOS = [
     'AFGHANISTAN', 'ALGERIA', 'BANGLADESH', 'BHUTAN', 'BOTSWANA', 'DJIBOUTI', 'EGYPT', 'FIJI', 'GABON', 'IRAQ',
@@ -38,10 +38,6 @@ def main():
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo Procurement')
-
-    # Obtenemos ids que ya se guardaron
-    ids_referencia = obtener_ids_PROCUREMENT()
-    print(ids_referencia)
 
     # Esperamos que cargue el buscador
     WebDriverWait(driver, 30).until(
@@ -101,7 +97,7 @@ def obtener_datos_tabla(driver):
         numero_referencia = datos_fila[2].text
         print('Referencia: ' + numero_referencia)
 
-        if ids_referencia is not None and numero_referencia in ids_referencia:
+        if obtener_expediente(numero_referencia):
             print("Ya existe")
             continue
 
@@ -134,7 +130,7 @@ def obtener_datos_tabla(driver):
         fecha_publicacion = datos_fila[8].text
         print('Fecha publicacion: ' + fecha_publicacion)
 
-        agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion)
+        # agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion)
 
 
 def pais_valido(pais):

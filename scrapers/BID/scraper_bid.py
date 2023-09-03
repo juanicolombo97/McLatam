@@ -6,6 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
+from scrapers.firebase import agregar_datos_BID, obtener_expediente
+
 LISTA_TITULOS_MALOS = [
     'LGTBI+'
 ]
@@ -16,7 +18,7 @@ def main():
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-    options.add_argument('headless')
+    # options.add_argument('headless')
     options.add_argument("start-maximized")
     options.add_experimental_option('prefs', {
         'download.prompt_for_download': False,
@@ -36,11 +38,13 @@ def main():
 
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
-    print('Iniciando scrapeo')
+    print('Iniciando scrapeo BID')
 
     # Esperamos que cargue la tabla
     WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.XPATH, "//th[contains(text(), 'Title of Consultancy')]/../../../tbody")))
+
+    WebDriverWait(driver, 60).until(EC.invisibility_of_element((By.XPATH, "//div[@class='loading-container']")))
 
     # Obtenemos la tabla de la pagina
     tabla = driver.find_element(By.XPATH, "//th[contains(text(), 'Title of Consultancy')]/../../../tbody")
@@ -85,9 +89,14 @@ def obtener_datos_tabla(driver):
 
         # Obtenemos los datos de la fila
         datos_fila = fila_actual.find_elements(By.TAG_NAME, "td")
+        print("datos fila len:")
+        print(len(datos_fila))
 
         # Obtenemos el id de la fila
         id_fila = datos_fila[1].text
+        if obtener_expediente(id_fila):
+            print("Ya existe")
+            continue
         print('ID: ' + id_fila)
 
         # Obtenemos el titulo de la fila
@@ -200,6 +209,9 @@ def obtener_datos_tabla(driver):
         # Cerramos el tab
         driver.close()
         driver.switch_to.window(driver.window_handles[0])
+
+        agregar_datos_BID(id_fila, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
+                          tipo_proyecto, estado_proyecto, sub_sector, fund)
         print('Tab cerrado')
 
 

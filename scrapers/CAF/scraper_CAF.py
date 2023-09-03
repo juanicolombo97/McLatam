@@ -28,7 +28,7 @@ def main():
 
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
-    print('Iniciando scrapeo')
+    print('Iniciando scrapeo CAF')
 
     # Chequeamos que haya contenido
     contenido_vacio = driver.find_element(By.XPATH,

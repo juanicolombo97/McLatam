@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
 
-from scrapers.firebase import agregar_datos_OEA, obtener_ids_OEA
+from scrapers.firebase import agregar_datos_OEA, obtener_expediente
 
 ANIO_INVALIDO = 2022
 
@@ -37,10 +37,6 @@ def main():
 # Funcion que obtiene los datos de la tabla
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo OEA')
-
-    # Obtenemos ids que ya se guardaron
-    ids_referencia = obtener_ids_OEA()
-    print(ids_referencia)
 
     WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.ID, "status")))
@@ -91,7 +87,7 @@ def obtener_datos_tabla(driver):
             referencia = datos_fila[1].text
             print('Referencia: ' + referencia)
 
-            if ids_referencia is not None and referencia in ids_referencia:
+            if obtener_expediente(referencia):
                 print("Ya existe")
                 continue
 
@@ -114,7 +110,7 @@ def obtener_datos_tabla(driver):
             estado = datos_fila[4].text
             print('Estado: ' + estado)
 
-            agregar_datos_OEA(oficina, titulo, fecha, estado, referencia)
+            # agregar_datos_OEA(oficina, titulo, fecha, estado, referencia)
 
             print('__________________')
 
