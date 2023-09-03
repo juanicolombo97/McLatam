@@ -206,12 +206,12 @@ def obtener_datos_tabla(driver):
         monto = driver.find_element(By.XPATH, "//div[contains(text(),  'Amount')]/../span").text
         print('Amount: ' + monto)
 
+        agregar_datos_BID(id_fila, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
+                          tipo_proyecto, estado_proyecto, sub_sector, fund)
+
         # Cerramos el tab
         driver.close()
         driver.switch_to.window(driver.window_handles[0])
-
-        agregar_datos_BID(id_fila, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
-                          tipo_proyecto, estado_proyecto, sub_sector, fund)
         print('Tab cerrado')
 
 
