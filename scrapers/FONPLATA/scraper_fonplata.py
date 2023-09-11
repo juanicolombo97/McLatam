@@ -23,6 +23,9 @@ def main():
 
     driver = webdriver.Chrome(options=options)
 
+    # Abrimos la pagina
+    driver.get(url_pagina)
+
     # Llamamos funcion que inicia el scrapeo
     obtener_datos_tabla(driver)
 
@@ -31,11 +34,16 @@ def main():
 def obtener_datos_tabla(driver):
     print('Iniciando scrapeo FONPLATA')
 
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "//ul[@class='nav nav-tabs']/li")))
     paises = driver.find_elements(By.XPATH, "//ul[@class='nav nav-tabs']/li")
     datos_paises = driver.find_elements(By.XPATH, "//div[@class='tab-content']/div")
 
+    print(len(paises))
+
     # Recorro cada pais
     for index in range(0, len(paises)):
+        print("Recorriendo paises")
         # Selecciono el pais
         pais = paises[index]
         pais.click()
@@ -89,7 +97,7 @@ def obtener_datos_tabla(driver):
                 print("fecha_publicacion " + fecha_publicacion)
                 print("fecha_presentacion " + fecha_presentacion)
 
-                # agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
+                agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
 
         time.sleep(0.5)
 

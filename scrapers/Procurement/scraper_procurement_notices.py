@@ -31,6 +31,9 @@ def main():
 
     driver = webdriver.Chrome(options=options)
 
+    # Abrimos la pagina
+    driver.get(url_pagina)
+
     # Llamamos funcion que inicia el scrapeo
     obtener_datos_tabla(driver)
 
@@ -40,7 +43,7 @@ def obtener_datos_tabla(driver):
     print('Iniciando scrapeo Procurement')
 
     # Esperamos que cargue el buscador
-    WebDriverWait(driver, 30).until(
+    WebDriverWait(driver, 60).until(
         EC.presence_of_element_located((By.XPATH, "//form[@name='search_form']")))
 
     # Hacemos click sobre el select de los filtros
@@ -130,7 +133,7 @@ def obtener_datos_tabla(driver):
         fecha_publicacion = datos_fila[8].text
         print('Fecha publicacion: ' + fecha_publicacion)
 
-        # agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion)
+        agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion)
 
 
 def pais_valido(pais):

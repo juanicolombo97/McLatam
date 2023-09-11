@@ -79,7 +79,7 @@ def obtener_datos_tabla(driver):
         documento = fila.find_element(By.XPATH, f"../div[@class='content-2col-grid '][{num_doc}]/div/div/div[@class='di-content']/h4/a").get_attribute("href")
         print(documento)
 
-        # agregar_datos_comunidad_andina(nombre, fecha_limite, hora, contacto, documento)
+        agregar_datos_comunidad_andina(nombre, fecha_limite, hora, contacto, documento)
 
         time.sleep(.5)
         num_fila += 1

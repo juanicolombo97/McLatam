@@ -157,7 +157,7 @@ def obtener_datos_tabla(driver):
         print("anuncio: " + tipo_anuncio)
         print("ref: " + referencia)
 
-        # agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
+        agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
 
 
 if __name__ == '__main__':

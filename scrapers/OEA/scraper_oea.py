@@ -89,7 +89,10 @@ def obtener_datos_tabla(driver):
 
             if obtener_expediente(referencia):
                 print("Ya existe")
+                break
                 continue
+
+            break
 
             # Obtenemos la oficina de la fila
             oficina = datos_fila[0].text
@@ -110,7 +113,7 @@ def obtener_datos_tabla(driver):
             estado = datos_fila[4].text
             print('Estado: ' + estado)
 
-            # agregar_datos_OEA(oficina, titulo, fecha, estado, referencia)
+            agregar_datos_OEA(oficina, titulo, fecha, estado, referencia)
 
             print('__________________')
 
