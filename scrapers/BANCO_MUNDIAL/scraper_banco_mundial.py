@@ -165,7 +165,7 @@ def obtener_datos_tabla(driver):
             print('idioma: ' + idioma)
             print('Fecha: ' + fecha)
             print('Expediente id: ' + expediente_id)
-            # agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha)
+            agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha)
 
         wait(driver)
         WebDriverWait(driver, 30).until(
