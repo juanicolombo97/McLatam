@@ -193,13 +193,13 @@ def agregar_datos_profonanpe():
 
 
 # BID
-def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, fecha_publicacion, url_id, costo, monto,
-                      sector_proyecto, pais, link_datos, tipo_proyecto, estado_proyecto, sub_sector, fund):
+def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
+                          tipo_proyecto, estado_proyecto, sub_sector, fund):
     data = {"Expediente_id": id_fila, "fecha_limite": fecha, "fecha_aprobacion": fecha_aprobacion,
-            "fecha_publicacion": fecha_publicacion, "Titulo": titulo,
+            "Titulo": titulo, "Fund": fund,
             "url_id": url_id, "costo": costo, "monto": monto, "sector_proyecto": sector_proyecto, "pais": pais,
             "link_datos": link_datos, "tipo_proyecto": tipo_proyecto, "estado_proyecto": estado_proyecto,
-            "sub_sector": sub_sector, "fund": fund, "Documento": "https://www.worldbank.org/en/home",
+            "sub_sector": sub_sector, "Documento": "https://www.worldbank.org/en/home",
             "Estado_expediente": "NoRevisado", "Pagina": "BID", "Fecha_revisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)

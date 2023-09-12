@@ -18,7 +18,7 @@ def main():
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-    # options.add_argument('headless')
+    options.add_argument('headless')
     options.add_argument("start-maximized")
     options.add_experimental_option('prefs', {
         'download.prompt_for_download': False,
@@ -148,8 +148,8 @@ def obtener_datos_tabla(driver):
         print('Pais: ', pais)
 
         # Obtenemos el funding source
-        fund = lista_datos_apertura[3].split(':')[1].strip()
-        print('Funding source: ', fund)
+        # fund = lista_datos_apertura[3].text
+        # print('Funding source: ', fund)
 
         # Obtenemos el link del a
         link_datos = datos_apertura.find_element(By.TAG_NAME, "a").get_attribute('href')
@@ -206,7 +206,7 @@ def obtener_datos_tabla(driver):
         monto = driver.find_element(By.XPATH, "//div[contains(text(),  'Amount')]/../span").text
         print('Amount: ' + monto)
 
-        agregar_datos_BID(id_fila, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
+        agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
                           tipo_proyecto, estado_proyecto, sub_sector, fund)
 
         # Cerramos el tab
