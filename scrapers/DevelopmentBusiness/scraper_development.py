@@ -3,17 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.action_chains import ActionChains
-from datetime import datetime
-from datetime import date, timedelta
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import time
-import os
-import sys
-import requests
-from io import BytesIO
+from twocaptcha import TwoCaptcha
 
 
 # Funcion que se encarga de correr el scraper
@@ -45,14 +36,16 @@ def iniciar_scrapeo(driver):
             By.XPATH, "//a[@href='/user/login']"
         ))
     )
+
     driver.find_element(By.XPATH, "//a[@href='/user/login']").click()
     print('Presionamos boton de loguin')
+    time.sleep(5)
 
-    # # Logueamos
-    # while True:
-    #     resultado = login(driver)
-    #     if resultado == True:
-    #         break
+    # Logueamos
+    while True:
+        resultado = login(driver)
+        if resultado == True:
+            break
 
     # Volvemos a la paigna inicial
     driver.get('https://devbusiness.un.org/content/site-search')
@@ -61,12 +54,15 @@ def iniciar_scrapeo(driver):
     # Esperamos que cargue la seccion donde estan los datos
     WebDriverWait(driver, 30).until(
         EC.visibility_of_element_located((
-            By.XPATH, "//div[@class='row views-row ']"
+            By.ID, "block-un-devbusiness-content"
         ))
     )
+    print("Datos cargados")
+    time.sleep(15)
 
     # Obtenemos div donde estan los datos
-    div_datos = driver.find_element(By.XPATH, "//div[@class='search-results apachesolr_search-results']")
+    div_datos = driver.find_element(By.XPATH, "//div[@class='view-content']")
+    # div_datos = driver.find_element(By.XPATH, "//div[@class='search-results apachesolr_search-results']")
 
     # Obtenemos los divs de dichos datos
     divs_datos = div_datos.find_elements(By.XPATH, "./div")
@@ -107,13 +103,14 @@ def obtener_datos_expediente(driver, contador):
     url = ''
 
     # Obtenemos div donde estan los datos
-    div_datos = driver.find_element(By.XPATH, "//div[@class='search-results apachesolr_search-results']")
+    # div_datos = driver.find_element(By.XPATH, "//div[@class='search-results apachesolr_search-results']")
+    div_datos = driver.find_element(By.XPATH, "//div[@class='view-content']")
 
     # Obtenemos los divs del expediente y nos quedamos con el segundo
     expediente = div_datos.find_elements(By.XPATH, "./div")
     print('Cantidad de expedientes: ', len(expediente))
 
-    divs_expediente = expediente[contador].find_elements(By.XPATH, "./div")
+    divs_expediente = expediente[contador].find_elements(By.XPATH, "./div/div/div")
     print('Cantidad de divs del expediente: ', len(divs_expediente))
     div_expediente = divs_expediente[1]
 
@@ -122,14 +119,12 @@ def obtener_datos_expediente(driver, contador):
     print('Obtenemos los datos del expediente')
 
     # El primer div es el titulo, y obtenemos los spans dentro de el
-    div_titulo = divs_datos_expediente[0].find_elements(By.XPATH, "//span[@class='countries']")
+    div_titulo = divs_datos_expediente[0]
 
     # El separador | divide el pais y la empresa, obtenemos cada dato
     try:
-        pais_empresa = div_titulo[1].text
-        pais_empresa = pais_empresa.split('|')
-        pais = pais_empresa[0].strip()
-        empresa = pais_empresa[1].strip()
+        pais = div_titulo.find_element(By.XPATH, "./div[@class='card__countries']/span").text
+        empresa = div_titulo.find_element(By.XPATH, "./span[@class='card__institution']").text
         print('Pais: ', pais)
         print('Empresa: ', empresa)
     except:
@@ -142,7 +137,7 @@ def obtener_datos_expediente(driver, contador):
     divs_primero = div_descripcion[0].find_elements(By.XPATH, "./div")
     print('Cantidad de divs del primero: ', len(divs_primero))
 
-    # Obtenemos el url y el titulo 
+    # Obtenemos el url y el titulo
     url = divs_primero[0].find_element(By.TAG_NAME, "a").get_attribute('href')
     print('Url: ', url)
     titulo = divs_primero[0].find_element(By.TAG_NAME, "a").text
@@ -200,12 +195,24 @@ def login(driver):
         time.sleep(3)
 
         # ESPRAMOS PARA INGRESAR CAPTCHA
-        time.sleep(15)
+        # time.sleep(15)
+        # # ingresamos el captcha
+        # solver = TwoCaptcha('725b33267e77fe2aa1ec45d2f6be8210')
+        # result = solver.recaptcha(sitekey='6LdrPCcfAAAAAItDUROndz6RcAi0ngbTjYj4BKHB',
+        #                           url='https://devbusiness.un.org/user/login')
+        # print("Result from captcha: ")
+        # print(result)
+        #
+        # captcha = driver.find_element(By.XPATH, "//*[@id='g-recaptcha-response']")
+        # driver.execute_script('arguments[0].style.display = "block";', captcha)
+        # valor_code = result['code']
+        # captcha.send_keys(valor_code)
+        # time.sleep(1)
 
         # Obtenemos el botton de submit
-        boton_submit = driver.find_element(By.XPATH, "//button[@id='edit-submit']")
+        boton_submit = driver.find_element(By.XPATH, "//input[@id='edit-submit']")
         boton_submit.click()
-        print('Presionamos boton de submit')
+        print('Presionamos boton de log in')
 
         try:
             # Esperamos que cargue pagina de logeado
@@ -237,7 +244,7 @@ def login(driver):
                         time.sleep(2)
 
                         # Presionamos el boton de cerrar la sesion
-                        boton_cerrar_sesion = driver.find_element(By.XPATH, "//button[@id='edit-submit']")
+                        boton_cerrar_sesion = driver.find_element(By.XPATH, "//input[@id='edit-submit']")
                         boton_cerrar_sesion.click()
                         time.sleep(2)
 
