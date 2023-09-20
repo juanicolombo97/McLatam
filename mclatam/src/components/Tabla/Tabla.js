@@ -141,32 +141,27 @@ const Tabla = ({expedientes}) => {
     document.addEventListener("mouseup", handleMouseUp);
   };
 
-  const handleDeleteClick = async (expedienteId) => {
+  const handleDeleteClick = async (e, expedienteId) => {
+    e.preventDefault();
+    e.stopPropagation();
     const expedienteRef = doc(db, 'crm', expedienteId);
 
     await updateDoc(expedienteRef, {
       "Fecha_revisado": "",
       "Fecha_enviado": "",
       "Encargado": "",
-      "Reporte": ""
+      "Reporte": "",
+      "Estado_expediente": 'NoRevisado'
     });
 
-    // Actualizar el estado local para reflejar los cambios
-    const newExpedientes = expedientesFiltrados.map(exp => {
-      if (exp.id === expedienteId) {
-        return {
-          ...exp,
-          Fecha_revisado: "",
-          Fecha_enviado: "",
-          Encargado: "",
-          Reporte: ""
-        };
-      }
-      return exp;
-    });
+    // Filtra y remueve el expediente seleccionado de la lista
+    const newExpedientes = expedientesFiltrados.filter(exp => exp.id !== expedienteId);
 
     setExpedientesFiltrados(newExpedientes);
-  };
+};
+
+
+  
   if (!dataLoaded) {
     return (
       <div className="transparent-modal">
@@ -207,9 +202,9 @@ const Tabla = ({expedientes}) => {
                 </a>
               </td>
               <td>
-                <button onClick={() => handleDeleteClick(expediente.id)}>
+              <button onClick={(e) => handleDeleteClick(e, expediente.id)}>
                   <span style={{color: 'red'}}>🗑</span>
-                </button>
+              </button>
               </td>
             </tr>
           ))}

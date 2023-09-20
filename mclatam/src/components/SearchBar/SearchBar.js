@@ -10,7 +10,6 @@ const SearchBar = ({ searchTerm, setSearchTerm, setExpedientes }) => {
     if (searchTerm === "") return;
 
     const searchInFirebase = async () => {
-      setIsSearching(true);
       const expedientesRef = collection(db, "crm");
       const q = query(
         expedientesRef, 
@@ -27,7 +26,6 @@ const SearchBar = ({ searchTerm, setSearchTerm, setExpedientes }) => {
         setExpedientes(expedientesData);
       }
     
-      setIsSearching(false);
     };
 
     searchInFirebase();

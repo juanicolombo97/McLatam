@@ -60,6 +60,7 @@ export const RevisarExpedientes = () => {
     const allFieldsFilled = Object.values(formValues).every(field => field !== '');
     if (!allFieldsFilled) {
       alert("Por favor, completa todos los campos antes de enviar.");
+      setIsLoading(false);
       return;
     }
 
