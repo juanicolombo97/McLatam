@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from '../../firebase/firebase'; 
 import Modal from '../Modal/Modal';
 import './Tabla.css';
 
@@ -37,7 +38,6 @@ const columnas = [
   },
   
 ];
-
 
 const Tabla = ({expedientes}) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -141,6 +141,32 @@ const Tabla = ({expedientes}) => {
     document.addEventListener("mouseup", handleMouseUp);
   };
 
+  const handleDeleteClick = async (expedienteId) => {
+    const expedienteRef = doc(db, 'crm', expedienteId);
+
+    await updateDoc(expedienteRef, {
+      "Fecha_revisado": "",
+      "Fecha_enviado": "",
+      "Encargado": "",
+      "Reporte": ""
+    });
+
+    // Actualizar el estado local para reflejar los cambios
+    const newExpedientes = expedientesFiltrados.map(exp => {
+      if (exp.id === expedienteId) {
+        return {
+          ...exp,
+          Fecha_revisado: "",
+          Fecha_enviado: "",
+          Encargado: "",
+          Reporte: ""
+        };
+      }
+      return exp;
+    });
+
+    setExpedientesFiltrados(newExpedientes);
+  };
   if (!dataLoaded) {
     return (
       <div className="transparent-modal">
@@ -179,6 +205,11 @@ const Tabla = ({expedientes}) => {
                 <a href={expediente.Documento} target="_blank" rel="noreferrer">
                   Ver Documento
                 </a>
+              </td>
+              <td>
+                <button onClick={() => handleDeleteClick(expediente.id)}>
+                  <span style={{color: 'red'}}>🗑</span>
+                </button>
               </td>
             </tr>
           ))}
@@ -238,11 +269,12 @@ const Tabla = ({expedientes}) => {
       <div className="modal-fila-documento">
         <button
           className="modal-fila-detalle-boton"
-          onClick={() => openDocument(filaSeleccionada.Documento)}
+          onClick={() => openDocument(filaSeleccionada.Documento || filaSeleccionada.pagina)}
         >
           Ver documento
         </button>
       </div>
+
     </Modal>
   )
 }

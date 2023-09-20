@@ -9,6 +9,7 @@ export const RevisarExpedientes = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [expedientes, setExpedientes] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [noExpedientes, setNoExpedientes] = useState(false);
 
   // Formulario de reporte 
   const initialFormValues = {
@@ -31,24 +32,27 @@ export const RevisarExpedientes = () => {
 
   useEffect(() => {
     const loadExpedientes = async () => {
-      const expedientesRef = collection(db, "crm"); // Asegúrate de cambiar "crm" por el nombre de tu colección
-      const q = query(expedientesRef, where("estado_expediente", "==", "NoRevisado"));
+      const expedientesRef = collection(db, "crm"); 
+      const q = query(expedientesRef, where("Estado_expediente", "==", "NoRevisado"));
       const querySnapshot = await getDocs(q);
       const expedientesData = [];
       querySnapshot.forEach((doc) => {
         expedientesData.push({ id: doc.id, ...doc.data() });
       });
-      setExpedientes(expedientesData);
+      console.log('Expedientes: ', expedientesData);
+      if(expedientesData.length === 0){
+        setNoExpedientes(true);
+      } else {
+        setExpedientes(expedientesData);
+        setNoExpedientes(false);
+      }
+      setIsLoading(false);
+
     };
 
     loadExpedientes();
   }, []);
 
-  useEffect(() => {
-    if (expedientes && expedientes.length > 0) {
-      setIsLoading(false);
-    }
-  }, [expedientes]);
 
   const handleEnviar = async () => {
     setIsLoading(true);
@@ -121,22 +125,30 @@ export const RevisarExpedientes = () => {
   };
 
 
-return (
-  <div>
-     {isLoading && (
-        <div className="loading-modal">
-          <div className="loading-icon"></div>
-        </div>
-      )}
-   <ExpedienteButtons
-      onEnviar={handleEnviar}
-      onNoSirve={handleNoSirve}
-      onAvanzar={handleAvanzar}
-    />
-    {expedientes.length > 0 && <Expediente expediente={expedientes[currentIndex]} />}
-    <ExpedienteForm values={formValues} onChange={handleChange} />
-  </div>
+  return (
+    <div>
+        {isLoading && (
+            <div className="loading-modal">
+                <div className="loading-icon"></div>
+            </div>
+        )}
+
+        {expedientes.length > 0 ? (
+            <>
+                <ExpedienteButtons
+                    onEnviar={handleEnviar}
+                    onNoSirve={handleNoSirve}
+                    onAvanzar={handleAvanzar}
+                />
+                <Expediente expediente={expedientes[currentIndex]} />
+                <ExpedienteForm values={formValues} onChange={handleChange} />
+            </>
+        ) : (
+            <Expediente expediente={null} />
+        )}
+    </div>
 );
+
 };
 
 export default RevisarExpedientes;

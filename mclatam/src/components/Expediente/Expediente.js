@@ -8,10 +8,18 @@ const Expediente = ({ expediente }) => {
     const [titulo, ...contenidoArr] = modalContent.split(":");
     const contenido = contenidoArr.join(":"); 
     
-        const handleModalOpen = (titulo, valor) => {
+    const handleModalOpen = (titulo, valor) => {
         setModalContent(`${titulo}: ${valor}`);
         setIsModalOpen(true);
     };
+
+    if (!expediente) {
+        return (
+            <div className="sin-expediente-container">
+                <div className="no-expedientes">No quedan expedientes por revisar.</div>
+            </div>
+        );
+    }
 
     return (
         <div className="expediente-container">
@@ -28,23 +36,24 @@ const Expediente = ({ expediente }) => {
                 ))}
             </div>
             {
-            isModalOpen && (
-            <Modal
-              onClose={() => setIsModalOpen(false)}
-              style={{
-                alignItems: 'flex-start',
-                paddingTop: '5rem',
-                width: 'auto',
-                maxWidth: '100%',
-                minWidth: '500px',
-              }}
-            >
-              <div className="modal-fila-detalles">
-                <span className="modal-fila-detalle-nombre">{titulo}</span>
-                <span className="modal-fila-detalle-valor">{contenido}</span>
-              </div>
-            </Modal>
-            )}
+                isModalOpen && (
+                    <Modal
+                        onClose={() => setIsModalOpen(false)}
+                        style={{
+                            alignItems: 'flex-start',
+                            paddingTop: '5rem',
+                            width: 'auto',
+                            maxWidth: '100%',
+                            minWidth: '500px',
+                        }}
+                    >
+                        <div className="modal-fila-detalles">
+                            <span className="modal-fila-detalle-nombre">{titulo}</span>
+                            <span className="modal-fila-detalle-valor">{contenido}</span>
+                        </div>
+                    </Modal>
+                )
+            }
         </div>
     );
 };

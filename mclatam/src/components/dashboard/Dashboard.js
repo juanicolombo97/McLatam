@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Tabla from '../Tabla/Tabla';
-import SearchBar from '../SearchBar/SearchBar'; // Importa el nuevo componente
-import { collection, getDocs } from "firebase/firestore";
+import SearchBar from '../SearchBar/SearchBar';
+import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { db } from '../../firebase/firebase';
 
 const Dashboard = () => {
   const [expedientes, setExpedientes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredExpedientes = expedientes.filter(expediente => {
-    return Object.values(expediente).some(value =>
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
 
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
@@ -27,7 +21,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     const loadExpedientes = async () => {
-      const querySnapshot = await getDocs(collection(db, "crm"));
+      const expedientesRef = collection(db, "crm");
+      const q = query(expedientesRef, orderBy("Fecha_revisado", "desc"), limit(100));
+      const querySnapshot = await getDocs(q);
       const expedientesData = [];
       querySnapshot.forEach((doc) => {
         expedientesData.push({ id: doc.id, ...doc.data() });
@@ -37,6 +33,12 @@ const Dashboard = () => {
 
     loadExpedientes();
   }, []);
+
+  const filteredExpedientes = expedientes.filter(expediente => {
+    return Object.values(expediente).some(value =>
+      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   return (
     <div className="dashboard-container">
