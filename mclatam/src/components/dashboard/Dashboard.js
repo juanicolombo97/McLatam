@@ -38,7 +38,7 @@ const Dashboard = () => {
 
       if (expedientesData.length === 0) {
         const expedientesRef = collection(db, "crm");
-        const q = query(expedientesRef, where("Estado_expediente", "==", "NoRevisado"), limit(100));
+        const q = query(expedientesRef, where("Estado_expediente", "==", "NoRevisado"), limit(50));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             expedientesData.push({ id: doc.id, ...doc.data() });

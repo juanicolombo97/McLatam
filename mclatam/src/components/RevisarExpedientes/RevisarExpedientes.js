@@ -4,6 +4,7 @@ import { db } from '../../firebase/firebase';  // Asegúrate de tener la ruta co
 import Expediente from '../Expediente/Expediente';
 import ExpedienteButtons from '../ExpedienteButtons/ExpedienteButtons';
 import ExpedienteForm from '../ExpedienteForm/ExpedienteForm';
+import {auth} from '../../firebase/firebase'
 
 export const RevisarExpedientes = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,11 +26,13 @@ export const RevisarExpedientes = () => {
     objetivos: '',
     objetivoEspecifico: '',
     alcance: '',
-    experiencia: ''
+    experiencia: '',
+    encargado: '',
   };
+  
   const [formValues, setFormValues] = useState(initialFormValues);
 
-
+    
   useEffect(() => {
     const loadExpedientes = async () => {
       const expedientesRef = collection(db, "crm"); 
@@ -56,13 +59,21 @@ export const RevisarExpedientes = () => {
 
   const handleEnviar = async () => {
     setIsLoading(true);
-
+    
     const allFieldsFilled = Object.values(formValues).every(field => field !== '');
     if (!allFieldsFilled) {
       alert("Por favor, completa todos los campos antes de enviar.");
       setIsLoading(false);
       return;
     }
+
+    // obtenemos el mail del usuario de firebase
+    const user = auth.currentUser;
+    const email = user.email;
+    console.log('EMAIL: ', email);
+
+    // Agregamos el mail del usuario al formulario
+    formValues.encargado = email;
 
     // Formatear los datos del formulario para el reporte
     const formattedReport = Object.entries(formValues).map(([key, value]) => `${key}: ${value}`).join('\n');
@@ -75,7 +86,8 @@ export const RevisarExpedientes = () => {
     await updateDoc(expedienteRef, {
       Estado_expediente: "Enviar",
       Reporte: formattedReport,
-      Fecha_revisado: serverTimestamp()
+      Fecha_revisado: serverTimestamp(),
+      Encargado: email,
     });
   
     if (expedientes.length > 0) {
@@ -120,6 +132,11 @@ export const RevisarExpedientes = () => {
 
   };
 
+  const handleEnviarReporte = async () => {
+    console.log('Enviar reporte');
+
+  }
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
@@ -140,6 +157,7 @@ export const RevisarExpedientes = () => {
                     onEnviar={handleEnviar}
                     onNoSirve={handleNoSirve}
                     onAvanzar={handleAvanzar}
+                    handleEnviarReporte={handleEnviarReporte}
                 />
                 <Expediente expediente={expedientes[currentIndex]} />
                 <ExpedienteForm values={formValues} onChange={handleChange} />
