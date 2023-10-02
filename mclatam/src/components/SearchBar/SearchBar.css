@@ -1,0 +1,23 @@
+.search-container {
+    text-align: center;
+    margin: 20px auto; /* Centra el contenedor horizontalmente */
+    width: 60%; /* Establece el ancho del contenedor */
+    margin-top: 5%;
+  }
+  
+  .search-input {
+    padding: 8px;
+    font-size: 14px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    transition: 0.3s ease;
+    outline: none;
+  }
+  
+  .search-input:hover,
+  .search-input:focus {
+    border-color: #e0a800;
+    box-shadow: 0 0 8px #e0a800;
+  }
+  

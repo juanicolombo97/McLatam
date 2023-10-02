@@ -1,0 +1,33 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "crm",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Estado_expediente",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Fecha_revisado",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "crm",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Pagina",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Publicado",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

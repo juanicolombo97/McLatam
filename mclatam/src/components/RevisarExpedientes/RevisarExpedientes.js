@@ -4,11 +4,13 @@ import { db } from '../../firebase/firebase';  // Asegúrate de tener la ruta co
 import Expediente from '../Expediente/Expediente';
 import ExpedienteButtons from '../ExpedienteButtons/ExpedienteButtons';
 import ExpedienteForm from '../ExpedienteForm/ExpedienteForm';
+import {auth} from '../../firebase/firebase'
 
 export const RevisarExpedientes = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [expedientes, setExpedientes] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [noExpedientes, setNoExpedientes] = useState(false);
 
   // Formulario de reporte 
   const initialFormValues = {
@@ -24,40 +26,54 @@ export const RevisarExpedientes = () => {
     objetivos: '',
     objetivoEspecifico: '',
     alcance: '',
-    experiencia: ''
+    experiencia: '',
+    encargado: '',
   };
+  
   const [formValues, setFormValues] = useState(initialFormValues);
 
-
+    
   useEffect(() => {
     const loadExpedientes = async () => {
-      const expedientesRef = collection(db, "crm"); // Asegúrate de cambiar "crm" por el nombre de tu colección
-      const q = query(expedientesRef, where("estado_expediente", "==", "NoRevisado"));
+      const expedientesRef = collection(db, "crm"); 
+      const q = query(expedientesRef, where("Estado_expediente", "==", "NoRevisado"));
       const querySnapshot = await getDocs(q);
       const expedientesData = [];
       querySnapshot.forEach((doc) => {
         expedientesData.push({ id: doc.id, ...doc.data() });
       });
-      setExpedientes(expedientesData);
+      console.log('Expedientes: ', expedientesData);
+      if(expedientesData.length === 0){
+        setNoExpedientes(true);
+      } else {
+        setExpedientes(expedientesData);
+        setNoExpedientes(false);
+      }
+      setIsLoading(false);
+
     };
 
     loadExpedientes();
   }, []);
 
-  useEffect(() => {
-    if (expedientes && expedientes.length > 0) {
-      setIsLoading(false);
-    }
-  }, [expedientes]);
 
   const handleEnviar = async () => {
     setIsLoading(true);
-
+    
     const allFieldsFilled = Object.values(formValues).every(field => field !== '');
     if (!allFieldsFilled) {
       alert("Por favor, completa todos los campos antes de enviar.");
+      setIsLoading(false);
       return;
     }
+
+    // obtenemos el mail del usuario de firebase
+    const user = auth.currentUser;
+    const email = user.email;
+    console.log('EMAIL: ', email);
+
+    // Agregamos el mail del usuario al formulario
+    formValues.encargado = email;
 
     // Formatear los datos del formulario para el reporte
     const formattedReport = Object.entries(formValues).map(([key, value]) => `${key}: ${value}`).join('\n');
@@ -70,7 +86,8 @@ export const RevisarExpedientes = () => {
     await updateDoc(expedienteRef, {
       Estado_expediente: "Enviar",
       Reporte: formattedReport,
-      Fecha_revisado: serverTimestamp()
+      Fecha_revisado: serverTimestamp(),
+      Encargado: email,
     });
   
     if (expedientes.length > 0) {
@@ -115,28 +132,42 @@ export const RevisarExpedientes = () => {
 
   };
 
+  const handleEnviarReporte = async () => {
+    console.log('Enviar reporte');
+
+  }
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
 
-return (
-  <div>
-     {isLoading && (
-        <div className="loading-modal">
-          <div className="loading-icon"></div>
-        </div>
-      )}
-   <ExpedienteButtons
-      onEnviar={handleEnviar}
-      onNoSirve={handleNoSirve}
-      onAvanzar={handleAvanzar}
-    />
-    {expedientes.length > 0 && <Expediente expediente={expedientes[currentIndex]} />}
-    <ExpedienteForm values={formValues} onChange={handleChange} />
-  </div>
+  return (
+    <div>
+        {isLoading && (
+            <div className="loading-modal">
+                <div className="loading-icon"></div>
+            </div>
+        )}
+
+        {expedientes.length > 0 ? (
+            <>
+                <ExpedienteButtons
+                    onEnviar={handleEnviar}
+                    onNoSirve={handleNoSirve}
+                    onAvanzar={handleAvanzar}
+                    handleEnviarReporte={handleEnviarReporte}
+                />
+                <Expediente expediente={expedientes[currentIndex]} />
+                <ExpedienteForm values={formValues} onChange={handleChange} />
+            </>
+        ) : (
+            <Expediente expediente={null} />
+        )}
+    </div>
 );
+
 };
 
 export default RevisarExpedientes;
