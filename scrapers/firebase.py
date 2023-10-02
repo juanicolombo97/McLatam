@@ -203,3 +203,14 @@ def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, m
             "Estado_expediente": "NoRevisado", "Pagina": "BID", "Fecha_revisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)
+
+
+# Development
+def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, proyecto, status, deadline):
+    data = {"Expediente_id": expediente_id, "fecha_limite": deadline, "fecha": fecha,
+            "Titulo": titulo, "url_id": url, "pais": pais, "tipo_proyecto": proyecto, "estado_proyecto": status,
+            "empresa": empresa, "Documento": "https://devbusiness.un.org/site-search",
+            "Estado_expediente": "NoRevisado", "Pagina": "Development Business", "Fecha_revisado": "", "Encargado": "",
+            "Reporte": ""}
+    db.collection("crm").add(data)
+
