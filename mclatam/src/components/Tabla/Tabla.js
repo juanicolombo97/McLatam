@@ -7,13 +7,6 @@ import './Tabla.css';
 // Lista de filtros de cada columna
 const columnas = [
   {
-    nombre: 'ID',
-    filtros: [
-      { etiqueta: '1 - 100', valor: (expediente) => expediente.id >= 1 && expediente.id <= 100 },
-      { etiqueta: '101 - 200', valor: (expediente) => expediente.id >= 101 && expediente.id <= 200 },
-    ],
-  },
-  {
     nombre: 'Expediente_id',
     filtros: [
     ],
