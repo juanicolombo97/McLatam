@@ -8,6 +8,9 @@ import time
 from twocaptcha import TwoCaptcha
 from scrapers.firebase import agregar_datos_development, obtener_expediente
 
+LISTA_PAISES_INVALIDOS = [
+    'Afghanistan', 'Benin', 'Burundi', 'Chad', 'China', 'Côte d’Ivoire', 'Ethiopia', 'Georgia', 'India', 'Iraq', 'Moldova', 'Nepal', 'Niger', 'Pakistan', 'Philippines', 'Senegal', 'Somalia', 'South Sudan', 'Tunisia', 'Turkmenistan', 'Uganda', 'Ukraine', 'Vietnam', 'Zambia'
+]
 
 # Funcion que se encarga de correr el scraper
 def main():
@@ -152,6 +155,9 @@ def obtener_datos_expediente(driver, contador):
         pais = div_titulo.find_element(By.XPATH, "./div[@class='card__countries']/span").text
         empresa = div_titulo.find_element(By.XPATH, "./span[@class='card__institution']").text
         print('Pais: ', pais)
+        if(pais in LISTA_PAISES_INVALIDOS):
+            print('Pais invalido')
+            return
         print('Empresa: ', empresa)
     except:
         print('No se pudo obtener pais y empresa')
