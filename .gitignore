@@ -12,3 +12,5 @@
 .chromedriver
 
 .DS_Store
+
+scrapers/__pycache__/firebase.cpython-311.pyc
