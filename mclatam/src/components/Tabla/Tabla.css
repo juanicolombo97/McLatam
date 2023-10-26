@@ -204,3 +204,15 @@ tbody tr:hover {
   left: 0;
   z-index: 1000;
 }
+
+/* Estilo para las celdas revisadas */
+td.revisado {
+  color: green;
+  text-align: center;
+}
+
+/* Estilo para las celdas no revisadas */
+td.no-revisado {
+  color: red;
+  text-align: center;
+}

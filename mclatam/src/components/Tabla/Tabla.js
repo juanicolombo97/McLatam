@@ -7,11 +7,6 @@ import './Tabla.css';
 // Lista de filtros de cada columna
 const columnas = [
   {
-    nombre: 'Expediente_id',
-    filtros: [
-    ],
-  },
-  {
     nombre: 'Titulo',
     filtros: [
       { etiqueta: 'A - M', valor: (expediente) => /^[A-M]/.test(expediente.Titulo) },
@@ -19,17 +14,21 @@ const columnas = [
     ],
   },
   {
-    nombre: 'Estado_expediente',
+    nombre: 'Revisado',
     filtros: [
       { etiqueta: 'Revisado', valor: (expediente) => expediente.Estado_expediente === 'Revisado' },
       { etiqueta: 'NoRevisado', valor: (expediente) => expediente.Estado_expediente === 'NoRevisado' },
     ],
   },
   {
+    nombre: 'Pais',
+    filtros: [],
+  },
+  {
     nombre: 'Documento',
     filtros: [], // No hay filtros para la columna Documento
   },
-  
+
 ];
 
 const Tabla = ({expedientes}) => {
@@ -185,10 +184,11 @@ const Tabla = ({expedientes}) => {
         <tbody>
           {paginatedExpedientes.map((expediente, index) => (
             <tr key={index} onClick={(e) => handleFilaClick(e, expediente)}>
-              <td>{expediente.id}</td>
-              <td>{expediente.Expediente_id}</td>
               <td>{expediente.Titulo}</td>
-              <td>{expediente.Estado_expediente}</td>
+              <td className={expediente.Estado_expediente === 'Revisado' ? 'revisado' : 'no-revisado'}>
+              {expediente.Estado_expediente === 'Revisado' ? '✓' : '❌'}
+            </td>
+              <td>{expediente.pais}</td>
               <td>
                 <a href={expediente.Documento} target="_blank" rel="noreferrer">
                   Ver Documento
@@ -196,7 +196,7 @@ const Tabla = ({expedientes}) => {
               </td>
               <td>
               <button onClick={(e) => handleDeleteClick(e, expediente.id)}>
-                  <span style={{color: 'red'}}>🗑</span>
+                  <span className={'no-revisado'}>🗑</span>
               </button>
               </td>
             </tr>
