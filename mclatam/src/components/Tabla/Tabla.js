@@ -244,7 +244,7 @@ const Tabla = ({expedientes}) => {
       <h3>Detalles del expediente</h3>
       <div className="modal-fila-detalles">
         {filaSeleccionada && Object.keys(filaSeleccionada).map((key, index) => (
-          key !== 'Documento' && (
+          key !== 'Documento' && key !== 'id' && key !== 'Expediente_id' && (
             <div className="modal-fila-detalle" key={index}>
               <span className="modal-fila-detalle-nombre">{key}:</span>
               <span className="modal-fila-detalle-valor">

@@ -33,7 +33,7 @@ const Expediente = ({ expediente }) => {
             <div className="expediente-data">
                 {Object.entries(expediente).map(([titulo, valor], index) => {
                     // Si el título es "Documento", no lo renderizamos
-                    if (titulo === "Documento" || titulo === "Estado_expediente" || titulo === "Reporte" || titulo === "Fecha_revisado" || titulo === "Encargado" || titulo === "Fecha_enviado" || titulo === "id")  {
+                    if (titulo === "Documento" || titulo === "Estado_expediente" || titulo === "Reporte" || titulo === "Fecha_revisado" || titulo === "Encargado" || titulo === "Fecha_enviado" || titulo === "id" || titulo === "Expediente_id")  {
                         return null;
                     }
                     return (

@@ -33,8 +33,8 @@ def delete_all_documents():
 
 # BANCO MUNDIAL
 def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha):
-    data = {"Expediente_id": expediente_id, "descripcion": descripcion, "pais": pais,
-            "Titulo": titulo, "tipo_noticia": tipo_noticia, "idioma": idioma, "fecha": fecha,
+    data = {"Expediente_id": expediente_id, "Descripcion": descripcion, "Pais": pais,
+            "Titulo": titulo, "tipo_noticia": tipo_noticia, "Idioma": idioma, "Fecha": fecha,
             "Documento": "https://projects.worldbank.org/en/projects-operations/procurement?lang=en&qterm=&showrecent=true&srce=notices",
             "Estado_expediente": "NoRevisado", "Pagina": "Banco Mundial", "Fecha_revisado": "", "Encargado": "",
             "Reporte": ""}
@@ -59,7 +59,7 @@ def obtener_ids_banco_mundial():
 
 # COMUNIDAD ANDINA
 def agregar_datos_comunidad_andina(nombre, fecha_limite, hora, contacto, documento):
-    data = {"Expediente_id": nombre, "fecha_limite": fecha_limite, "hora": hora, "contacto": contacto,
+    data = {"Expediente_id": nombre, "Titulo": nombre, "fecha_limite": fecha_limite, "Hora": hora, "Contacto": contacto,
             "Documento": documento,
             "Estado_expediente": "NoRevisado", "Pagina": "Comunidad Andina", "Fecha_revisado": "",
             "Encargado": "", "Reporte": ""}
@@ -85,8 +85,8 @@ def obtener_ids_comunidad_andina():
 # FONPLATA
 def agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion,
                            pais):
-    data = {"Expediente_id": prestamo, "modalidad": modalidad, "objeto": objeto, "descripcion": descripcion,
-            "presupuesto": presupuesto, "fecha_publicacion": fecha_publicacion, "pais": pais,
+    data = {"Expediente_id": prestamo, "Modalidad": modalidad, "Objeto": objeto, "Descripcion": descripcion,
+            "Presupuesto": presupuesto, "fecha_publicacion": fecha_publicacion, "Pais": pais,
             "fecha_presentacion": fecha_presentacion,
             "Estado_expediente": "NoRevisado", "Pagina": "Fonplata", "Fecha_revisado": "", "Encargado": "",
             "Reporte": "", "Documento": "https://www.fonplata.org/es/adquisiciones-en-proyectos"}
@@ -111,8 +111,8 @@ def obtener_ids_fonplata():
 
 # NUG
 def agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais):
-    data = {"Expediente_id": referencia, "fecha_limite": fecha_limite, "Titulo": titulo, "publicado": publicado,
-            "organismo_onu": organismo_onu, "tipo_anuncio": tipo_anuncio, "pais": pais,
+    data = {"Expediente_id": referencia, "fecha_limite": fecha_limite, "Titulo": titulo, "Publicado": publicado,
+            "organismo_onu": organismo_onu, "tipo_anuncio": tipo_anuncio, "Pais": pais,
             "Documento": "https://www.ungm.org/Public/Notice", "Estado_expediente": "NoRevisado",
             "Pagina": "Naciones Unidas Global", "Fecha_revisado": "", "Encargado": "", "Reporte": ""}
     db.collection("crm").add(data)
@@ -136,7 +136,7 @@ def obtener_ids_NUG():
 
 # OEA
 def agregar_datos_OEA(oficina, titulo, fecha, estado, referencia):
-    data = {"Expediente_id": referencia, "oficina": oficina, "Titulo": titulo, "fecha": fecha, "estado": estado,
+    data = {"Expediente_id": referencia, "Oficina": oficina, "Titulo": titulo, "Fecha": fecha, "Estado": estado,
             "Documento": "https://oei.int/contrataciones", "Estado_expediente": "NoRevisado", "Pagina": "OEA",
             "Fecha_revisado": "", "Encargado": "", "Reporte": ""}
     db.collection("crm").add(data)
@@ -160,7 +160,7 @@ def obtener_ids_OEA():
 
 # PROCUREMENT
 def agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion):
-    data = {"Expediente_id": numero_referencia, "Titulo": titulo, "oficina": oficina, "pais": pais, "proceso": proceso,
+    data = {"Expediente_id": numero_referencia, "Titulo": titulo, "Oficina": oficina, "Pais": pais, "Proceso": proceso,
             "fecha_hasta": fecha_hasta, "fecha_publicacion": fecha_publicacion,
             "Documento": "https://procurement-notices.undp.org/search.cfm", "Estado_expediente": "NoRevisado",
             "Pagina": "Procurement Notices", "Fecha_revisado": "", "Encargado": "",
@@ -197,7 +197,7 @@ def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, m
                           tipo_proyecto, estado_proyecto, sub_sector, fund):
     data = {"Expediente_id": id_fila, "fecha_limite": fecha, "fecha_aprobacion": fecha_aprobacion,
             "Titulo": titulo, "Fund": fund,
-            "url_id": url_id, "costo": costo, "monto": monto, "sector_proyecto": sector_proyecto, "pais": pais,
+            "url_id": url_id, "Costo": costo, "Monto": monto, "sector_proyecto": sector_proyecto, "Pais": pais,
             "link_datos": link_datos, "tipo_proyecto": tipo_proyecto, "estado_proyecto": estado_proyecto,
             "sub_sector": sub_sector, "Documento": "https://www.worldbank.org/en/home",
             "Estado_expediente": "NoRevisado", "Pagina": "BID", "Fecha_revisado": "", "Encargado": "",
@@ -206,9 +206,9 @@ def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, m
 
 # Development
 def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, proyecto, status, deadline):
-    data = {"Expediente_id": expediente_id, "fecha_limite": deadline, "fecha": fecha,
-            "Titulo": titulo, "url_id": url, "pais": pais, "tipo_proyecto": proyecto, "estado_proyecto": status,
-            "empresa": empresa, "Documento": "https://devbusiness.un.org/site-search",
+    data = {"Expediente_id": expediente_id, "fecha_limite": deadline, "Fecha": fecha,
+            "Titulo": titulo, "url_id": url, "Pais": pais, "tipo_proyecto": proyecto, "estado_proyecto": status,
+            "Empresa": empresa, "Documento": "https://devbusiness.un.org/site-search",
             "Estado_expediente": "NoRevisado", "Pagina": "Development Business", "Fecha_revisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)

@@ -59,7 +59,7 @@ def obtener_datos_tabla(driver):
         contacto = ''
         documentos = ''
 
-        nombre = datos_fila.find_element(By.XPATH, "h4[1]/strong[2]").text
+        nombre = datos_fila.find_element(By.XPATH, "h4[2]/strong[2]").text
         print(nombre)
         if obtener_expediente(nombre):
             num_fila += 1
@@ -67,10 +67,10 @@ def obtener_datos_tabla(driver):
             print("Ya existe")
             continue
 
-        fecha_limite = datos_fila.find_element(By.XPATH, "h4[2]/strong[2]").text
+        fecha_limite = datos_fila.find_element(By.XPATH, "h4[3]/strong[2]").text
         print(fecha_limite)
 
-        hora = datos_fila.find_element(By.XPATH, "h4[3]/strong[2]").text
+        hora = datos_fila.find_element(By.XPATH, "h4[4]/strong[2]").text
         print(hora)
 
         contacto = datos_fila.find_element(By.XPATH, "div").text
