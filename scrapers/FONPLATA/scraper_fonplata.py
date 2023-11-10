@@ -43,45 +43,35 @@ def obtener_datos_tabla(driver):
 
     # Recorro cada pais
     for index in range(0, len(paises)):
-        print("Recorriendo paises")
         # Selecciono el pais
         pais = paises[index]
         pais.click()
         pais = pais.text
-        print("pais " + pais)
-        # Obtengo la clase que indica si el pais tiene contenido para mostrar
-        clase = datos_paises[index].find_element(By.XPATH, "div/div/div")
-        contenido = clase.get_attribute("class")
-        # Chequeo que haya contenido
-        if "content" in contenido:
+        print("Pais: " + pais)
+        try:
+            datos_paises[index].find_element(By.XPATH, './/*[contains(text(), "Sin adquisiciones activas")]')
+        except:
             # Esperamos que cargue la tabla
             WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, "//th[contains(text(), 'Modalidad')]/../../../tbody")))
             # Obtenemos la tabla de la pagina
-            tabla = driver.find_element(By.XPATH, "//th[contains(text(), 'Modalidad')]/../../../tbody")
+            tabla = datos_paises[index].find_element(By.XPATH, ".//th[contains(text(), 'Modalidad')]/../../../tbody")
 
             # Obtenemos las filas de la tabla
             filas = tabla.find_elements(By.TAG_NAME, "tr")
+            print("len(filas)")
+            print(len(filas))
 
             # Recorremos las filas
             for numero_fila in range(0, int(len(filas))):
                 print('FILA ACTUAL: ' + str(numero_fila))
-                # Iniciamos datos de la fila
-                prestamo = ''
-                modalidad = ''
-                objeto = ''
-                descripcion = ''
-                presupuesto = ''
-                fecha_publicacion = ''
-                fecha_presentacion = ''
-
                 # Obtenemos los datos de la fila
                 datos_fila = filas[numero_fila].find_elements(By.TAG_NAME, "td")
 
                 prestamo = datos_fila[0].text
-                if obtener_expediente(prestamo):
-                    print("Ya existe")
-                    continue
+                # if obtener_expediente(prestamo):
+                #     print("Ya existe")
+                #     continue
 
                 modalidad = datos_fila[1].text
                 objeto = datos_fila[2].text
@@ -92,12 +82,12 @@ def obtener_datos_tabla(driver):
                 print("Prestamo " + prestamo)
                 print("Modalidad " + modalidad)
                 print("Objeto " + objeto)
-                print("descripcion " + descripcion)
-                print("presupuesto " + presupuesto)
-                print("fecha_publicacion " + fecha_publicacion)
-                print("fecha_presentacion " + fecha_presentacion)
+                print("Descripcion " + descripcion)
+                print("Presupuesto " + presupuesto)
+                # print("Fecha_publicacion " + fecha_publicacion)
+                # print("Fecha_presentacion " + fecha_presentacion)
 
-                agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
+                # agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
 
         time.sleep(0.5)
 

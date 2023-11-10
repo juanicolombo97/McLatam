@@ -29,7 +29,7 @@ def delete_all_documents():
         documento.reference.delete()
         print("eliminado")
 
-# delete_all_documents()
+delete_all_documents()
 
 # BANCO MUNDIAL
 def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha):
@@ -58,11 +58,11 @@ def obtener_ids_banco_mundial():
 
 
 # COMUNIDAD ANDINA
-def agregar_datos_comunidad_andina(nombre, fecha_limite, hora, contacto, documento):
-    data = {"Expediente_id": nombre, "Titulo": nombre, "fecha_limite": fecha_limite, "Hora": hora, "Contacto": contacto,
+def agregar_datos_comunidad_andina(nombre, fecha_limite, contacto, documento):
+    data = {"Expediente_id": nombre, "Titulo": nombre, "Fecha Limite": fecha_limite, "Contacto": contacto,
             "Documento": documento,
-            "Estado_expediente": "NoRevisado", "Pagina": "Comunidad Andina", "Fecha_revisado": "",
-            "Encargado": "", "Reporte": ""}
+            "Estado_expediente": "NoRevisado", "Pagina": "Comunidad Andina", "Fecha Revisado": "",
+            "Encargado": ""}
     db.collection("crm").add(data)
 
 
@@ -85,10 +85,10 @@ def obtener_ids_comunidad_andina():
 # FONPLATA
 def agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion,
                            pais):
-    data = {"Expediente_id": prestamo, "Modalidad": modalidad, "Objeto": objeto, "Descripcion": descripcion,
-            "Presupuesto": presupuesto, "fecha_publicacion": fecha_publicacion, "Pais": pais,
-            "fecha_presentacion": fecha_presentacion,
-            "Estado_expediente": "NoRevisado", "Pagina": "Fonplata", "Fecha_revisado": "", "Encargado": "",
+    data = {"Expediente_id": prestamo, "Modalidad": modalidad, "Titulo": objeto, "Descripcion": descripcion,
+            "Presupuesto": presupuesto, "Fecha Publicacion": fecha_publicacion, "Pais": pais,
+            "Fecha Presentacion": fecha_presentacion, "Programa": prestamo,
+            "Estado_expediente": "NoRevisado", "Pagina": "Fonplata", "Fecha Revisado": "", "Encargado": "",
             "Reporte": "", "Documento": "https://www.fonplata.org/es/adquisiciones-en-proyectos"}
     db.collection("crm").add(data)
 

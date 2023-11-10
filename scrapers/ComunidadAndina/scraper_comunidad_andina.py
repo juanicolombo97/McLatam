@@ -7,6 +7,7 @@ import time
 
 from scrapers.firebase import agregar_datos_comunidad_andina, obtener_expediente
 
+# No obtenemos el pais porque esta adentro del documento
 
 def main():
     url_pagina = 'https://www.comunidadandina.org/convocatorias/'
@@ -55,7 +56,6 @@ def obtener_datos_tabla(driver):
         # Iniciamos datos de la fila
         nombre = ''
         fecha_limite = ''
-        hora = ''
         contacto = ''
         documentos = ''
 
@@ -70,16 +70,13 @@ def obtener_datos_tabla(driver):
         fecha_limite = datos_fila.find_element(By.XPATH, "h4[3]/strong[2]").text
         print(fecha_limite)
 
-        hora = datos_fila.find_element(By.XPATH, "h4[4]/strong[2]").text
-        print(hora)
-
         contacto = datos_fila.find_element(By.XPATH, "div").text
         print(contacto)
 
         documento = fila.find_element(By.XPATH, f"../div[@class='content-2col-grid '][{num_doc}]/div/div/div[@class='di-content']/h4/a").get_attribute("href")
         print(documento)
 
-        agregar_datos_comunidad_andina(nombre, fecha_limite, hora, contacto, documento)
+        agregar_datos_comunidad_andina(nombre, fecha_limite, contacto, documento)
 
         time.sleep(.5)
         num_fila += 1
