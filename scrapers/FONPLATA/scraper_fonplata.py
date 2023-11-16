@@ -6,7 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from scrapers.firebase import agregar_datos_fonplata, obtener_expediente
 
-
 def main():
     url_pagina = 'https://www.fonplata.org/es/adquisiciones-en-proyectos'
 
@@ -69,9 +68,9 @@ def obtener_datos_tabla(driver):
                 datos_fila = filas[numero_fila].find_elements(By.TAG_NAME, "td")
 
                 prestamo = datos_fila[0].text
-                # if obtener_expediente(prestamo):
-                #     print("Ya existe")
-                #     continue
+                if obtener_expediente(prestamo):
+                    print("Ya existe")
+                    continue
 
                 modalidad = datos_fila[1].text
                 objeto = datos_fila[2].text
@@ -84,10 +83,10 @@ def obtener_datos_tabla(driver):
                 print("Objeto " + objeto)
                 print("Descripcion " + descripcion)
                 print("Presupuesto " + presupuesto)
-                # print("Fecha_publicacion " + fecha_publicacion)
-                # print("Fecha_presentacion " + fecha_presentacion)
+                print("Fecha_publicacion " + fecha_publicacion)
+                print("Fecha_presentacion " + fecha_presentacion)
 
-                # agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
+                agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
 
         time.sleep(0.5)
 

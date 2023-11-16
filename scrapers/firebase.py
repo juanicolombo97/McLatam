@@ -29,7 +29,7 @@ def delete_all_documents():
         documento.reference.delete()
         print("eliminado")
 
-delete_all_documents()
+# delete_all_documents()
 
 # BANCO MUNDIAL
 def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha):
