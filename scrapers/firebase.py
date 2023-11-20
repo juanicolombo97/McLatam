@@ -111,10 +111,10 @@ def obtener_ids_fonplata():
 
 # NUG
 def agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais):
-    data = {"Expediente_id": referencia, "fecha_limite": fecha_limite, "Titulo": titulo, "Publicado": publicado,
-            "organismo_onu": organismo_onu, "tipo_anuncio": tipo_anuncio, "Pais": pais,
+    data = {"Expediente_id": referencia, "Fecha Limite": fecha_limite, "Titulo": titulo, "Publicado": publicado,
+            "Organismo Onu": organismo_onu, "Tipo Anuncio": tipo_anuncio, "Pais": pais,
             "Documento": "https://www.ungm.org/Public/Notice", "Estado_expediente": "NoRevisado",
-            "Pagina": "Naciones Unidas Global", "Fecha_revisado": "", "Encargado": "", "Reporte": ""}
+            "Pagina": "Naciones Unidas Global", "Fecha Revisado": "", "Encargado": "", "Reporte": ""}
     db.collection("crm").add(data)
 
 
@@ -135,10 +135,10 @@ def obtener_ids_NUG():
 
 
 # OEA
-def agregar_datos_OEA(oficina, titulo, fecha, estado, referencia):
-    data = {"Expediente_id": referencia, "Oficina": oficina, "Titulo": titulo, "Fecha": fecha, "Estado": estado,
-            "Documento": "https://oei.int/contrataciones", "Estado_expediente": "NoRevisado", "Pagina": "OEA",
-            "Fecha_revisado": "", "Encargado": "", "Reporte": ""}
+def agregar_datos_OEA(oficina, titulo, fecha, estado, referencia, documento):
+    data = {"Expediente_id": referencia, "Pais": oficina, "Titulo": titulo, "Fecha": fecha, "Estado": estado,
+            "Documento": documento, "Estado_expediente": "NoRevisado", "Pagina": "OEA",
+            "Fecha Revisado": "", "Encargado": "", "Reporte": ""}
     db.collection("crm").add(data)
 
 

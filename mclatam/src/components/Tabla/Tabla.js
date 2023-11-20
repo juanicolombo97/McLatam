@@ -25,6 +25,10 @@ const columnas = [
     filtros: [],
   },
   {
+    nombre: 'Pagina',
+    filtros: [],
+  },
+  {
     nombre: 'Documento',
     filtros: [], // No hay filtros para la columna Documento
   },
@@ -188,7 +192,8 @@ const Tabla = ({expedientes}) => {
               <td className={expediente.Estado_expediente === 'Revisado' ? 'revisado' : 'no-revisado'}>
               {expediente.Estado_expediente === 'Revisado' ? '✓' : '❌'}
             </td>
-              <td>{expediente.pais}</td>
+              <td>{expediente.Pais}</td>
+              <td>{expediente.Pagina}</td>
               <td>
                 <a href={expediente.Documento} target="_blank" rel="noreferrer">
                   Ver Documento
@@ -239,20 +244,23 @@ const Tabla = ({expedientes}) => {
         width: 'auto',
         maxWidth: '100%',
         minWidth: '500px',
+        minHeight: '80vh', // Establece una altura máxima
+        overflowY: 'auto', // Habilita el desplazamiento vertical
       }}
     >
       <h3>Detalles del expediente</h3>
-      <div className="modal-fila-detalles">
-        {filaSeleccionada && Object.keys(filaSeleccionada).map((key, index) => (
-          key !== 'Documento' && key !== 'id' && key !== 'Expediente_id' && (
+      <div className="modal-fila-detalles" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+        {filaSeleccionada && Object.keys(filaSeleccionada)
+                .filter(key => key !== 'Documento' && key !== 'id' && key !== 'Expediente_id' && key !== 'Estado_expediente' && key !== 'Pagina')
+                .sort()
+                .map((key, index) => (
             <div className="modal-fila-detalle" key={index}>
               <span className="modal-fila-detalle-nombre">{key}:</span>
               <span className="modal-fila-detalle-valor">
                 {typeof filaSeleccionada[key] === 'object' ? JSON.stringify(filaSeleccionada[key]) : filaSeleccionada[key]}
               </span>
             </div>
-          )
-        ))}
+          ))}
       </div>
       <div className="modal-fila-documento">
         <button
@@ -262,7 +270,6 @@ const Tabla = ({expedientes}) => {
           Ver documento
         </button>
       </div>
-
     </Modal>
   )
 }

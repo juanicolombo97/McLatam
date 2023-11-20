@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
+from selenium.webdriver.common.action_chains import ActionChains
 
 from scrapers.firebase import agregar_datos_OEA, obtener_expediente
 
@@ -48,6 +49,15 @@ def obtener_datos_tabla(driver):
     index = 0
     pagina_siguiente = True
 
+    try:
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Rechazar')]")))
+        rechazar = driver.find_element(By.XPATH, "//button[contains(text(), 'Rechazar')]")
+        rechazar.click()
+        print("click rechazar")
+    except Exception:
+        pass
+
     while pagina_siguiente:
         # Esperamos que cargue la tabla
         WebDriverWait(driver, 30).until(
@@ -65,6 +75,13 @@ def obtener_datos_tabla(driver):
 
         # Hacemos for por cada fila
         for numero_fila in range(0, int(num_filas)):
+            # Esperamos que cargue la tabla
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.ID, "offerstable")))
+
+            # Obtenemos la tabla de la pagina
+            tabla = driver.find_element(By.XPATH, "//*[@id=\"offerstable\"]/tbody")
+
             print('Fila actual: ' + str(numero_fila))
 
             # Iniciamos datos de la fila
@@ -92,8 +109,6 @@ def obtener_datos_tabla(driver):
                 break
                 continue
 
-            break
-
             # Obtenemos la oficina de la fila
             oficina = datos_fila[0].text
             print('Oficina: ' + oficina)
@@ -113,8 +128,24 @@ def obtener_datos_tabla(driver):
             estado = datos_fila[4].text
             print('Estado: ' + estado)
 
-            agregar_datos_OEA(oficina, titulo, fecha, estado, referencia)
+            # Entramos a la fila para obtener el documento
+            time.sleep(1)
+            fila_actual.click()
 
+            # Obtengo el link al archivo
+            time.sleep(3)
+            try:
+                WebDriverWait(driver, 50).until(
+                    EC.presence_of_element_located((By.XPATH, "//strong[contains(text(), 'Documentos')]")))
+                actions = ActionChains(driver)
+                docs = driver.find_element(By.XPATH, "//strong[contains(text(), 'Documentos')]")
+                actions.move_to_element(docs).perform()
+                documento = driver.find_element(By.XPATH, "//strong[contains(text(), 'Documentos')]/../../ul/li[1]/a").get_attribute("href")
+            except:
+                documento = 'https://oei.int/contrataciones?office=&status=1&year=&submit='
+            print('Documento: ' + documento)
+            driver.back()
+            agregar_datos_OEA(oficina, titulo, fecha, estado, referencia, documento)
             print('__________________')
 
         try:
