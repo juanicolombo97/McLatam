@@ -149,6 +149,8 @@ def obtener_datos_tabla(driver):
             # Obtenemos la descripcion
             descripcion = datos_fila[0].text
 
+            documento = datos_fila[0].find_element(By.TAG_NAME, "a").get_attribute("href")
+
             # Obtenemos el titulo
             titulo = datos_fila[2].text
 
@@ -165,7 +167,8 @@ def obtener_datos_tabla(driver):
             print('idioma: ' + idioma)
             print('Fecha: ' + fecha)
             print('Expediente id: ' + expediente_id)
-            agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha)
+            print('documento' + documento)
+            agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha, documento)
 
         wait(driver)
         WebDriverWait(driver, 30).until(

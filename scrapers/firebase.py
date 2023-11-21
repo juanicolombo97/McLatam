@@ -29,14 +29,14 @@ def delete_all_documents():
         documento.reference.delete()
         print("eliminado")
 
-# delete_all_documents()
+delete_all_documents()
 
 # BANCO MUNDIAL
-def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha):
+def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha, documento):
     data = {"Expediente_id": expediente_id, "Descripcion": descripcion, "Pais": pais,
-            "Titulo": titulo, "tipo_noticia": tipo_noticia, "Idioma": idioma, "Fecha": fecha,
-            "Documento": "https://projects.worldbank.org/en/projects-operations/procurement?lang=en&qterm=&showrecent=true&srce=notices",
-            "Estado_expediente": "NoRevisado", "Pagina": "Banco Mundial", "Fecha_revisado": "", "Encargado": "",
+            "Titulo": titulo, "Tipo Noticia": tipo_noticia, "Idioma": idioma, "Fecha": fecha,
+            "Documento": documento,
+            "Estado_expediente": "NoRevisado", "Pagina": "Banco Mundial", "Fecha Revisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)
 
@@ -161,9 +161,9 @@ def obtener_ids_OEA():
 # PROCUREMENT
 def agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion):
     data = {"Expediente_id": numero_referencia, "Titulo": titulo, "Oficina": oficina, "Pais": pais, "Proceso": proceso,
-            "fecha_hasta": fecha_hasta, "fecha_publicacion": fecha_publicacion,
+            "Fecha Hasta": fecha_hasta, "Fecha Publicacion": fecha_publicacion,
             "Documento": "https://procurement-notices.undp.org/search.cfm", "Estado_expediente": "NoRevisado",
-            "Pagina": "Procurement Notices", "Fecha_revisado": "", "Encargado": "",
+            "Pagina": "Procurement Notices", "Fecha Revisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)
 
