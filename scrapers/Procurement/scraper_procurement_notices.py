@@ -106,6 +106,9 @@ def obtener_datos_tabla(driver):
 
         # Obtenemos el titulo de la fila
         titulo = datos_fila[3].text
+        documento = datos_fila[3].find_element(By.TAG_NAME, "a").get_attribute("href")
+        print(documento)
+
         print('Titulo: ' + titulo)
 
         # Obtenemos la oficina de la fila
@@ -133,7 +136,7 @@ def obtener_datos_tabla(driver):
         fecha_publicacion = datos_fila[8].text
         print('Fecha publicacion: ' + fecha_publicacion)
 
-        agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion)
+        agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion, documento)
 
 
 def pais_valido(pais):

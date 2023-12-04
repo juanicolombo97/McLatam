@@ -9,7 +9,7 @@ from twocaptcha import TwoCaptcha
 from scrapers.firebase import agregar_datos_development, obtener_expediente
 
 LISTA_PAISES_INVALIDOS = [
-    'Afghanistan', 'Benin', 'Burundi', 'Chad', 'China', 'Côte d’Ivoire', 'Ethiopia', 'Georgia', 'India', 'Iraq', 'Moldova', 'Nepal', 'Niger', 'Pakistan', 'Philippines', 'Senegal', 'Somalia', 'South Sudan', 'Tunisia', 'Turkmenistan', 'Uganda', 'Ukraine', 'Vietnam', 'Zambia'
+    'Afghanistan', 'Benin', 'Burundi', 'Chad', 'China', 'Côte d’Ivoire', 'Djibouti','Ethiopia', 'Georgia', 'India', 'Iraq', 'Malawi','Moldova', 'Nepal', 'Niger', 'Pakistan', 'Philippines', 'Senegal', 'Somalia', 'South Sudan', 'Tajikistan', 'Tunisia', 'Turkmenistan', 'Uganda', 'Ukraine', 'Vietnam', 'Zambia'
 ]
 
 # Funcion que se encarga de correr el scraper
@@ -42,15 +42,15 @@ def iniciar_scrapeo(driver):
         ))
     )
 
-    # driver.find_element(By.XPATH, "//a[@href='/user/login']").click()
-    # print('Presionamos boton de loguin')
-    # time.sleep(5)
+    driver.find_element(By.XPATH, "//a[@href='/user/login']").click()
+    print('Presionamos boton de loguin')
+    time.sleep(5)
 
     # Logueamos
-    # while True:
-    #     resultado = login(driver)
-    #     if resultado == True:
-    #         break
+    while True:
+        resultado = login(driver)
+        if resultado == True:
+            break
 
     # Volvemos a la paigna inicial
     driver.get('https://devbusiness.un.org/content/site-search')
@@ -215,7 +215,7 @@ def obtener_datos_expediente(driver, contador):
     except:
         print("No se pudo obtener el deadline")
     print('Deadline: ', deadline)
-    # agregar_datos_development(expediente_id, titulo, divs_segundo, pais, empresa, url, proyecto, status, deadline)
+    agregar_datos_development(expediente_id, titulo, divs_segundo, pais, empresa, url, proyecto, status, deadline)
 
 
 # Funcion que se encarga de loguearse a la pagina

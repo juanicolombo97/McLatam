@@ -29,7 +29,7 @@ def delete_all_documents():
         documento.reference.delete()
         print("eliminado")
 
-delete_all_documents()
+# delete_all_documents()
 
 # BANCO MUNDIAL
 def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha, documento):
@@ -159,10 +159,10 @@ def obtener_ids_OEA():
 
 
 # PROCUREMENT
-def agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion):
+def agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion, documento):
     data = {"Expediente_id": numero_referencia, "Titulo": titulo, "Oficina": oficina, "Pais": pais, "Proceso": proceso,
             "Fecha Hasta": fecha_hasta, "Fecha Publicacion": fecha_publicacion,
-            "Documento": "https://procurement-notices.undp.org/search.cfm", "Estado_expediente": "NoRevisado",
+            "Documento": documento, "Estado_expediente": "NoRevisado",
             "Pagina": "Procurement Notices", "Fecha Revisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)
@@ -206,9 +206,9 @@ def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, m
 
 # Development
 def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, proyecto, status, deadline):
-    data = {"Expediente_id": expediente_id, "fecha_limite": deadline, "Fecha": fecha,
-            "Titulo": titulo, "url_id": url, "Pais": pais, "tipo_proyecto": proyecto, "estado_proyecto": status,
-            "Empresa": empresa, "Documento": "https://devbusiness.un.org/site-search",
-            "Estado_expediente": "NoRevisado", "Pagina": "Development Business", "Fecha_revisado": "", "Encargado": "",
+    data = {"Expediente_id": expediente_id, "Fecha Limite": deadline, "Fecha": fecha,
+            "Titulo": titulo, "Pais": pais, "Tipo Proyecto": proyecto, "Estado Proyecto": status,
+            "Empresa": empresa, "Documento": url,
+            "Estado_expediente": "NoRevisado", "Pagina": "Development Business", "Fecha Revisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)
