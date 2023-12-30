@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from twocaptcha import TwoCaptcha
 from scrapers.firebase import agregar_datos_development, obtener_expediente
+from selenium.webdriver.support.ui import Select
 
 LISTA_PAISES_INVALIDOS = [
     'Afghanistan', 'Benin', 'Burundi', 'Chad', 'China', 'Côte d’Ivoire', 'Djibouti','Ethiopia', 'Georgia', 'India', 'Iraq', 'Malawi','Moldova', 'Nepal', 'Niger', 'Pakistan', 'Philippines', 'Senegal', 'Somalia', 'South Sudan', 'Tajikistan', 'Tunisia', 'Turkmenistan', 'Uganda', 'Ukraine', 'Vietnam', 'Zambia'
@@ -56,6 +57,19 @@ def iniciar_scrapeo(driver):
     driver.get('https://devbusiness.un.org/content/site-search')
     print('Volvemos a la pagina inicial')
 
+    # Esperamos que cargue la seccion de filtro
+    WebDriverWait(driver, 30).until(
+        EC.visibility_of_element_located((
+            By.XPATH, "//aside[@class='main-sidebar col-md-3 search-results__filters filters--operational-summary']"
+        ))
+    )
+    time.sleep(1)
+
+    select_element = driver.find_element(By.XPATH, "//select[@data-drupal-facet-id='language']")
+    select = Select(select_element)
+    select.select_by_index(7)
+    time.sleep(5)
+
     # Esperamos que cargue la seccion donde estan los datos
     WebDriverWait(driver, 30).until(
         EC.visibility_of_element_located((
@@ -90,8 +104,6 @@ def iniciar_scrapeo(driver):
 
             if contador >= cantidad_datos:
                 pagina += 1
-                print("Pagina")
-                print(pagina)
                 xpath = f'//span[contains(text(), "Next page")]/..'
                 print(xpath)
                 print("Por clickear pagina siguiente")
