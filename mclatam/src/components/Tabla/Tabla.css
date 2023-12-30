@@ -216,3 +216,14 @@ td.no-revisado {
   color: red;
   text-align: center;
 }
+
+.close-button {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #FFC107;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+}

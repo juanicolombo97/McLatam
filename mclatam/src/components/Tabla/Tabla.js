@@ -249,6 +249,9 @@ const Tabla = ({expedientes}) => {
       }}
     >
       <h3>Detalles del expediente</h3>
+      <button className="close-button" onClick={() => setModalFilaOpen(false)}>
+              &times;
+      </button>
       <div className="modal-fila-detalles" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
         {filaSeleccionada && Object.keys(filaSeleccionada)
                 .filter(key => key !== 'Documento' && key !== 'id' && key !== 'Expediente_id' && key !== 'Estado_expediente' && key !== 'Pagina')
