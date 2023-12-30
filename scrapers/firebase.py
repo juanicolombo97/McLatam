@@ -34,7 +34,7 @@ def delete_all_documents():
 # BANCO MUNDIAL
 def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha, documento):
     data = {"Expediente_id": expediente_id, "Descripcion": descripcion, "Pais": pais,
-            "Titulo": titulo, "Tipo Noticia": tipo_noticia, "Idioma": idioma, "Fecha": fecha,
+            "Titulo": titulo, "Tipo Noticia": tipo_noticia, "Idioma": idioma, "Fecha Publicacion": fecha,
             "Documento": documento,
             "Estado_expediente": "NoRevisado", "Pagina": "Banco Mundial", "Fecha Revisado": "", "Encargado": "",
             "Reporte": ""}
@@ -136,7 +136,7 @@ def obtener_ids_NUG():
 
 # OEA
 def agregar_datos_OEA(oficina, titulo, fecha, estado, referencia, documento):
-    data = {"Expediente_id": referencia, "Pais": oficina, "Titulo": titulo, "Fecha": fecha, "Estado": estado,
+    data = {"Expediente_id": referencia, "Pais": oficina, "Titulo": titulo, "Fecha Publicacion": fecha, "Estado": estado,
             "Documento": documento, "Estado_expediente": "NoRevisado", "Pagina": "OEA",
             "Fecha Revisado": "", "Encargado": "", "Reporte": ""}
     db.collection("crm").add(data)
@@ -206,7 +206,7 @@ def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, m
 
 # Development
 def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, proyecto, status, deadline):
-    data = {"Expediente_id": expediente_id, "Fecha Limite": deadline, "Fecha": fecha,
+    data = {"Expediente_id": expediente_id, "Fecha Limite": deadline, "Fecha Publicacion": fecha,
             "Titulo": titulo, "Pais": pais, "Tipo Proyecto": proyecto, "Estado Proyecto": status,
             "Empresa": empresa, "Documento": url,
             "Estado_expediente": "NoRevisado", "Pagina": "Development Business", "Fecha Revisado": "", "Encargado": "",
