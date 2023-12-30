@@ -118,6 +118,20 @@ export const RevisarExpedientes = () => {
 
   };
 
+  // Boton anterior
+  const handleAnterior = () => {
+    setIsLoading(true);
+
+        // Retroceder al expediente anterior
+    console.log('Anterior');
+    if (expedientes.length > 0) {
+      setCurrentIndex((prevIndex) => (prevIndex - 1) % expedientes.length);
+    }
+    setIsLoading(false);
+    setFormValues(initialFormValues);
+
+  };
+
   // Boton avanzar
   const handleAvanzar = () => {
     setIsLoading(true);
@@ -156,6 +170,7 @@ export const RevisarExpedientes = () => {
                 <ExpedienteButtons
                     onEnviar={handleEnviar}
                     onNoSirve={handleNoSirve}
+                    onAnterior={handleAnterior}
                     onAvanzar={handleAvanzar}
                     handleEnviarReporte={handleEnviarReporte}
                 />
