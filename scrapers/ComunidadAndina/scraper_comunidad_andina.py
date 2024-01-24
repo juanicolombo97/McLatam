@@ -4,6 +4,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
+from datetime import datetime
 
 from scrapers.firebase import agregar_datos_comunidad_andina, obtener_expediente
 
@@ -59,22 +60,32 @@ def obtener_datos_tabla(driver):
         contacto = ''
         documentos = ''
 
-        nombre = datos_fila.find_element(By.XPATH, "h4[2]/strong[2]").text
-        print(nombre)
+        nombre = datos_fila.find_element(By.XPATH, "h4[1]/strong[2]").text
+        print("Nombre: " + nombre)
         if obtener_expediente(nombre):
             num_fila += 1
             num_doc += 2
             print("Ya existe")
             continue
 
-        fecha_limite = datos_fila.find_element(By.XPATH, "h4[3]/strong[2]").text
-        print(fecha_limite)
+        fecha_limite = datos_fila.find_element(By.XPATH, "h4[2]/strong[2]").text
+        print("Fecha Lim: " + fecha_limite)
+
+        fecha_actual = datetime.now().date()
+        fecha_limite_date = datetime.strptime(fecha_limite, "%Y-%m-%d").date()
+
+        # Compara las fechas
+        if fecha_limite_date < fecha_actual:
+            num_fila += 1
+            num_doc += 2
+            print("La fecha limite ya paso.")
+            continue
 
         contacto = datos_fila.find_element(By.XPATH, "div").text
-        print(contacto)
+        print("Contacto: " + contacto)
 
         documento = fila.find_element(By.XPATH, f"../div[@class='content-2col-grid '][{num_doc}]/div/div/div[@class='di-content']/h4/a").get_attribute("href")
-        print(documento)
+        print("Documento: " + documento)
 
         agregar_datos_comunidad_andina(nombre, fecha_limite, contacto, documento)
 
