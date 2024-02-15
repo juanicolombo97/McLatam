@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from scrapers.firebase import agregar_datos_fonplata, obtener_expediente
+from datetime import datetime
 
 def main():
     url_pagina = 'https://www.fonplata.org/es/adquisiciones-en-proyectos'
@@ -68,16 +69,25 @@ def obtener_datos_tabla(driver):
                 datos_fila = filas[numero_fila].find_elements(By.TAG_NAME, "td")
 
                 prestamo = datos_fila[0].text
-                if obtener_expediente(prestamo):
+                modalidad = datos_fila[1].text
+                if obtener_expediente(modalidad):
                     print("Ya existe")
                     continue
 
-                modalidad = datos_fila[1].text
                 objeto = datos_fila[2].text
                 descripcion = datos_fila[3].text
                 presupuesto = datos_fila[4].text
                 fecha_publicacion = datos_fila[5].text
                 fecha_presentacion = datos_fila[6].text
+
+                fecha_actual = datetime.now().date()
+                fecha_limite_date = datetime.strptime(fecha_presentacion, "%d/%m/%Y").date()
+
+                # Compara las fechas
+                if fecha_limite_date < fecha_actual:
+                    print("La fecha limite ya paso.")
+                    continue
+
                 print("Prestamo " + prestamo)
                 print("Modalidad " + modalidad)
                 print("Objeto " + objeto)
