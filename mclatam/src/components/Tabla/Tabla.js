@@ -143,7 +143,7 @@ const Tabla = ({expedientes}) => {
     const expedienteRef = doc(db, 'crm', expedienteId);
 
     await updateDoc(expedienteRef, {
-      "Fecha Revisado": "",
+      "FechaRevisado": "",
       "Fecha_enviado": "",
       "Encargado": "",
       "Reporte": "",
