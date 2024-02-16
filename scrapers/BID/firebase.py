@@ -14,6 +14,6 @@ def agregar_datos(id_fila, titulo, fecha, fecha_aprobacion, fecha_publicacion, u
             "url_id": url_id, "costo": costo, "monto": monto, "sector_proyecto": sector_proyecto, "pais": pais,
             "link_datos": link_datos, "tipo_proyecto": tipo_proyecto, "estado_proyecto": estado_proyecto,
             "sub_sector": sub_sector, "fund": fund, "pagina": "https://www.worldbank.org/en/home",
-            "estado_expediente": "NoRevisado", "Nombre_pagina": "BID", "Fecha_revisado": "", "Encargado": "",
+            "estado_expediente": "NoRevisado", "Nombre_pagina": "BID", "FechaRevisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)
