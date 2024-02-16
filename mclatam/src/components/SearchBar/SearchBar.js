@@ -14,7 +14,7 @@ const SearchBar = ({ searchTerm, setSearchTerm, setExpedientes }) => {
       const q = query(
         expedientesRef, 
         where("algún_campo", "==", searchTerm),
-        where("Fecha_revisado", "!=", null)  
+        where("Fecha Revisado", "!=", null)
       );
     
       const querySnapshot = await getDocs(q);

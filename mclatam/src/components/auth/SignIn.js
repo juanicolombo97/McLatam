@@ -34,7 +34,7 @@ export const SignIn = ({isSignedIn, setIsSignedIn}) => {
             setIsSignedIn(true)
             
             // Redireccionamos a dashboard
-            navigate('/dashboard')
+            navigate('/expedientes')
             
             }
         ).catch((error) => {

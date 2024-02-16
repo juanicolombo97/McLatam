@@ -6,8 +6,8 @@ const Expediente = ({ expediente }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
     const [titulo, ...contenidoArr] = modalContent.split(":");
-    const contenido = contenidoArr.join(":"); 
-    
+    const contenido = contenidoArr.join(":");
+
     const handleModalOpen = (titulo, valor) => {
         setModalContent(`${titulo}: ${valor}`);
         setIsModalOpen(true);

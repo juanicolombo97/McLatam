@@ -94,7 +94,7 @@ const Estadisticas = () => {
       const threeMonthsAgo = new Date();
       threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
-      const q = query(crmRef, where("Fecha_revisado", ">=", threeMonthsAgo));
+      const q = query(crmRef, where("Fecha Revisado", ">=", threeMonthsAgo));
       const snapshot = await getDocs(q);
 
       const lineChartData = snapshot.docs.map(doc => doc.data());

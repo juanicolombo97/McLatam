@@ -10,11 +10,11 @@ const ExpedienteForm = ({ values, onChange }) => {
     return (
         <form className="expediente-form">
             <label>
-                <span>EI: Nombre de la Consultoría</span>
+                <span>Nombre de la Consultoría</span>
                 <input type="text" name="consultoria" value={values.consultoria} onChange={handleChange} required/>
             </label>
             <label>
-                <span>Lugar</span>
+                <span>País</span>
                 <input type="text" name="lugar" value={values.lugar} onChange={handleChange} required/>
             </label>
             <label>

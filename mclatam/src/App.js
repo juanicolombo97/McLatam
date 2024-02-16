@@ -11,6 +11,7 @@ import Navbar from './components/Navbar/Navbar';
 import Dashboard from './components/dashboard/Dashboard';
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import Expedientes from "./components/Expedientes/Expedientes";
 
 function App() {
   
@@ -34,6 +35,14 @@ function App() {
         <Navbar  />
         <Routes>
           <Route path='/' element={<SignIn isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn} />} />
+          <Route
+            path="/expedientes"
+            element={
+              <Protected isSignedIn={isSignedIn}>
+                <Expedientes />
+              </Protected>
+            }
+          />
           <Route
             path="/dashboard"
             element={

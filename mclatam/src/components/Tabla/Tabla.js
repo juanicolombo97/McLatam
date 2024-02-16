@@ -143,7 +143,7 @@ const Tabla = ({expedientes}) => {
     const expedienteRef = doc(db, 'crm', expedienteId);
 
     await updateDoc(expedienteRef, {
-      "Fecha_revisado": "",
+      "Fecha Revisado": "",
       "Fecha_enviado": "",
       "Encargado": "",
       "Reporte": "",
@@ -189,9 +189,9 @@ const Tabla = ({expedientes}) => {
           {paginatedExpedientes.map((expediente, index) => (
             <tr key={index} onClick={(e) => handleFilaClick(e, expediente)}>
               <td>{expediente.Titulo}</td>
-              <td className={expediente.Estado_expediente === 'Revisado' ? 'revisado' : 'no-revisado'}>
-              {expediente.Estado_expediente === 'Revisado' ? '✓' : '❌'}
-            </td>
+              <td className={expediente.Estado_expediente === 'Enviar' ? 'revisado' : 'no-revisado'}>
+              {expediente.Estado_expediente === 'Enviar' ? '✓' : '❌'}
+              </td>
               <td>{expediente.Pais}</td>
               <td>{expediente.Pagina}</td>
               <td>
@@ -199,10 +199,10 @@ const Tabla = ({expedientes}) => {
                   Ver Documento
                 </a>
               </td>
-              <td>
-              <button onClick={(e) => handleDeleteClick(e, expediente.id)}>
-                  <span className={'no-revisado'}>🗑</span>
-              </button>
+              <td className="columna-eliminar">
+                <button onClick={(e) => handleDeleteClick(e, expediente.id)}>
+                    <span className={'no-revisado'}>🗑</span>
+                </button>
               </td>
             </tr>
           ))}

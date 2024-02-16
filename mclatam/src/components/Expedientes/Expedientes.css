@@ -1,0 +1,7 @@
+.expedientes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1%;
+    width: 100%;
+  }

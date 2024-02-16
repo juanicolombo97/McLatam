@@ -227,3 +227,7 @@ td.no-revisado {
   border: none;
   font-size: 24px;
 }
+
+.columna-eliminar{
+  min-width: auto;
+}

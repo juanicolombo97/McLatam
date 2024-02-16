@@ -5,12 +5,14 @@ import Expediente from '../Expediente/Expediente';
 import ExpedienteButtons from '../ExpedienteButtons/ExpedienteButtons';
 import ExpedienteForm from '../ExpedienteForm/ExpedienteForm';
 import {auth} from '../../firebase/firebase'
+import Popup from "./Popup";
 
 export const RevisarExpedientes = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [expedientes, setExpedientes] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [noExpedientes, setNoExpedientes] = useState(false);
+  const [isPopupVisible, setPopupVisibility] = useState(false);
 
   // Formulario de reporte 
   const initialFormValues = {
@@ -59,14 +61,8 @@ export const RevisarExpedientes = () => {
 
   const handleEnviar = async () => {
     setIsLoading(true);
-    
-    const allFieldsFilled = Object.values(formValues).every(field => field !== '');
-    if (!allFieldsFilled) {
-      alert("Por favor, completa todos los campos antes de enviar.");
-      setIsLoading(false);
-      return;
-    }
-
+    console.log("formValues")
+    console.log(Object.values(formValues))
     // obtenemos el mail del usuario de firebase
     const user = auth.currentUser;
     const email = user.email;
@@ -74,11 +70,15 @@ export const RevisarExpedientes = () => {
 
     // Agregamos el mail del usuario al formulario
     formValues.encargado = email;
+    const allFieldsFilled = Object.values(formValues).every(field => field !== '');
+    if (!allFieldsFilled) {
+      alert("Por favor, completa todos los campos antes de enviar.");
+      setIsLoading(false);
+      return;
+    }
 
     // Formatear los datos del formulario para el reporte
     const formattedReport = Object.entries(formValues).map(([key, value]) => `${key}: ${value}`).join('\n');
-  
-    console.log('REPORTE: ', formattedReport);
   
     // Realizar updates en la base de datos y avanzar al siguiente expediente
     const expedienteRef = doc(db, "crm", expedientes[currentIndex].id);
@@ -95,6 +95,10 @@ export const RevisarExpedientes = () => {
     }
     setIsLoading(false);
     setFormValues(initialFormValues);
+    setPopupVisibility(true);
+    setTimeout(() => {
+      setPopupVisibility(false);
+    }, 2000);
 
   };
   
@@ -156,18 +160,23 @@ export const RevisarExpedientes = () => {
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
+  const handleClosePopup = () => {
+    setPopupVisibility(false);
+  };
 
   return (
     <div>
-        {isLoading && (
-            <div className="loading-modal">
-                <div className="loading-icon"></div>
+        {isLoading ? (
+            <div className="transparent-modal">
+              <div className="loading-icon"></div>
             </div>
-        )}
-
-        {expedientes.length > 0 ? (
+        ) :
+        expedientes.length === 0 ? (
+            <Expediente expediente={null} />
+        ) : (
             <>
-                <ExpedienteButtons
+              {isPopupVisible && <Popup onClose={handleClosePopup} />}
+              <ExpedienteButtons
                     onEnviar={handleEnviar}
                     onNoSirve={handleNoSirve}
                     onAnterior={handleAnterior}
@@ -177,8 +186,6 @@ export const RevisarExpedientes = () => {
                 <Expediente expediente={expedientes[currentIndex]} />
                 <ExpedienteForm values={formValues} onChange={handleChange} />
             </>
-        ) : (
-            <Expediente expediente={null} />
         )}
     </div>
 );
