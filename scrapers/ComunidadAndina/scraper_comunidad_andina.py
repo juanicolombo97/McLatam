@@ -5,11 +5,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from datetime import datetime
-
 from scrapers.firebase import agregar_datos_comunidad_andina, obtener_expediente
 
-# No obtenemos el pais porque esta adentro del documento
 
+# No obtenemos el pais porque esta adentro del documento
 def main():
     url_pagina = 'https://www.comunidadandina.org/convocatorias/'
 
@@ -84,7 +83,9 @@ def obtener_datos_tabla(driver):
         contacto = datos_fila.find_element(By.XPATH, "div").text
         print("Contacto: " + contacto)
 
-        documento = fila.find_element(By.XPATH, f"../div[@class='content-2col-grid '][{num_doc}]/div/div/div[@class='di-content']/h4/a").get_attribute("href")
+        documento = fila.find_element(By.XPATH,
+                                      f"../div[@class='content-2col-grid '][{num_doc}]/div/div/div[@class='di-content']/h4/a").get_attribute(
+            "href")
         print("Documento: " + documento)
 
         agregar_datos_comunidad_andina(nombre, fecha_limite, contacto, documento)
