@@ -160,14 +160,14 @@ def obtener_datos_tabla(driver):
             # Obtenemos la fecha de publicacion
             fecha = datos_fila[5].text
 
-            print('desc: ' + descripcion)
-            print('pais: ' + pais)
-            print('titulo: ' + titulo)
-            print('tipo noticia: ' + tipo_noticia)
-            print('idioma: ' + idioma)
+            print('Desc: ' + descripcion)
+            print('Pais: ' + pais)
+            print('Titulo: ' + titulo)
+            print('Tipo noticia: ' + tipo_noticia)
+            print('Idioma: ' + idioma)
             print('Fecha: ' + fecha)
             print('Expediente id: ' + expediente_id)
-            print('documento' + documento)
+            print('Documento: ' + documento)
             agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha, documento)
 
         wait(driver)
@@ -184,7 +184,6 @@ def obtener_datos_tabla(driver):
 
 
 # Funcion que se encarga de ver si un elemento es valido
-# Devuelve True si es valido, False si no lo es
 def elemento_valido(elemento, lista_invalida):
     # Hacemos for por cada elemento invalido
     for elemento_invalido in lista_invalida:
