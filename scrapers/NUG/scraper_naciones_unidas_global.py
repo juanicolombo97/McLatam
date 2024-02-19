@@ -1,5 +1,7 @@
 # -------------------------------------- LIBRERIAS --------------------------------------------------------------------
+import locale
 import time
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
@@ -29,6 +31,8 @@ def main():
         'download.directory_upgrade': True,
         'plugins.always_open_pdf_externally': True  # Abrir PDF en lugar de descargar
     })
+
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 
     # Obtenemos el driver
     driver = webdriver.Chrome(options=options)
@@ -118,6 +122,7 @@ def obtener_datos_tabla(driver):
 
     # Obtener la altura de una fila de la tabla
     altura_fila = driver.execute_script("return arguments[0].clientHeight;", filas[0]) * 2
+    fecha_actual = datetime.now().date()
 
     while filas_scrapeadas < int(filas_totales.text):
         print("FILA " + str(filas_scrapeadas))
@@ -148,6 +153,14 @@ def obtener_datos_tabla(driver):
         print("pais: " + pais)
         if pais not in PAISES_VALIDOS:
             print("Pais invalido")
+            continue
+
+        fecha_limite_recortada = fecha_limite.split(' ')[0].replace('.', '')
+        fecha_limite_date = datetime.strptime(fecha_limite_recortada, "%d-%b-%Y").date()
+        print(fecha_limite_date)
+        # Compara las fechas
+        if fecha_limite_date < fecha_actual:
+            print("La fecha limite ya paso.")
             continue
 
         print("titulo: " + titulo)
