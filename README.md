@@ -15,3 +15,5 @@ Para deployar me paro en la carpeta mclatam (donde esta el front) y ejecuto:
 
 Me aseguro que se deployo correctamente yendo a la pagina de firebase > Hosting y veo cual fue la ultima version.
 
+
+2Captcha: https://2captcha.com/es/enterpage 
