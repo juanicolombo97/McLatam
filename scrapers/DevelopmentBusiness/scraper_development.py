@@ -1,4 +1,5 @@
 # -------------------------------------- LIBRERIAS --------------------------------------------------------------------
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
@@ -7,11 +8,12 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from twocaptcha import TwoCaptcha
 from scrapers.firebase import agregar_datos_development, obtener_expediente
-from selenium.webdriver.support.ui import Select
 
 LISTA_PAISES_INVALIDOS = [
     'Afghanistan', 'Benin', 'Burundi', 'Chad', 'China', 'Côte d’Ivoire', 'Djibouti','Ethiopia', 'Georgia', 'India', 'Iraq', 'Malawi','Moldova', 'Nepal', 'Niger', 'Pakistan', 'Philippines', 'Senegal', 'Somalia', 'South Sudan', 'Tajikistan', 'Tunisia', 'Turkmenistan', 'Uganda', 'Ukraine', 'Vietnam', 'Zambia'
 ]
+
+fecha_actual = datetime.now().date()
 
 # Funcion que se encarga de correr el scraper
 def main():
@@ -19,8 +21,10 @@ def main():
 
     # Opciones Chromedriver
     options = webdriver.ChromeOptions()
-    # options.add_argument('headless')
+    options.add_argument('headless')
     options.add_argument("start-maximized")
+    options.add_argument("--window-size=1920x1080")
+    options.add_argument("--start-maximized")
 
     # Obtenemos el driver
     driver = webdriver.Chrome(options=options)
@@ -58,17 +62,33 @@ def iniciar_scrapeo(driver):
     print('Volvemos a la pagina inicial')
 
     # Esperamos que cargue la seccion de filtro
-    WebDriverWait(driver, 30).until(
+    WebDriverWait(driver, 40).until(
         EC.visibility_of_element_located((
             By.XPATH, "//aside[@class='main-sidebar col-md-3 search-results__filters filters--operational-summary']"
         ))
     )
     time.sleep(1)
 
-    select_element = driver.find_element(By.XPATH, "//select[@data-drupal-facet-id='language']")
-    select = Select(select_element)
-    select.select_by_index(7)
-    time.sleep(5)
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((
+            By.XPATH, "//select[@data-drupal-facet-id='language']"
+        ))
+    )
+    print("presence")
+    block_language = driver.find_element(By.XPATH, "//div[@id='block-language']")
+    driver.execute_script("arguments[0].scrollIntoView(true);", block_language)
+    print('Scroll')
+    time.sleep(2)
+
+    selector = driver.find_element(By.XPATH, "//input[@placeholder='Select languages']/../..")
+    selector.click()
+    print("Click")
+    time.sleep(1)
+
+    spanish = driver.find_element(By.XPATH, "//li[contains(text(), 'Spanish')]")
+    spanish.click()
+    print("Click spanish")
+    time.sleep(1)
 
     # Esperamos que cargue la seccion donde estan los datos
     WebDriverWait(driver, 30).until(
@@ -77,11 +97,10 @@ def iniciar_scrapeo(driver):
         ))
     )
     print("Datos cargados")
-    time.sleep(15)
+    time.sleep(10)
 
     # Obtenemos div donde estan los datos
     div_datos = driver.find_element(By.XPATH, "//div[@class='view-content']")
-    # div_datos = driver.find_element(By.XPATH, "//div[@class='search-results apachesolr_search-results']")
 
     # Obtenemos los divs de dichos datos
     divs_datos = div_datos.find_elements(By.XPATH, "./div")
@@ -98,7 +117,7 @@ def iniciar_scrapeo(driver):
             # Obtenemos datos de los expedientes
             obtener_datos_expediente(driver, contador)
 
-            # Aumentamos contadro
+            # Aumentamos contador
             contador += 1
             print('Contador: ', contador)
 
@@ -160,7 +179,6 @@ def obtener_datos_expediente(driver, contador):
 
     # El primer div es el titulo, y obtenemos los spans dentro de el
     div_titulo = divs_datos_expediente[0]
-    # //div[@class='view-content']/div/div/div/div/div[0]
 
     # El separador | divide el pais y la empresa, obtenemos cada dato
     try:
@@ -176,11 +194,9 @@ def obtener_datos_expediente(driver, contador):
 
     # Obtenemos el segundo div que es donde estan los demas divs, y obtenemos los 4 restantes
     div_descripcion = divs_datos_expediente[1].find_elements(By.XPATH, "./div")
-    # //div[@class='view-content']/div/div/div/div/div[1]/div
 
     # Del primer div obtenemos los dos divs
     divs_primero = div_descripcion[0].find_elements(By.XPATH, "./div")
-    # //div[@class='view-content']/div/div/div/div/div[1]/div[0]/div
     print('Cantidad de divs del primero: ', len(divs_primero))
 
     # Obtenemos el url y el titulo
@@ -224,6 +240,10 @@ def obtener_datos_expediente(driver, contador):
         div_deadline = divs_datos_expediente[2]
         deadline = div_deadline.text
         deadline = deadline.split('DEADLINE')[1].strip()
+        deadline_date = datetime.strptime(deadline, "%d %b %Y").date()
+        if deadline_date < fecha_actual:
+            print("La fecha limite ya paso.")
+            return
     except:
         print("No se pudo obtener el deadline")
     print('Deadline: ', deadline)
@@ -256,19 +276,19 @@ def login(driver):
         time.sleep(3)
 
         # ESPRAMOS PARA INGRESAR CAPTCHA
-        # time.sleep(15)
-        # # ingresamos el captcha
-        # solver = TwoCaptcha('725b33267e77fe2aa1ec45d2f6be8210')
-        # result = solver.recaptcha(sitekey='6LdrPCcfAAAAAItDUROndz6RcAi0ngbTjYj4BKHB',
-        #                           url='https://devbusiness.un.org/user/login')
-        # print("Result from captcha: ")
-        # print(result)
-        #
-        # captcha = driver.find_element(By.XPATH, "//*[@id='g-recaptcha-response']")
-        # driver.execute_script('arguments[0].style.display = "block";', captcha)
-        # valor_code = result['code']
-        # captcha.send_keys(valor_code)
-        # time.sleep(1)
+        time.sleep(15)
+        # ingresamos el captcha
+        solver = TwoCaptcha('725b33267e77fe2aa1ec45d2f6be8210')
+        result = solver.recaptcha(sitekey='6LdrPCcfAAAAAItDUROndz6RcAi0ngbTjYj4BKHB',
+                                  url='https://devbusiness.un.org/user/login')
+        print("Result from captcha: ")
+        print(result)
+
+        captcha = driver.find_element(By.XPATH, "//*[@id='g-recaptcha-response']")
+        driver.execute_script('arguments[0].style.display = "block";', captcha)
+        valor_code = result['code']
+        captcha.send_keys(valor_code)
+        time.sleep(1)
 
         # Obtenemos el botton de submit
         boton_submit = driver.find_element(By.XPATH, "//input[@id='edit-submit']")
