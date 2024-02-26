@@ -7,7 +7,9 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-
+# Para que corra en AWS
+# import sys
+# sys.path.append('/home/ec2-user/McLatam')
 from scrapers.firebase import agregar_datos_NUG, obtener_expediente
 
 PAISES_VALIDOS = ['Haiti', 'Ecuador', 'El Salvador', 'Colombia', 'República Dominicana',

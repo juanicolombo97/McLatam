@@ -3,6 +3,8 @@ from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1 import FieldFilter
 
 cred = credentials.Certificate("/Users/mickyconca/Desktop/McLatam/scrapers/clave.json")
+# Para que corra en AWS:
+# cred = credentials.Certificate("/home/ec2-user/McLatam/scrapers/clave.json")
 firebase_admin.initialize_app(cred)
 
 # Obtén una referencia a la instancia de Firestore
