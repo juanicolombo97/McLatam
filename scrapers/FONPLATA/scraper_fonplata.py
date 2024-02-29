@@ -4,8 +4,12 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
+# Para que corra en AWS
+# import sys
+# sys.path.append('/home/ubuntu/McLatam')
 from scrapers.firebase import agregar_datos_fonplata, obtener_expediente
 from datetime import datetime
+
 
 def main():
     url_pagina = 'https://www.fonplata.org/es/adquisiciones-en-proyectos'
@@ -96,7 +100,8 @@ def obtener_datos_tabla(driver):
                 print("Fecha_publicacion " + fecha_publicacion)
                 print("Fecha_presentacion " + fecha_presentacion)
 
-                agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion, pais)
+                agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion,
+                                       fecha_presentacion, pais)
 
         time.sleep(0.5)
 
