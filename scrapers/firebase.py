@@ -214,3 +214,10 @@ def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, 
             "Estado_expediente": "NoRevisado", "Pagina": "Development Business", "FechaRevisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)
+
+# CAF
+def agregar_datos_CAF(titulo, pais, url, deadline):
+    data = {"Expediente_id": titulo, "Fecha Limite": deadline, "Titulo": titulo, "Pais": pais, "Documento": url,
+            "Estado_expediente": "NoRevisado", "Pagina": "CAF", "FechaRevisado": "", "Encargado": "",
+            "Reporte": ""}
+    db.collection("crm").add(data)

@@ -118,3 +118,5 @@ scrapers/Procurement/__pycache__/scraper_procurement_notices.cpython-311.pyc
 .idea/shelf/Uncommitted_changes_before_Checkout_at_29_07_2023_16_53_\[Changes\]/shelved.patch
 
 scrapers/NUG/__pycache__/scraper_naciones_unidas_global.cpython-311.pyc
+
+scrapers/CAF/__pycache__/scraper_CAF.cpython-311.pyc
