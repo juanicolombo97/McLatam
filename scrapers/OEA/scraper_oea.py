@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
 from selenium.webdriver.common.action_chains import ActionChains
+from datetime import datetime
 # Para que corra en AWS
 # import sys
 # sys.path.append('/home/ubuntu/McLatam')
@@ -57,6 +58,7 @@ def obtener_datos_tabla(driver):
         rechazar = driver.find_element(By.XPATH, "//button[contains(text(), 'Rechazar')]")
         rechazar.click()
         print("click rechazar")
+        fecha_actual = datetime.now().date()
     except Exception:
         pass
 
@@ -108,7 +110,6 @@ def obtener_datos_tabla(driver):
 
             if obtener_expediente(referencia):
                 print("Ya existe")
-                break
                 continue
 
             # Obtenemos la oficina de la fila
@@ -121,9 +122,10 @@ def obtener_datos_tabla(driver):
 
             # Obtenemos la fecha
             fecha = datos_fila[3].text
-            anio = fecha.split('/')[2]
-            if int(anio) < ANIO_INVALIDO:
-                print('Fecha invalida')
+            print('Fecha: ' + fecha)
+            fecha_limite = datetime.strptime(fecha, "%d/%m/%Y").date()
+            if fecha_limite < fecha_actual:
+                print("La fecha limite ya paso.")
                 continue
 
             # Obtenemos el estado de la fila

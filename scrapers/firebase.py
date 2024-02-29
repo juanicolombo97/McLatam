@@ -138,7 +138,7 @@ def obtener_ids_NUG():
 
 # OEA
 def agregar_datos_OEA(oficina, titulo, fecha, estado, referencia, documento):
-    data = {"Expediente_id": referencia, "Pais": oficina, "Titulo": titulo, "Fecha Publicacion": fecha, "Estado": estado,
+    data = {"Expediente_id": referencia, "Pais": oficina, "Titulo": titulo, "Fecha Limite": fecha, "Estado": estado,
             "Documento": documento, "Estado_expediente": "NoRevisado", "Pagina": "OEA",
             "FechaRevisado": "", "Encargado": "", "Reporte": ""}
     db.collection("crm").add(data)
