@@ -5,7 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
-
+# Para que corra en AWS
+# import sys
+# sys.path.append('/home/ubuntu/McLatam')
 from scrapers.firebase import agregar_datos_banco_mundial, obtener_expediente
 
 LISTA_PAISES_INVALIDOS = [
