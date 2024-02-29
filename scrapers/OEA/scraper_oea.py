@@ -6,7 +6,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
 from selenium.webdriver.common.action_chains import ActionChains
-
+# Para que corra en AWS
+# import sys
+# sys.path.append('/home/ubuntu/McLatam')
 from scrapers.firebase import agregar_datos_OEA, obtener_expediente
 
 ANIO_INVALIDO = 2022
