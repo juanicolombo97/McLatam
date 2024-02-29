@@ -7,6 +7,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from twocaptcha import TwoCaptcha
+# Para que corra en AWS
+# import sys
+# sys.path.append('/home/ubuntu/McLatam')
 from scrapers.firebase import agregar_datos_development, obtener_expediente
 
 LISTA_PAISES_INVALIDOS = [
