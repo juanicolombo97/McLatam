@@ -4,7 +4,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
-
+from datetime import datetime
+# Para que corra en AWS
+# import sys
+# sys.path.append('/home/ubuntu/McLatam')
 from scrapers.firebase import agregar_datos_PROCUREMENT, obtener_expediente
 
 LISTA_PAISES_INVALIDOS = [
@@ -69,6 +72,7 @@ def obtener_datos_tabla(driver):
     # Obtenemos el numero de filas
     num_filas = len(filas)
     print('Numero de filas: ' + str(num_filas))
+    fecha_actual = datetime.now().date()
 
     # Hacemos for por cada fila
     for numero_fila in range(1, len(filas)):
@@ -129,8 +133,13 @@ def obtener_datos_tabla(driver):
         print('Proceso: ' + proceso)
 
         # Obtenemos la fecha hasta de la fila
-        fecha_hasta = datos_fila[7].text
+        fecha_hasta = datos_fila[7].text.split(" ")[0]
         print('Fecha hasta: ' + fecha_hasta)
+        fecha_limite_date = datetime.strptime(fecha_hasta, "%d-%b-%y").date()
+
+        if fecha_limite_date < fecha_actual:
+            print("La fecha limite ya paso.")
+            continue
 
         # Obtenemos la fecha publicacion de la fila
         fecha_publicacion = datos_fila[8].text
