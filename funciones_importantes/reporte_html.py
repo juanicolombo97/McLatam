@@ -2,18 +2,10 @@ from email.mime.text import MIMEText
 from yattag import Doc
 import os.path
 import base64
-import pickle
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
-
-import json
-import boto3
-import mysql.connector
-import mysql
-import io
-from datetime import datetime
 
 # Ejemplo de uso:
 expedientes = [
@@ -55,21 +47,22 @@ expedientes = [
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
+
 def lambda_handler(event, context):
-    
     service = gmail_authenticate()
 
     # Creamos el reporte
     html_report = create_report(expedientes)
 
     # Creamos el mensaje
-    message = create_message('jcolombo@qanlexlfund.com', 'juanicolombo8@gmail.com', 'Reporte de Expedientes Revisados', html_report, 'Reporte')
+    message = create_message('jcolombo@qanlexlfund.com', 'juanicolombo8@gmail.com', 'Reporte de Expedientes Revisados',
+                             html_report, 'Reporte')
 
     # Enviamos el mensaje
     send_message(service, 'me', message)
 
-def gmail_authenticate():
 
+def gmail_authenticate():
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -89,20 +82,21 @@ def gmail_authenticate():
             token.write(creds.to_json())
     return build('gmail', 'v1', credentials=creds)
 
+
 def create_message(sender, to, subject, message_text, nombre):
     message = MIMEText(message_text, 'html')
 
     # Le agregamos los headers
     message['to'] = to
-    message['from'] = nombre +  "<" + sender + ">"
+    message['from'] = nombre + "<" + sender + ">"
     message['subject'] = subject
-
 
     # Devolvemos dragt
     raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
     return {
         'raw': raw_message.decode("utf-8")
     }
+
 
 def send_message(service, user_id, message):
     try:
@@ -112,12 +106,13 @@ def send_message(service, user_id, message):
         print('An error occurred: %s' % e)
         return None
 
+
 def create_report(expedientes):
     """
     Crea un reporte HTML basado en una lista de expedientes.
     Cada expediente debe ser un diccionario con llaves como en initialFormValues.
     """
-    
+
     doc, tag, text = Doc().tagtext()
 
     # Estilos para separar y resaltar el Expediente_ID
@@ -155,7 +150,7 @@ def create_report(expedientes):
             background-color: #E0A800;
         }
     """
-    
+
     with tag('html'):
         with tag('head'):
             with tag('style'):
@@ -168,7 +163,7 @@ def create_report(expedientes):
                     if 'Expediente_ID' in expediente:
                         with tag('div', klass='expediente-id'):
                             text(expediente['Expediente_ID'])
-                    
+
                     # Procesamos todos los otros datos del expediente
                     for key, value in expediente.items():
                         if value is not None:  # Asegurarse de que el valor no sea None
@@ -183,5 +178,6 @@ def create_report(expedientes):
                         text('Ver Expediente')
 
     return doc.getvalue()
+
 
 lambda_handler(1, 2)
