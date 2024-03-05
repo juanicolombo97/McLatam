@@ -55,7 +55,7 @@ def lambda_handler(event, context):
     html_report = create_report(expedientes)
 
     # Creamos el mensaje
-    message = create_message('jcolombo@qanlexlfund.com', 'juanicolombo8@gmail.com', 'Reporte de Expedientes Revisados',
+    message = create_message('jcolombo@qanlexlfund.com', 'concamicky@gmail.com', 'Reporte de Expedientes Revisados',
                              html_report, 'Reporte')
 
     # Enviamos el mensaje
@@ -166,16 +166,12 @@ def create_report(expedientes):
 
                     # Procesamos todos los otros datos del expediente
                     for key, value in expediente.items():
-                        if value is not None:  # Asegurarse de que el valor no sea None
-                            if key != 'Expediente_ID':  # Evitamos mostrarlo nuevamente
-                                with tag('p'):
-                                    with tag('strong'):
-                                        text(key.capitalize() + ': ')
-                                    text(value)
-                    # Botón que dirige a la URL del expediente
-                    expediente_url = f"https://tuweb.com/expediente/{expediente['Expediente_ID']}"
-                    with tag('a', href=expediente_url, klass='btn'):
-                        text('Ver Expediente')
+                        if value is not None and key not in ['Fecha_revisado',
+                                                             'Expediente_id']:  # Asegurarse de que el valor no sea None
+                            with tag('p'):
+                                with tag('strong'):
+                                    text(key.capitalize() + ': ')
+                                text(value)
 
     return doc.getvalue()
 
