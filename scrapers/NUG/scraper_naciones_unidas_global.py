@@ -165,14 +165,15 @@ def obtener_datos_tabla(driver):
             print("La fecha limite ya paso.")
             continue
 
+        fecha_publicacion = datetime.strptime(publicado, "%d-%b.-%Y").strftime("%Y-%m-%d")
         print("titulo: " + titulo)
         print("fecha: " + fecha_limite)
-        print("publicado: " + publicado)
+        print("fecha_publicacion: ", fecha_publicacion)
         print("org_onu: " + organismo_onu)
         print("anuncio: " + tipo_anuncio)
         print("ref: " + referencia)
 
-        agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais)
+        agregar_datos_NUG(titulo, fecha_limite, fecha_publicacion, organismo_onu, tipo_anuncio, referencia, pais)
 
 
 if __name__ == '__main__':
