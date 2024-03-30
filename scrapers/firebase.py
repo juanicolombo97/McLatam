@@ -62,7 +62,7 @@ def obtener_ids_banco_mundial():
 # COMUNIDAD ANDINA
 def agregar_datos_comunidad_andina(nombre, fecha_limite, contacto, documento):
     data = {"Expediente_id": nombre, "Titulo": nombre, "Fecha Limite": fecha_limite, "Contacto": contacto,
-            "Documento": documento,
+            "Documento": documento, "FechaPublicacion": "",
             "Estado_expediente": "NoRevisado", "Pagina": "Comunidad Andina", "FechaRevisado": "",
             "Encargado": ""}
     db.collection("crm").add(data)
@@ -140,7 +140,7 @@ def obtener_ids_NUG():
 def agregar_datos_OEA(oficina, titulo, fecha, estado, referencia, documento):
     data = {"Expediente_id": referencia, "Pais": oficina, "Titulo": titulo, "Fecha Limite": fecha, "Estado": estado,
             "Documento": documento, "Estado_expediente": "NoRevisado", "Pagina": "OEA",
-            "FechaRevisado": "", "Encargado": "", "Reporte": ""}
+            "FechaPublicacion": "", "FechaRevisado": "", "Encargado": "", "Reporte": ""}
     db.collection("crm").add(data)
 
 
@@ -198,7 +198,7 @@ def agregar_datos_profonanpe():
 def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
                           tipo_proyecto, estado_proyecto, sub_sector, fund):
     data = {"Expediente_id": id_fila, "fecha_limite": fecha, "fecha_aprobacion": fecha_aprobacion,
-            "Titulo": titulo, "Fund": fund,
+            "Titulo": titulo, "Fund": fund, "FechaPublicacion": "",
             "url_id": url_id, "Costo": costo, "Monto": monto, "sector_proyecto": sector_proyecto, "Pais": pais,
             "link_datos": link_datos, "tipo_proyecto": tipo_proyecto, "estado_proyecto": estado_proyecto,
             "sub_sector": sub_sector, "Documento": "https://www.worldbank.org/en/home",
@@ -219,5 +219,5 @@ def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, 
 def agregar_datos_CAF(titulo, pais, url, deadline):
     data = {"Expediente_id": titulo, "Fecha Limite": deadline, "Titulo": titulo, "Pais": pais, "Documento": url,
             "Estado_expediente": "NoRevisado", "Pagina": "CAF", "FechaRevisado": "", "Encargado": "",
-            "Reporte": ""}
+            "FechaPublicacion": "", "Reporte": ""}
     db.collection("crm").add(data)
