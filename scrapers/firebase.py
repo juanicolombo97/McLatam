@@ -36,7 +36,7 @@ def delete_all_documents():
 # BANCO MUNDIAL
 def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha, documento):
     data = {"Expediente_id": expediente_id, "Descripcion": descripcion, "Pais": pais,
-            "Titulo": titulo, "Tipo Noticia": tipo_noticia, "Idioma": idioma, "Fecha Publicacion": fecha,
+            "Titulo": titulo, "Tipo Noticia": tipo_noticia, "Idioma": idioma, "FechaPublicacion": fecha,
             "Documento": documento,
             "Estado_expediente": "NoRevisado", "Pagina": "Banco Mundial", "FechaRevisado": "", "Encargado": "",
             "Reporte": ""}
@@ -88,7 +88,7 @@ def obtener_ids_comunidad_andina():
 def agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion, fecha_presentacion,
                            pais):
     data = {"Expediente_id": prestamo, "Modalidad": modalidad, "Titulo": objeto, "Descripcion": descripcion,
-            "Presupuesto": presupuesto, "Fecha Publicacion": fecha_publicacion, "Pais": pais,
+            "Presupuesto": presupuesto, "FechaPublicacion": fecha_publicacion, "Pais": pais,
             "Fecha Presentacion": fecha_presentacion, "Programa": prestamo,
             "Estado_expediente": "NoRevisado", "Pagina": "Fonplata", "FechaRevisado": "", "Encargado": "",
             "Reporte": "", "Documento": "https://www.fonplata.org/es/adquisiciones-en-proyectos"}
@@ -113,7 +113,7 @@ def obtener_ids_fonplata():
 
 # NUG
 def agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais):
-    data = {"Expediente_id": referencia, "Fecha Limite": fecha_limite, "Titulo": titulo, "Publicado": publicado,
+    data = {"Expediente_id": referencia, "Fecha Limite": fecha_limite, "Titulo": titulo, "FechaPublicacion": publicado,
             "Organismo Onu": organismo_onu, "Tipo Anuncio": tipo_anuncio, "Pais": pais,
             "Documento": "https://www.ungm.org/Public/Notice", "Estado_expediente": "NoRevisado",
             "Pagina": "Naciones Unidas Global", "FechaRevisado": "", "Encargado": "", "Reporte": ""}
@@ -163,7 +163,7 @@ def obtener_ids_OEA():
 # PROCUREMENT
 def agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion, documento):
     data = {"Expediente_id": numero_referencia, "Titulo": titulo, "Oficina": oficina, "Pais": pais, "Proceso": proceso,
-            "Fecha Hasta": fecha_hasta, "Fecha Publicacion": fecha_publicacion,
+            "Fecha Hasta": fecha_hasta, "FechaPublicacion": fecha_publicacion,
             "Documento": documento, "Estado_expediente": "NoRevisado",
             "Pagina": "Procurement Notices", "FechaRevisado": "", "Encargado": "",
             "Reporte": ""}
@@ -208,7 +208,7 @@ def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, m
 
 # Development
 def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, proyecto, status, deadline):
-    data = {"Expediente_id": expediente_id, "Fecha Limite": deadline, "Fecha Publicacion": fecha,
+    data = {"Expediente_id": expediente_id, "Fecha Limite": deadline, "FechaPublicacion": fecha,
             "Titulo": titulo, "Pais": pais, "Tipo Proyecto": proyecto, "Estado Proyecto": status,
             "Empresa": empresa, "Documento": url,
             "Estado_expediente": "NoRevisado", "Pagina": "Development Business", "FechaRevisado": "", "Encargado": "",
