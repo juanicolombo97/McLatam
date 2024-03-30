@@ -142,7 +142,8 @@ def obtener_datos_tabla(driver):
             continue
 
         # Obtenemos la fecha publicacion de la fila
-        fecha_publicacion = datos_fila[8].text
+        fecha_pub = datos_fila[8].text
+        fecha_publicacion = datetime.strptime(fecha_pub, "%d-%b-%y").strftime("%Y-%m-%d")
         print('Fecha publicacion: ' + fecha_publicacion)
 
         agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion, documento)
