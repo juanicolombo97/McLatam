@@ -26,7 +26,8 @@ const Expedientes = () => {
 
       const q = query(
         expedientesRef,
-        orderBy("Pagina", "desc")
+        orderBy("Pagina", "asc"),
+        orderBy("FechaPublicacion", "desc")
       );
 
       const querySnapshot = await getDocs(q);

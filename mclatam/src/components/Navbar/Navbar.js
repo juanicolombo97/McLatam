@@ -9,7 +9,7 @@ const Navbar = () => {
           Expedientes
       </NavLink>
       <NavLink to="/dashboard" className="nav-link" activeClassName="active">
-          Enviados
+          Seleccionados
       </NavLink>
       <NavLink to="/revisar-expedientes" className="nav-link" activeClassName="active">
         Revisar Expedientes

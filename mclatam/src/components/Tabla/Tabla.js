@@ -29,6 +29,10 @@ const columnas = [
     filtros: [],
   },
   {
+    nombre: 'Fecha Publicacion',
+    filtros: [],
+  },
+  {
     nombre: 'Documento',
     filtros: [], // No hay filtros para la columna Documento
   },
@@ -109,6 +113,13 @@ const Tabla = ({expedientes}) => {
     // Actualiza el número de página actual
     setCurrentPage(newPage);
   };
+
+  function formatDate(dateString) {
+    if (!dateString) return '-';
+    const dateParts = dateString.split('-');
+    const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+    return formattedDate;
+}
 
   const paginatedExpedientes = expedientesFiltrados.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -194,6 +205,7 @@ const Tabla = ({expedientes}) => {
               </td>
               <td>{expediente.Pais}</td>
               <td>{expediente.Pagina}</td>
+              <td>{formatDate(expediente.FechaPublicacion)}</td>
               <td>
                 <a href={expediente.Documento} target="_blank" rel="noreferrer">
                   Ver Documento

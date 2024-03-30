@@ -4,7 +4,7 @@ const Popup = ({ onClose }) => {
 
   return (
     <div className="popup">
-        <p>Email enviado</p>
+        <p>Seleccionado</p>
         <button className="close-button-black" onClick={onClose}>
               &times;
         </button>

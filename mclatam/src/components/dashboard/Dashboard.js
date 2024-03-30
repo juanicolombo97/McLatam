@@ -23,12 +23,14 @@ const Dashboard = () => {
   useEffect(() => {
     const loadExpedientes = async () => {
       const expedientesRef = collection(db, "crm");
-  
+
       const q = query(
-        expedientesRef, 
-        where("Estado_expediente", "==", 'Enviar')
+        expedientesRef,
+        where("Estado_expediente", "==", 'Enviar'),
+        orderBy("Pagina", "asc"),
+        orderBy("FechaPublicacion", "desc")
       );
-  
+
       const querySnapshot = await getDocs(q);
       const expedientesData = [];
       querySnapshot.forEach((doc) => {
