@@ -81,7 +81,7 @@ def obtener_datos_tabla(driver):
                 objeto = datos_fila[2].text
                 descripcion = datos_fila[3].text
                 presupuesto = datos_fila[4].text
-                fecha_publicacion = datos_fila[5].text
+                fecha = datos_fila[5].text
                 fecha_presentacion = datos_fila[6].text
 
                 fecha_actual = datetime.now().date()
@@ -91,13 +91,13 @@ def obtener_datos_tabla(driver):
                 if fecha_limite_date < fecha_actual:
                     print("La fecha limite ya paso.")
                     continue
-
+                fecha_publicacion = datetime.strptime(fecha, "%d/%m/%Y").strftime("%Y-%m-%d")
                 print("Prestamo " + prestamo)
                 print("Modalidad " + modalidad)
                 print("Objeto " + objeto)
                 print("Descripcion " + descripcion)
                 print("Presupuesto " + presupuesto)
-                print("Fecha_publicacion " + fecha_publicacion)
+                print("Fecha_publicacion ", fecha_publicacion)
                 print("Fecha_presentacion " + fecha_presentacion)
 
                 agregar_datos_fonplata(prestamo, modalidad, objeto, descripcion, presupuesto, fecha_publicacion,
