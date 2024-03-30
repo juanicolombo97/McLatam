@@ -224,7 +224,8 @@ def obtener_datos_expediente(driver, contador):
 
     # Obtenemos del segundo div de descripcion para obtener la fecha
     divs_segundo = div_descripcion[1].text.split('\n')[1].strip()
-    print('Fecha: ', divs_segundo)
+    fecha_publicacion = datetime.strptime(divs_segundo, "%d %B %Y").strftime("%Y-%m-%d")
+    print('Fecha: ', fecha_publicacion)
 
     # Obtenemos el status
     status = div_descripcion[2].text.split('\n')[1].strip()
@@ -250,7 +251,7 @@ def obtener_datos_expediente(driver, contador):
     except:
         print("No se pudo obtener el deadline")
     print('Deadline: ', deadline)
-    agregar_datos_development(expediente_id, titulo, divs_segundo, pais, empresa, url, proyecto, status, deadline)
+    agregar_datos_development(expediente_id, titulo, fecha_publicacion, pais, empresa, url, proyecto, status, deadline)
 
 
 # Funcion que se encarga de loguearse a la pagina
