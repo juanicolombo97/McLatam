@@ -1,4 +1,5 @@
 # -------------------------------------- LIBRERIAS --------------------------------------------------------------------
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -161,16 +162,17 @@ def obtener_datos_tabla(driver):
 
             # Obtenemos la fecha de publicacion
             fecha = datos_fila[5].text
+            fecha_publicacion = datetime.strptime(fecha, "%B %d, %Y").strftime("%d/%m/%Y")
 
             print('Desc: ' + descripcion)
             print('Pais: ' + pais)
             print('Titulo: ' + titulo)
             print('Tipo noticia: ' + tipo_noticia)
             print('Idioma: ' + idioma)
-            print('Fecha: ' + fecha)
+            print('Fecha: ', fecha_publicacion)
             print('Expediente id: ' + expediente_id)
             print('Documento: ' + documento)
-            agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha, documento)
+            agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha_publicacion, documento)
 
         wait(driver)
         WebDriverWait(driver, 30).until(
