@@ -23,6 +23,18 @@ def obtener_expediente(expediente_id):
     return 0
 
 
+def obtener_expedientes_seleccionados():
+    docs = (
+        db.collection("crm")
+        .where(filter=FieldFilter("Estado_expediente", "==", 'Enviar')).stream()
+    )
+
+    for doc in docs:
+        print(f"{doc.id} => {doc.to_dict()}")
+        return 1
+    return 0
+
+
 def delete_all_documents():
     # Obtengo los documentos
     docs = db.collection("crm").stream()
@@ -31,7 +43,9 @@ def delete_all_documents():
         documento.reference.delete()
         print("eliminado")
 
+
 # delete_all_documents()
+# obtener_expedientes_seleccionados()
 
 # BANCO MUNDIAL
 def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha, documento):
@@ -161,7 +175,8 @@ def obtener_ids_OEA():
 
 
 # PROCUREMENT
-def agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion, documento):
+def agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion,
+                              documento):
     data = {"Expediente_id": numero_referencia, "Titulo": titulo, "Oficina": oficina, "Pais": pais, "Proceso": proceso,
             "Fecha Hasta": fecha_hasta, "FechaPublicacion": fecha_publicacion,
             "Documento": documento, "Estado_expediente": "NoRevisado",
@@ -196,7 +211,7 @@ def agregar_datos_profonanpe():
 
 # BID
 def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
-                          tipo_proyecto, estado_proyecto, sub_sector, fund):
+                      tipo_proyecto, estado_proyecto, sub_sector, fund):
     data = {"Expediente_id": id_fila, "fecha_limite": fecha, "fecha_aprobacion": fecha_aprobacion,
             "Titulo": titulo, "Fund": fund, "FechaPublicacion": "",
             "url_id": url_id, "Costo": costo, "Monto": monto, "sector_proyecto": sector_proyecto, "Pais": pais,
@@ -206,6 +221,7 @@ def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, m
             "Reporte": ""}
     db.collection("crm").add(data)
 
+
 # Development
 def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, proyecto, status, deadline):
     data = {"Expediente_id": expediente_id, "Fecha Limite": deadline, "FechaPublicacion": fecha,
@@ -214,6 +230,7 @@ def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, 
             "Estado_expediente": "NoRevisado", "Pagina": "Development Business", "FechaRevisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)
+
 
 # CAF
 def agregar_datos_CAF(titulo, pais, url, deadline):
