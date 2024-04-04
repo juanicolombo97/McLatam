@@ -23,18 +23,6 @@ def obtener_expediente(expediente_id):
     return 0
 
 
-def obtener_expedientes_seleccionados():
-    docs = (
-        db.collection("crm")
-        .where(filter=FieldFilter("Estado_expediente", "==", 'Enviar')).stream()
-    )
-
-    for doc in docs:
-        print(f"{doc.id} => {doc.to_dict()}")
-        return 1
-    return 0
-
-
 def delete_all_documents():
     # Obtengo los documentos
     docs = db.collection("crm").stream()
@@ -45,7 +33,6 @@ def delete_all_documents():
 
 
 # delete_all_documents()
-# obtener_expedientes_seleccionados()
 
 # BANCO MUNDIAL
 def agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha, documento):
