@@ -127,3 +127,5 @@ func_importantes/token.json
 package-lock.json
 
 package.json
+
+func_importantes/credentials.json
