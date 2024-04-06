@@ -122,3 +122,4 @@ scrapers/NUG/__pycache__/scraper_naciones_unidas_global.cpython-311.pyc
 scrapers/CAF/__pycache__/scraper_CAF.cpython-311.pyc
 
 node_modules/
+func_importantes/token.json
