@@ -123,3 +123,7 @@ scrapers/CAF/__pycache__/scraper_CAF.cpython-311.pyc
 
 node_modules/
 func_importantes/token.json
+
+package-lock.json
+
+package.json
