@@ -6,46 +6,35 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
+import firebase_admin
+from firebase_admin import credentials, firestore
+from google.cloud.firestore_v1 import FieldFilter
 
-# Ejemplo de uso:
-expedientes = [
-    {
-        'consultoria': 'Consultoría ABC',
-        'lugar': 'Ciudad A',
-        'tipo': 'Tipo 1',
-        'codigoProceso': '12345',
-        'codigoCompleto': 'ABC-12345',
-        'proyecto': 'Proyecto X',
-        'deadline': '01/01/2024',
-        'plazo': '30 días',
-        'presupuesto': '$1000',
-        'objetivos': 'Objetivo principal...',
-        'objetivoEspecifico': 'Objetivo específico...',
-        'alcance': 'Alcance del proyecto...',
-        'experiencia': '10 años',
-        'encargado': 'Juan Pérez',
-        'Expediente_ID': 'EXP-12345',
-    },
-    {
-        'consultoria': 'Consultoría DEF',
-        'lugar': 'Ciudad B',
-        'tipo': 'Tipo 2',
-        'codigoProceso': '67890',
-        'codigoCompleto': 'DEF-67890',
-        'proyecto': 'Proyecto Y',
-        'deadline': '01/02/2024',
-        'plazo': '45 días',
-        'presupuesto': '$1500',
-        'objetivos': 'Otro objetivo principal...',
-        'objetivoEspecifico': 'Otro objetivo específico...',
-        'alcance': 'Otro alcance...',
-        'experiencia': '5 años',
-        'encargado': 'María Rodríguez',
-        'Expediente_ID': 'EXP-67890',
-    },
-]
+cred = credentials.Certificate("/Users/mickyconca/Desktop/McLatam/clave.json")
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+
+
+def obtener_expedientes_seleccionados():
+    docs = (
+        db.collection("crm")
+        .where(filter=FieldFilter("Estado_expediente", "==", 'Enviar')).stream()
+    )
+
+    json_array = []
+
+    for doc in docs:
+        doc_dict = doc.to_dict()  # Convierte el documento a un diccionario
+        json_array.append(doc_dict)  # Agrega el diccionario al array
+
+    return json_array
+
+
+# expedientes = obtener_expedientes_seleccionados()
+expedientes = obtener_expedientes_seleccionados()
 
 
 def lambda_handler(event, context):
@@ -60,6 +49,7 @@ def lambda_handler(event, context):
 
     # Enviamos el mensaje
     send_message(service, 'me', message)
+    print("Email enviado")
 
 
 def gmail_authenticate():
@@ -160,17 +150,21 @@ def create_report(expedientes):
             for expediente in expedientes:
                 with tag('div', klass='expediente'):
                     # Destacamos el dato de Expediente_ID
-                    if 'Expediente_ID' in expediente:
+                    if 'Titulo' in expediente:
                         with tag('div', klass='expediente-id'):
-                            text(expediente['Expediente_ID'])
+                            text(expediente['Titulo'])
 
                     # Procesamos todos los otros datos del expediente
                     for key, value in expediente.items():
-                        if value is not None and key not in ['Fecha_revisado',
-                                                             'Expediente_id']:  # Asegurarse de que el valor no sea None
+                        if value is not None and key not in ['Fecha_revisado', 'FechaRevisado', 'Reporte',
+                                                             'Estado_expediente',
+                                                             'Expediente_id',
+                                                             'Titulo']:  # Asegurarse de que el valor no sea None
+                            # Formateamos el nombre del campo si es 'FechaPublicacion'
+                            display_key = 'Fecha Publicación' if key == 'FechaPublicacion' else key
                             with tag('p'):
                                 with tag('strong'):
-                                    text(key.capitalize() + ': ')
+                                    text(display_key.capitalize() + ': ')
                                 text(value)
 
     return doc.getvalue()
