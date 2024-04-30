@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Tabla from '../Tabla/Tabla';
-import SearchBar from '../SearchBar/SearchBar';
 import { collection, getDocs, query, orderBy, limit, where } from "firebase/firestore";
 import { db } from '../../firebase/firebase';
+import Popup from "../RevisarExpedientes/Popup";
+import EmailRestAPI from "./EmailRestAPI";
 
 const Dashboard = () => {
   const [expedientes, setExpedientes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isPopupVisible, setPopupVisibility] = useState(false);
 
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
@@ -27,8 +29,7 @@ const Dashboard = () => {
       const q = query(
         expedientesRef,
         where("Estado_expediente", "==", 'Enviar'),
-        orderBy("Pagina", "asc"),
-        orderBy("FechaPublicacion", "desc")
+        orderBy("Pagina", "asc")
       );
 
       const querySnapshot = await getDocs(q);
@@ -51,6 +52,10 @@ const Dashboard = () => {
     );
   });
 
+  const handleClosePopup = () => {
+    setPopupVisibility(false);
+  };
+
   return (
         <div className="expedientes-container">
           {isLoading ? (
@@ -63,7 +68,10 @@ const Dashboard = () => {
             </div>
           ) : (
             <>
-              <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+              <div className="container">
+                {isPopupVisible && <Popup onClose={handleClosePopup} />}
+                <EmailRestAPI expedientes={filteredExpedientes}/>
+              </div>
               <Tabla expedientes={filteredExpedientes} />
             </>
           )}

@@ -25,12 +25,37 @@
     transition: background-color 0.3s;
 }
 
+.botonArribaDerecha {
+    background-color: #ccc;
+    border: none;
+    color: white;
+    position: absolute;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    top: 30%; /* Ajusta la posición arriba */
+    right: 0; /* Ajusta la posición derecha */
+    margin: 10px; /* Ajusta el margen si es necesario */
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.container {
+    text-align: center;
+    margin: 20px auto; /* Centra el contenedor horizontalmente */
+    width: 60%; /* Establece el ancho del contenedor */
+    margin-top: 5%;
+}
+
 .button:hover {
     opacity: 0.8;
 }
 
 .enviar {
-    background-color: #4CAF50;
+    background-color: #3d07ff;
 }
 
 .no-sirve {
@@ -42,5 +67,5 @@
 }
 
 .enviar_reporte {
-    background-color: #3d07ff;
+    background-color: #4CAF50;
 }

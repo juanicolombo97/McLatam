@@ -10,7 +10,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1 import FieldFilter
 
-cred = credentials.Certificate("/Users/mickyconca/Desktop/McLatam/clave.json")
+cred = credentials.Certificate("/Users/mickyconca/Desktop/McLatam/scrapers/clave.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()

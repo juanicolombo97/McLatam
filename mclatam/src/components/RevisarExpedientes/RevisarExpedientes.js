@@ -181,7 +181,6 @@ export const RevisarExpedientes = () => {
                     onNoSirve={handleNoSirve}
                     onAnterior={handleAnterior}
                     onAvanzar={handleAvanzar}
-                    handleEnviarReporte={handleEnviarReporte}
                 />
                 <Expediente expediente={expedientes[currentIndex]} />
                 <ExpedienteForm values={formValues} onChange={handleChange} />
