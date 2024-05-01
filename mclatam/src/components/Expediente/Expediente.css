@@ -73,7 +73,6 @@ h2 {
 .modal-fila-detalles {
     display: flex;
     flex-direction: column; /* Asegura que los elementos hijos se apilen verticalmente */
-    align-items: start;     /* Alinea los elementos hijos a la izquierda */
     padding: 10px;          /* Proporciona algo de espacio interno */
 }
 

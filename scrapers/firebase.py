@@ -62,7 +62,7 @@ def obtener_ids_banco_mundial():
 
 # COMUNIDAD ANDINA
 def agregar_datos_comunidad_andina(nombre, fecha_limite, contacto, documento):
-    data = {"Expediente_id": nombre, "Titulo": nombre, "Fecha Limite": fecha_limite, "Contacto": contacto,
+    data = {"Expediente_id": nombre, "Titulo": nombre, "FechaLimite": fecha_limite, "Contacto": contacto,
             "Documento": documento, "FechaPublicacion": "",
             "Estado_expediente": "NoRevisado", "Pagina": "Comunidad Andina", "FechaRevisado": "",
             "Encargado": ""}
@@ -114,7 +114,7 @@ def obtener_ids_fonplata():
 
 # NUG
 def agregar_datos_NUG(titulo, fecha_limite, publicado, organismo_onu, tipo_anuncio, referencia, pais):
-    data = {"Expediente_id": referencia, "Fecha Limite": fecha_limite, "Titulo": titulo, "FechaPublicacion": publicado,
+    data = {"Expediente_id": referencia, "FechaLimite": fecha_limite, "Titulo": titulo, "FechaPublicacion": publicado,
             "Organismo Onu": organismo_onu, "Tipo Anuncio": tipo_anuncio, "Pais": pais,
             "Documento": "https://www.ungm.org/Public/Notice", "Estado_expediente": "NoRevisado",
             "Pagina": "Naciones Unidas Global", "FechaRevisado": "", "Encargado": "", "Reporte": ""}
@@ -139,7 +139,7 @@ def obtener_ids_NUG():
 
 # OEA
 def agregar_datos_OEA(oficina, titulo, fecha, estado, referencia, documento):
-    data = {"Expediente_id": referencia, "Pais": oficina, "Titulo": titulo, "Fecha Limite": fecha, "Estado": estado,
+    data = {"Expediente_id": referencia, "Pais": oficina, "Titulo": titulo, "FechaLimite": fecha, "Estado": estado,
             "Documento": documento, "Estado_expediente": "NoRevisado", "Pagina": "OEA",
             "FechaPublicacion": "", "FechaRevisado": "", "Encargado": "", "Reporte": ""}
     db.collection("crm").add(data)
@@ -211,7 +211,7 @@ def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, m
 
 # Development
 def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, proyecto, status, deadline):
-    data = {"Expediente_id": expediente_id, "Fecha Limite": deadline, "FechaPublicacion": fecha,
+    data = {"Expediente_id": expediente_id, "FechaLimite": deadline, "FechaPublicacion": fecha,
             "Titulo": titulo, "Pais": pais, "Tipo Proyecto": proyecto, "Estado Proyecto": status,
             "Empresa": empresa, "Documento": url,
             "Estado_expediente": "NoRevisado", "Pagina": "Development Business", "FechaRevisado": "", "Encargado": "",
@@ -221,7 +221,7 @@ def agregar_datos_development(expediente_id, titulo, fecha, pais, empresa, url, 
 
 # CAF
 def agregar_datos_CAF(titulo, pais, url, deadline):
-    data = {"Expediente_id": titulo, "Fecha Limite": deadline, "Titulo": titulo, "Pais": pais, "Documento": url,
+    data = {"Expediente_id": titulo, "FechaLimite": deadline, "Titulo": titulo, "Pais": pais, "Documento": url,
             "Estado_expediente": "NoRevisado", "Pagina": "CAF", "FechaRevisado": "", "Encargado": "",
             "FechaPublicacion": "", "Reporte": ""}
     db.collection("crm").add(data)
