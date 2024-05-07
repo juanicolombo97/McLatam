@@ -3,7 +3,6 @@ import { collection, getDocs, query, where, doc, updateDoc,serverTimestamp } fro
 import { db } from '../../firebase/firebase';  // Asegúrate de tener la ruta correcta a tu archivo firebase
 import Expediente from '../Expediente/Expediente';
 import ExpedienteButtons from '../ExpedienteButtons/ExpedienteButtons';
-import ExpedienteForm from '../ExpedienteForm/ExpedienteForm';
 import {auth} from '../../firebase/firebase'
 import Popup from "./Popup";
 
@@ -32,7 +31,7 @@ export const RevisarExpedientes = () => {
     encargado: '',
   };
   
-  const [formValues, setFormValues] = useState(initialFormValues);
+  const [formValues] = useState(initialFormValues);
 
     
   useEffect(() => {
@@ -67,25 +66,12 @@ export const RevisarExpedientes = () => {
     const user = auth.currentUser;
     const email = user.email;
     console.log('EMAIL: ', email);
-
-    // Agregamos el mail del usuario al formulario
-    formValues.encargado = email;
-    const allFieldsFilled = Object.values(formValues).every(field => field !== '');
-    if (!allFieldsFilled) {
-      alert("Por favor, completa todos los campos antes de enviar.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Formatear los datos del formulario para el reporte
-    const formattedReport = Object.entries(formValues).map(([key, value]) => `${key}: ${value}`).join('\n');
   
     // Realizar updates en la base de datos y avanzar al siguiente expediente
     const expedienteRef = doc(db, "crm", expedientes[currentIndex].id);
     
     await updateDoc(expedienteRef, {
       Estado_expediente: "Enviar",
-      Reporte: formattedReport,
       Fecha_revisado: serverTimestamp(),
       Encargado: email,
     });
@@ -94,7 +80,6 @@ export const RevisarExpedientes = () => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
     }
     setIsLoading(false);
-    setFormValues(initialFormValues);
     setPopupVisibility(true);
     setTimeout(() => {
       setPopupVisibility(false);
@@ -118,7 +103,6 @@ export const RevisarExpedientes = () => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
     }
     setIsLoading(false);
-    setFormValues(initialFormValues);
 
   };
 
@@ -126,42 +110,23 @@ export const RevisarExpedientes = () => {
   const handleAnterior = () => {
     setIsLoading(true);
 
-        // Retroceder al expediente anterior
     console.log('Anterior');
     if (expedientes.length > 0) {
       setCurrentIndex((prevIndex) => (prevIndex - 1) % expedientes.length);
     }
     setIsLoading(false);
-    setFormValues(initialFormValues);
-
   };
 
   // Boton avanzar
   const handleAvanzar = () => {
     setIsLoading(true);
 
-        // Avanzar al siguiente expediente
     console.log('Avanzar');
     if (expedientes.length > 0) {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % expedientes.length);
-    }        
+    }
     setIsLoading(false);
-    setFormValues(initialFormValues);
 
-  };
-
-  const handleEnviarReporte = async () => {
-    console.log('Enviar reporte');
-
-  }
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
-  };
-
-  const handleClosePopup = () => {
-    setPopupVisibility(false);
   };
 
   return (
@@ -175,15 +140,14 @@ export const RevisarExpedientes = () => {
             <Expediente expediente={null} />
         ) : (
             <>
-              {isPopupVisible && <Popup onClose={handleClosePopup} />}
+              {isPopupVisible && <Popup text="Seleccionado!" />}
               <ExpedienteButtons
                     onEnviar={handleEnviar}
                     onNoSirve={handleNoSirve}
                     onAnterior={handleAnterior}
                     onAvanzar={handleAvanzar}
-                />
-                <Expediente expediente={expedientes[currentIndex]} />
-                <ExpedienteForm values={formValues} onChange={handleChange} />
+              />
+              <Expediente expediente={expedientes[currentIndex]} />
             </>
         )}
     </div>

@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import Popup from "../RevisarExpedientes/Popup";
 
 const EmailRestAPI = ({expedientes}) => {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [isPopupVisible, setPopupVisibility] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,12 +39,17 @@ const EmailRestAPI = ({expedientes}) => {
     } catch (error) {
       console.error(error);
     }
+    setPopupVisibility(true);
+    setTimeout(() => {
+      setPopupVisibility(false);
+    }, 2000);
   }
 
   return (
     <div>
         <form onSubmit={handleSubmit} className='emailForm'>
-          <button type="submit">Enviar Reporte</button>
+          <button type="submit" style={{ backgroundColor: '#63c132', color: 'white',cursor: 'pointer', border: 'none', padding: '10px 20px', borderRadius: '5px', fontSize: '16px' }}>Enviar Reporte</button>
+          {isPopupVisible && <Popup text="¡Email enviado!" />}
         </form>
     </div>
   )
