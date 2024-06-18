@@ -1,7 +1,7 @@
 # -------------------------------------- LIBRERIAS --------------------------------------------------------------------
 import locale
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
@@ -83,10 +83,11 @@ def obtener_datos_tabla(driver):
     WebDriverWait(driver, 30).until(EC.invisibility_of_element((By.ID, 'mainThrobber')))
 
     # Clickear sobre la busqueda avanzada para poder ver los filtros
-    WebDriverWait(driver, 30).until(
-        EC.element_to_be_clickable((By.XPATH, "//*[@id='noticeFilter']/div[1]/div[2]/input")))
-    busqueda_avanzada = driver.find_element(By.XPATH, "//*[@id='noticeFilter']/div[1]/div[2]/input")
-    busqueda_avanzada.click()
+    # WebDriverWait(driver, 30).until(
+    #     EC.element_to_be_clickable((By.XPATH, "//*[@id='noticeFilter']/div[1]/div[2]/input")))
+
+    # busqueda_avanzada = driver.find_element(By.XPATH, "//*[@id='noticeFilter']/div[1]/div[2]/input")
+    # busqueda_avanzada.click()
     print("Click Mostrar Busqueda")
 
     # Seleccionar el filtro que quiero
@@ -121,6 +122,7 @@ def obtener_datos_tabla(driver):
 
     filas_scrapeadas = 0
     fila_actual = filas_scrapeadas
+    una_semana_antes = datetime.now() - timedelta(days=7)
 
     # Obtener la altura de una fila de la tabla
     altura_fila = driver.execute_script("return arguments[0].clientHeight;", filas[0]) * 2
@@ -166,6 +168,11 @@ def obtener_datos_tabla(driver):
             continue
 
         fecha_publicacion = datetime.strptime(publicado, "%d-%b.-%Y").strftime("%Y-%m-%d")
+        fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%Y-%m-%d")
+        if fecha_publicacion_dt < una_semana_antes:
+            print(f"Fecha publicación {fecha_publicacion} vieja")
+            continue
+
         print("titulo: " + titulo)
         print("fecha: " + fecha_limite)
         print("fecha_publicacion: ", fecha_publicacion)

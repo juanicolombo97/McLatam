@@ -4,7 +4,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 # Para que corra en AWS
 # import sys
 # sys.path.append('/home/ubuntu/McLatam')
@@ -73,6 +73,7 @@ def obtener_datos_tabla(driver):
     num_filas = len(filas)
     print('Numero de filas: ' + str(num_filas))
     fecha_actual = datetime.now().date()
+    una_semana_antes = datetime.now() - timedelta(days=7)
 
     # Hacemos for por cada fila
     for numero_fila in range(1, len(filas)):
@@ -144,6 +145,11 @@ def obtener_datos_tabla(driver):
         # Obtenemos la fecha publicacion de la fila
         fecha_pub = datos_fila[8].text
         fecha_publicacion = datetime.strptime(fecha_pub, "%d-%b-%y").strftime("%Y-%m-%d")
+        fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%Y-%m-%d")
+        if fecha_publicacion_dt < una_semana_antes:
+            print(f"Fecha publicación {fecha_publicacion} vieja")
+            return
+
         print('Fecha publicacion: ' + fecha_publicacion)
 
         agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion, documento)

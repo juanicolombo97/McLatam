@@ -1,5 +1,5 @@
 # -------------------------------------- LIBRERIAS --------------------------------------------------------------------
-from datetime import datetime
+from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
@@ -161,6 +161,7 @@ def obtener_datos_expediente(driver, contador):
     titulo = ''
     proyecto = ''
     url = ''
+    una_semana_antes = datetime.now() - timedelta(days=7)
 
     # Obtenemos div donde estan los datos
     div_datos = driver.find_element(By.XPATH, "//div[@class='view-content']")
@@ -226,6 +227,10 @@ def obtener_datos_expediente(driver, contador):
     divs_segundo = div_descripcion[1].text.split('\n')[1].strip()
     fecha_publicacion = datetime.strptime(divs_segundo, "%d %B %Y").strftime("%Y-%m-%d")
     print('Fecha: ', fecha_publicacion)
+    fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%Y-%m-%d")
+    if fecha_publicacion_dt < una_semana_antes:
+        print(f"Fecha publicación {fecha_publicacion} vieja")
+        return
 
     # Obtenemos el status
     status = div_descripcion[2].text.split('\n')[1].strip()

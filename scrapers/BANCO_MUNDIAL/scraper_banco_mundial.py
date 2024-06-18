@@ -1,5 +1,5 @@
 # -------------------------------------- LIBRERIAS --------------------------------------------------------------------
-from datetime import datetime
+from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -98,6 +98,7 @@ def obtener_datos_tabla(driver):
     # Convertir la cadena sin coma en un número entero
     filas_totales = int(cadena_sin_coma)
     numero_pagina = 0
+    una_semana_antes = datetime.now() - timedelta(days=7)
 
     while fila_actual < int(filas_totales):
         # Esperamos que cargue la tabla
@@ -164,12 +165,17 @@ def obtener_datos_tabla(driver):
             fecha = datos_fila[5].text
             fecha_publicacion = datetime.strptime(fecha, "%B %d, %Y").strftime("%Y-%m-%d")
 
+            fecha_publicacion_dt = datetime.strptime(fecha, "%B %d, %Y")
+            if fecha_publicacion_dt < una_semana_antes:
+                print(f"Fecha publicación {fecha_publicacion} vieja")
+                break
+
             print('Desc: ' + descripcion)
             print('Pais: ' + pais)
             print('Titulo: ' + titulo)
             print('Tipo noticia: ' + tipo_noticia)
             print('Idioma: ' + idioma)
-            print('Fecha: ', fecha_publicacion)
+            print('Fecha Pub: ', fecha_publicacion)
             print('Expediente id: ' + expediente_id)
             print('Documento: ' + documento)
             agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha_publicacion, documento)

@@ -4,11 +4,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
+from datetime import datetime, timedelta
 # Para que corra en AWS
 # import sys
 # sys.path.append('/home/ubuntu/McLatam')
 from scrapers.firebase import agregar_datos_fonplata, obtener_expediente
-from datetime import datetime
 
 
 def main():
@@ -44,6 +44,7 @@ def obtener_datos_tabla(driver):
     datos_paises = driver.find_elements(By.XPATH, "//div[@class='tab-content']/div")
 
     print(len(paises))
+    una_semana_antes = datetime.now() - timedelta(days=7)
 
     # Recorro cada pais
     for index in range(0, len(paises)):
@@ -85,13 +86,19 @@ def obtener_datos_tabla(driver):
                 fecha_presentacion = datos_fila[6].text
 
                 fecha_actual = datetime.now().date()
-                fecha_limite_date = datetime.strptime(fecha_presentacion, "%d/%m/%Y").date()
+                if fecha_presentacion:
+                    fecha_limite_date = datetime.strptime(fecha_presentacion, "%d/%m/%Y").date()
+                    # Compara las fechas
+                    if fecha_limite_date < fecha_actual:
+                        print("La fecha limite ya paso.")
+                        continue
 
-                # Compara las fechas
-                if fecha_limite_date < fecha_actual:
-                    print("La fecha limite ya paso.")
-                    continue
                 fecha_publicacion = datetime.strptime(fecha, "%d/%m/%Y").strftime("%Y-%m-%d")
+                fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%Y-%m-%d")
+                if fecha_publicacion_dt < una_semana_antes:
+                    print(f"Fecha publicación {fecha_publicacion} vieja")
+                    continue
+
                 print("Prestamo " + prestamo)
                 print("Modalidad " + modalidad)
                 print("Objeto " + objeto)
