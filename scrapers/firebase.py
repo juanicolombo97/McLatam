@@ -197,13 +197,13 @@ def agregar_datos_profonanpe():
 
 
 # BID
-def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
-                      tipo_proyecto, estado_proyecto, sub_sector, fund):
-    data = {"Expediente_id": id_fila, "fecha_limite": fecha, "fecha_aprobacion": fecha_aprobacion,
-            "Titulo": titulo, "Fund": fund, "FechaPublicacion": "",
-            "url_id": url_id, "Costo": costo, "Monto": monto, "sector_proyecto": sector_proyecto, "Pais": pais,
-            "link_datos": link_datos, "tipo_proyecto": tipo_proyecto, "estado_proyecto": estado_proyecto,
-            "sub_sector": sub_sector, "Documento": "https://www.worldbank.org/en/home",
+def agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, fecha_publicacion, url_id, costo, monto, sector_proyecto, pais, url,
+                      tipo_proyecto, estado_proyecto, sub_sector):
+    data = {"Expediente_id": id_fila, "Fecha Limite": fecha, "Fecha Aprobacion": fecha_aprobacion,
+            "Titulo": titulo, "FechaPublicacion": fecha_publicacion,
+            "Costo": costo, "Monto": monto, "Sector": sector_proyecto, "Pais": pais,
+            "Tipo": tipo_proyecto, "Estado": estado_proyecto, "Link para descargar": url_id,
+            "Subsector": sub_sector, "Documento": url,
             "Estado_expediente": "NoRevisado", "Pagina": "BID", "FechaRevisado": "", "Encargado": "",
             "Reporte": ""}
     db.collection("crm").add(data)

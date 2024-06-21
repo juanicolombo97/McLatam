@@ -1,11 +1,14 @@
 # -------------------------------------- LIBRERIAS --------------------------------------------------------------------
+from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
-
+# Para que corra en AWS
+# import sys
+# sys.path.append('/home/ubuntu/McLatam')
 from scrapers.firebase import agregar_datos_BID, obtener_expediente
 
 LISTA_TITULOS_MALOS = [
@@ -55,6 +58,7 @@ def obtener_datos_tabla(driver):
     # Obtenemos el numero de filas
     num_filas = len(filas) / 2
     print('Numero de filas: ' + str(num_filas))
+    una_semana_antes = datetime.now() - timedelta(days=7)
 
     # Hacemos for por cada fila, saltando de 2 en 2
     for numero_fila in range(0, len(filas), 2):
@@ -120,7 +124,6 @@ def obtener_datos_tabla(driver):
         actions = ActionChains(driver)
         boton_expandir = datos_fila[0]
         actions.move_to_element(boton_expandir).perform()
-        print("actionss")
         time.sleep(10)
         boton_expandir.click()
         print('Boton fila presionado')
@@ -141,15 +144,16 @@ def obtener_datos_tabla(driver):
 
         # Obtenemos la fecha de publicacion que es el segundo item, apartir de los :
         fecha_publicacion = lista_datos_apertura[1].split(':')[1].strip()
-        print('Fecha publicacion: ', fecha_publicacion)
+        fecha_pub = datetime.strptime(fecha_publicacion, "%d-%B-%Y").strftime("%Y-%m-%d")
+        fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%d-%B-%Y")
+        if fecha_publicacion_dt < una_semana_antes:
+            print(f"Fecha publicación {fecha_publicacion_dt} vieja")
+            continue
+        print('Fecha publicacion: ', fecha_pub)
 
         # Obtenemos el pais que es el tercer item, apartir de los :
         pais = lista_datos_apertura[2].split(':')[1].strip()
         print('Pais: ', pais)
-
-        # Obtenemos el funding source
-        # fund = lista_datos_apertura[3].text
-        # print('Funding source: ', fund)
 
         # Obtenemos el link del a
         link_datos = datos_apertura.find_element(By.TAG_NAME, "a").get_attribute('href')
@@ -162,52 +166,50 @@ def obtener_datos_tabla(driver):
         print('Pagina abierta')
 
         # Esperamos que cargue la pagina
+        time.sleep(2)
+        try:
+            close_popup = driver.find_element(By.XPATH, "//*[@id='onetrust-close-btn-container']/button")
+            close_popup.click()
+        except:
+            print("No hay cookies")
+        try:
+            driver.find_element(By.XPATH, "//strong[contains(text(), 'File or directory not found.')]")
+            driver.close()
+            driver.switch_to.window(driver.window_handles[0])
+            continue
+        except:
+            print("Pagina valida")
+
         WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//h2[contains(text(),  'Project Detail')]")))
+            EC.presence_of_element_located((By.XPATH, "//h3[contains(text(),  'Project Detail')]")))
         print('Pagina cargada')
 
         # Obtenemos el aproval date
-        fecha_aprobacion = driver.find_element(By.XPATH, "//div[contains(text(),  ' Approval date')]/../span").text
+        fecha_aprobacion = driver.find_element(By.XPATH, "//p[contains(text(),  ' Date')]/../p[2]").text
         print('Fecha aprobacion: ' + fecha_aprobacion)
 
         # Obtenemos el sector del proyecto
-        sector_proyecto = driver.find_element(By.XPATH, "//div[contains(text(),  ' Project Sector')]/../span").text
+        sector_proyecto = driver.find_element(By.XPATH, "//p[contains(text(),  'Sector')]/../p[2]").text
         print('Sector proyecto: ' + sector_proyecto)
 
         # Obtenemos el tipo de proyecto
-        tipo_proyecto = driver.find_element(By.XPATH, "//div[contains(text(),  ' Project Type')]/../span").text
+        tipo_proyecto = driver.find_element(By.XPATH, "//p[contains(text(),  'Project Type')]/../p[2]").text
         print('Tipo proyecto: ' + tipo_proyecto)
 
         # Obtenemos el estado del proyecto
-        estado_proyecto = driver.find_element(By.XPATH, "//div[contains(text(),  ' Project Status')]/../span").text
+        estado_proyecto = driver.find_element(By.XPATH, "//p[contains(text(),  'Project Status')]/../p[2]").text
         print('Estado proyecto: ' + estado_proyecto)
 
-        # Obtenemos el operation number para presionarlo
-        operation_number = driver.find_element(By.XPATH, "//div[contains(text(),  ' Operation Number')]/../span")
-
-        # Nos movemos al elemento con actions y lo presionamos
-        actions = ActionChains(driver)
-        actions.move_to_element(operation_number).click().perform()
-        time.sleep(3)
-
-        # Esperamos que cargue el fund
-        WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//div[contains(text(),  'Fund')]/../span")))
-
-        # Obtenemos el fund
-        fund = driver.find_element(By.XPATH, "//div[contains(text(),  'Fund')]/../span").text
-        print('Fund: ' + fund)
-
         # Obtenemos monto proyecto
-        costo = driver.find_element(By.XPATH, "//div[contains(text(),  'Total Cost')]/../span").text
+        costo = driver.find_element(By.XPATH, "//p[contains(text(),  'Total Cost')]/../p[2]").text
         print('Monto: ' + costo)
 
         # Obtenemos el Amount
-        monto = driver.find_element(By.XPATH, "//div[contains(text(),  'Amount')]/../span").text
+        monto = driver.find_element(By.XPATH, "//p[contains(text(),  'Amount')]/../p[2]").text
         print('Amount: ' + monto)
 
-        agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, url_id, costo, monto, sector_proyecto, pais, link_datos,
-                          tipo_proyecto, estado_proyecto, sub_sector, fund)
+        agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, fecha_pub, url_id, costo, monto, sector_proyecto, pais, link_datos,
+                          tipo_proyecto, estado_proyecto, sub_sector)
 
         # Cerramos el tab
         driver.close()
