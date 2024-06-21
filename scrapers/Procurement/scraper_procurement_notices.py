@@ -11,8 +11,11 @@ from datetime import datetime, timedelta
 from scrapers.firebase import agregar_datos_PROCUREMENT, obtener_expediente
 
 LISTA_PAISES_INVALIDOS = [
-    'AFGHANISTAN', 'ALGERIA', 'BANGLADESH', 'BHUTAN', 'BOTSWANA', 'DJIBOUTI', 'EGYPT', 'FIJI', 'GABON', 'IRAQ',
-    'JORDAN',
+    'AFGHANISTAN', 'ALBANIA', 'ALGERIA', 'BANGLADESH', 'BHUTAN', 'BOTSWANA', 'CENTRAL AFRICAN REPUBLIC', 'DJIBOUTI',
+    'EGYPT', 'FIJI', 'GABON', 'IRAQ', 'BOSNIA AND HERZEGOVINA', 'SWITZERLAND', 'SEYCHELLES', 'SERBIA', 'INDIA',
+    'GAMBIA', 'GUINEA-BISSAU', 'MONGOLIA', 'TIMOR LESTE', 'BAHRAIN', 'SUDAN', 'LESOTHO', 'MONTENEGRO', 'SIERRA LEONE',
+    'JORDAN', 'NIGERIA', 'SAMOA', 'VIET NAM', 'MOZAMBIQUE', 'MOLDOVA', 'MOROCCO', 'MAURITIUS', 'BURKINA FASO',
+    'ETHIOPIA', 'COMOROS', 'LEBANON', '', 'CHAD', 'ZIMBABWE', 'INDONESIA', 'CAMEROON', 'LIBERIA', 'PAPUA NEW GUINEA',
     'THAILAND', 'LAO PDR', 'LIBYA', 'MALAWI', 'MALI', 'NEPAL', 'SRI LANKA', 'KYRGYZSTAN', 'UZBEKISTAN', 'MADAGASCAR',
     'PAKISTAN', 'PHILIPPINES', 'SOMALIA', 'TUNISIA', 'TURKMENISTAN', 'UGANDA', 'UKRAINE', 'UNITED STATES OF AMERICA',
     'YEMEN'
@@ -124,8 +127,8 @@ def obtener_datos_tabla(driver):
         pais = datos_fila[5].text
         print('Pais: ' + pais)
 
-        # Nos fijamos si el titulo es malo o no
-        if not pais_valido(pais):
+        # Nos fijamos si el pais es malo o no
+        if pais in LISTA_PAISES_INVALIDOS:
             print('************* Pais invalido *************')
             continue
 
@@ -153,15 +156,6 @@ def obtener_datos_tabla(driver):
         print('Fecha publicacion: ' + fecha_publicacion)
 
         agregar_datos_PROCUREMENT(numero_referencia, titulo, oficina, pais, proceso, fecha_hasta, fecha_publicacion, documento)
-
-
-def pais_valido(pais):
-    # Hacemos for por cada titulo malo
-    for pais_invalido in LISTA_PAISES_INVALIDOS:
-        if pais_invalido in pais:
-            return False
-
-    return True
 
 
 if __name__ == '__main__':
