@@ -46,7 +46,10 @@ def main():
     aplicar_filtros(driver)
 
     # Llamamos funcion obtiene los datos
-    obtener_datos_tabla(driver)
+    try:
+        driver.find_element(By.XPATH, "//a[contains(text(), 'Subscribe to receive email alerts')]")
+    except:
+        obtener_datos_tabla(driver)
 
 
 # Funcion que aplica filtros a la tabla
@@ -118,11 +121,6 @@ def obtener_datos_tabla(driver):
             print('FILA ACTUAL: ' + str(numero_fila))
             fila_actual += 1
 
-            expediente_id = str(numero_pagina) + str(numero_fila)
-            if obtener_expediente(expediente_id):
-                print("Ya existe")
-                continue
-
             # Iniciamos datos de la fila
             descripcion = ''
             pais = ''
@@ -133,6 +131,15 @@ def obtener_datos_tabla(driver):
 
             # Obtenemos los datos de la fila
             datos_fila = filas[numero_fila].find_elements(By.TAG_NAME, "td")
+
+            # Obtenemos la descripcion
+            descripcion = datos_fila[0].text
+            # Obtenemos el titulo
+            titulo = datos_fila[2].text
+            expediente_id = str(descripcion) + str(titulo)
+            if obtener_expediente(expediente_id):
+                print("Ya existe")
+                continue
 
             # Obtenemos el pais de la fila
             pais = datos_fila[1].text
@@ -150,13 +157,7 @@ def obtener_datos_tabla(driver):
                 print('Idioma invalido')
                 continue
 
-            # Obtenemos la descripcion
-            descripcion = datos_fila[0].text
-
             documento = datos_fila[0].find_element(By.TAG_NAME, "a").get_attribute("href")
-
-            # Obtenemos el titulo
-            titulo = datos_fila[2].text
 
             # Obtenemos tipo noticia
             tipo_noticia = datos_fila[3].text
@@ -178,7 +179,8 @@ def obtener_datos_tabla(driver):
             print('Fecha Pub: ', fecha_publicacion)
             print('Expediente id: ' + expediente_id)
             print('Documento: ' + documento)
-            agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma, fecha_publicacion, documento)
+            agregar_datos_banco_mundial(expediente_id, descripcion, pais, titulo, tipo_noticia, idioma,
+                                        fecha_publicacion, documento)
 
         wait(driver)
         WebDriverWait(driver, 30).until(
