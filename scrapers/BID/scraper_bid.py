@@ -113,7 +113,7 @@ def obtener_datos_tabla(driver):
             continue
 
         # Obtenemos la fecha
-        fecha = datos_fila[3].text.replace('\n', ' ')
+        fecha = datos_fila[3].text.replace('\n', ' ').split(" ")[0]
         print('Fecha: ' + fecha)
 
         # Obtenemos el url del id
