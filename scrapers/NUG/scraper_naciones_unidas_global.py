@@ -167,8 +167,8 @@ def obtener_datos_tabla(driver):
             print("La fecha limite ya paso.")
             continue
 
-        fecha_publicacion = datetime.strptime(publicado, "%d-%b.-%Y").strftime("%Y-%m-%d")
-        fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%Y-%m-%d")
+        fecha_publicacion = datetime.strptime(publicado, "%d-%b.-%Y").strftime("%d-%m-%Y")
+        fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%d-%m-%Y")
         if fecha_publicacion_dt < una_semana_antes:
             print(f"Fecha publicación {fecha_publicacion} vieja")
             continue

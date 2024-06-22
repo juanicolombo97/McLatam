@@ -225,9 +225,9 @@ def obtener_datos_expediente(driver, contador):
 
     # Obtenemos del segundo div de descripcion para obtener la fecha
     divs_segundo = div_descripcion[1].text.split('\n')[1].strip()
-    fecha_publicacion = datetime.strptime(divs_segundo, "%d %B %Y").strftime("%Y-%m-%d")
+    fecha_publicacion = datetime.strptime(divs_segundo, "%d %B %Y").strftime("%d-%m-%Y")
     print('Fecha: ', fecha_publicacion)
-    fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%Y-%m-%d")
+    fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%d-%m-%Y")
     if fecha_publicacion_dt < una_semana_antes:
         print(f"Fecha publicación {fecha_publicacion} vieja")
         return

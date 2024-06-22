@@ -147,8 +147,8 @@ def obtener_datos_tabla(driver):
 
         # Obtenemos la fecha publicacion de la fila
         fecha_pub = datos_fila[8].text
-        fecha_publicacion = datetime.strptime(fecha_pub, "%d-%b-%y").strftime("%Y-%m-%d")
-        fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%Y-%m-%d")
+        fecha_publicacion = datetime.strptime(fecha_pub, "%d-%b-%y").strftime("%d-%m-%Y")
+        fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%d-%m-%Y")
         if fecha_publicacion_dt < una_semana_antes:
             print(f"Fecha publicación {fecha_publicacion} vieja")
             return

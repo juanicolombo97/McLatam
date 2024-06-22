@@ -117,7 +117,7 @@ const Tabla = ({expedientes}) => {
   function formatDate(dateString) {
     if (!dateString) return '-';
     const dateParts = dateString.split('-');
-    const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+    const formattedDate = `${dateParts[0]}/${dateParts[1]}/${dateParts[2]}`;
     return formattedDate;
 }
 

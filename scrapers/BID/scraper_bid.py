@@ -114,7 +114,8 @@ def obtener_datos_tabla(driver):
 
         # Obtenemos la fecha
         fecha = datos_fila[3].text.replace('\n', ' ').split(" ")[0]
-        print('Fecha: ' + fecha)
+        fecha_limite = datetime.strptime(fecha, '%d-%B-%Y').strftime('%d-%m-%Y')
+        print('Fecha Limite: ' + fecha_limite)
 
         # Obtenemos el url del id
         url_id = datos_fila[1].find_element(By.TAG_NAME, "a").get_attribute('href')
@@ -144,7 +145,7 @@ def obtener_datos_tabla(driver):
 
         # Obtenemos la fecha de publicacion que es el segundo item, apartir de los :
         fecha_publicacion = lista_datos_apertura[1].split(':')[1].strip()
-        fecha_pub = datetime.strptime(fecha_publicacion, "%d-%B-%Y").strftime("%Y-%m-%d")
+        fecha_pub = datetime.strptime(fecha_publicacion, "%d-%B-%Y").strftime("%d-%m-%Y")
         fecha_publicacion_dt = datetime.strptime(fecha_publicacion, "%d-%B-%Y")
         if fecha_publicacion_dt < una_semana_antes:
             print(f"Fecha publicación {fecha_publicacion_dt} vieja")
@@ -186,6 +187,7 @@ def obtener_datos_tabla(driver):
 
         # Obtenemos el aproval date
         fecha_aprobacion = driver.find_element(By.XPATH, "//p[contains(text(),  ' Date')]/../p[2]").text
+        fecha_aprobacion_dt = datetime.strptime(fecha_aprobacion, '%B %d, %Y').strftime('%d-%m-%Y')
         print('Fecha aprobacion: ' + fecha_aprobacion)
 
         # Obtenemos el sector del proyecto
@@ -208,7 +210,7 @@ def obtener_datos_tabla(driver):
         monto = driver.find_element(By.XPATH, "//p[contains(text(),  'Amount')]/../p[2]").text
         print('Amount: ' + monto)
 
-        agregar_datos_BID(id_fila, titulo, fecha, fecha_aprobacion, fecha_pub, url_id, costo, monto, sector_proyecto, pais, link_datos,
+        agregar_datos_BID(id_fila, titulo, fecha_limite, fecha_aprobacion_dt, fecha_pub, url_id, costo, monto, sector_proyecto, pais, link_datos,
                           tipo_proyecto, estado_proyecto, sub_sector)
 
         # Cerramos el tab
